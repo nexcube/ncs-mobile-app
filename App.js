@@ -1,8 +1,14 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Text} from 'react-native';
+
+import RootStack from './src/screens/RootStack';
 
 function App() {
-  return <Text>NCS mobile App !!!</Text>;
+  return (
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
+  );
 }
 
 export default App;
