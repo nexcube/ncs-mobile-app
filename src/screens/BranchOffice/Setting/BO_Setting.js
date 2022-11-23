@@ -2,12 +2,12 @@ import React from 'react';
 import {Button, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-function HO_Setting({navigation, route}) {
+function BO_Setting({navigation, route}) {
   const onSettingPush = function () {
-    navigation.navigate('HO_Setting_Push');
+    navigation.navigate('BO_Setting_Push');
   };
   const onSettingUser = function () {
-    navigation.navigate('HO_Setting_User');
+    navigation.navigate('BO_Setting_User');
   };
 
   return (
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HO_Setting;
+export default BO_Setting;

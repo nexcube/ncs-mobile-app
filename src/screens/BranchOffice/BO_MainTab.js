@@ -1,31 +1,22 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import BO_Dashboard from './BO_Dashboard';
+import BO_DashboardStack from './Dashboard/BO_DashboardStack';
+import BO_SettingStack from './Setting/BO_SettingStack';
 
 const Tab = createBottomTabNavigator();
+
 function BO_MainTab() {
   return (
-    <>
-      <View style={[styles.block]}>
-        <Tab.Navigator
-          screenOptions={{
-            headerShown: false,
-            tabBarShowLabel: false,
-            tabBarActiveTintColor: '#6200ee',
-          }}>
-          <Tab.Screen name="BO_Dashboard" component={BO_Dashboard} />
-        </Tab.Navigator>
-      </View>
-    </>
+    <Tab.Navigator
+      screenOptions={{
+        headerSBOwn: false,
+        tabBarSBOwLabel: true,
+        tabBarActiveTintColor: '#6200ee',
+      }}>
+      <Tab.Screen name="BO_DashboardStack" component={BO_DashboardStack} options={{headerShown: false}} />
+      <Tab.Screen name="BO_SettingStack" component={BO_SettingStack} options={{headerShown: false}} />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  block: {
-    flex: 1,
-    zIndex: 0,
-  },
-});
 export default BO_MainTab;

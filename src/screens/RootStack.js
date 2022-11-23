@@ -1,8 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen';
-import HO_MainTab from './HeadOffice/HO_MainTab';
 import BO_MainTab from './BranchOffice/BO_MainTab';
+import HO_MainTab from './HeadOffice/HO_MainTab';
 
 const Stack = createNativeStackNavigator();
 

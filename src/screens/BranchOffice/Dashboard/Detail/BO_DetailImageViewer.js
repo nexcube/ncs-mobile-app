@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function HO_DetailModify({navigation, route}) {
+function BO_DetailImageViewer({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Head Office Detail Modify</Text>
+      <Text>Branch Office Detail Image Viewer</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HO_DetailModify;
+export default BO_DetailImageViewer;

@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function HO_DetailAddComment({navigation, route}) {
+function BO_SettingPush({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Head Office Detail Add Comment</Text>
+      <Text>Head Office Setting Push</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HO_DetailAddComment;
+export default BO_SettingPush;

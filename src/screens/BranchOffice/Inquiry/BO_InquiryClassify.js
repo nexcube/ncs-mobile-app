@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function HO_SettingUser({navigation, route}) {
+function BO_InquiryClassify({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Head Office Setting User</Text>
+      <Text>Branch Office Inquiry Classify</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HO_SettingUser;
+export default BO_InquiryClassify;

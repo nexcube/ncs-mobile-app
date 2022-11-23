@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -7,11 +8,16 @@ const TABBAR_HEIGHT = 49;
 
 function InquiryButton() {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const bottom = Platform.select({
     android: TABBAR_HEIGHT / 2,
     ios: TABBAR_HEIGHT / 2 + insets.bottom - 4,
   });
+
+  const onInquiry = function () {
+    navigation.navigate('BO_Inquiry');
+  };
 
   return (
     <>
@@ -20,7 +26,8 @@ function InquiryButton() {
           android_ripple={{
             color: '#ffffff',
           }}
-          style={styles.circle}>
+          style={styles.circle}
+          onPress={onInquiry}>
           <Icon name="add" color="white" size={24} />
         </Pressable>
       </View>
