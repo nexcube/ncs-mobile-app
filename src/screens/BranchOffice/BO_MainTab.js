@@ -1,7 +1,8 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import BO_DashboardStack from './Dashboard/BO_DashboardStack';
-import BO_SettingStack from './Setting/BO_SettingStack';
+import BO_Dashboard from './Dashboard/BO_Dashboard';
+import BO_Setting from './Setting/BO_Setting';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,8 +14,20 @@ function BO_MainTab() {
         tabBarSBOwLabel: true,
         tabBarActiveTintColor: '#6200ee',
       }}>
-      <Tab.Screen name="BO_DashboardStack" component={BO_DashboardStack} options={{headerShown: false}} />
-      <Tab.Screen name="BO_SettingStack" component={BO_SettingStack} options={{headerShown: false}} />
+      <Tab.Screen
+        name="BO_Dashboard"
+        component={BO_Dashboard}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
+        }}
+      />
+
+      <Tab.Screen
+        name="BO_Setting"
+        component={BO_Setting}
+        options={{headerShown: false, tabBarIcon: ({color}) => <Icon name="settings" size={24} color={color} />}}
+      />
     </Tab.Navigator>
   );
 }

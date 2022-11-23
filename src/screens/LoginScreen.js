@@ -7,7 +7,7 @@ function LoginScreen({navigation, route}) {
     navigation.navigate('HO_MainTab');
   };
   const onBO = function () {
-    navigation.navigate('BO_MainTab');
+    navigation.navigate('BO_MainStack');
   };
 
   return (
