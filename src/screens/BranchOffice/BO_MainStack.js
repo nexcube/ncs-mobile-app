@@ -9,7 +9,8 @@ import BO_Inquiry from './Inquiry/BO_Inquiry';
 import BO_InquiryClassify from './Inquiry/BO_InquiryClassify';
 import BO_Setting from './Setting/BO_Setting';
 import BO_SettingPush from './Setting/BO_SettingPush';
-import BO_SettingUser from './Setting/BO_SettingUserSetting';
+import BO_SettingUserSetting from './Setting/BO_SettingUserSetting';
+import BO_SettingAddUser from './Setting/BO_SettingAddUser';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,8 @@ function BO_MainStack() {
       <Stack.Screen name="BO_Inquiry_Classify" component={BO_InquiryClassify} />
       <Stack.Screen name="BO_Setting" component={BO_Setting} />
       <Stack.Screen name="BO_Setting_Push" component={BO_SettingPush} />
-      <Stack.Screen name="BO_Setting_User" component={BO_SettingUser} />
+      <Stack.Screen name="BO_Setting_User_Setting" component={BO_SettingUserSetting} />
+      <Stack.Screen name="BO_Setting_Add_User" component={BO_SettingAddUser} />
     </Stack.Navigator>
   );
 }

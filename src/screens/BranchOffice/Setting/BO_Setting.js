@@ -6,15 +6,20 @@ function BO_Setting({navigation, route}) {
   const onSettingPush = function () {
     navigation.navigate('BO_Setting_Push');
   };
-  const onSettingUser = function () {
-    navigation.navigate('BO_Setting_User');
+  const onSettingUserSetting = function () {
+    navigation.navigate('BO_Setting_User_Setting');
+  };
+
+  const onSettingAddUser = function () {
+    navigation.navigate('BO_Setting_Add_User');
   };
 
   return (
     <SafeAreaView style={[styles.fullscreen]}>
       <Text>Head Office Setting</Text>
       <Button title="푸시알림" onPress={onSettingPush} />
-      <Button title="사용자설정" onPress={onSettingUser} />
+      <Button title="사용자설정" onPress={onSettingUserSetting} />
+      <Button title="사용자추가" onPress={onSettingAddUser} />
     </SafeAreaView>
   );
 }

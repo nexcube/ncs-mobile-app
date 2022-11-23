@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function BO_SettingUserSetting({navigation, route}) {
+function BO_SettingAddUser({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Branch Office Setting User Setting</Text>
+      <Text>Branch Office Setting Add User</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BO_SettingUserSetting;
+export default BO_SettingAddUser;
