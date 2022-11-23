@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const TABBAR_HEIGHT = 49;
 
-function InquiryButton() {
+function InquiryButton({routeName}) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
@@ -16,7 +16,7 @@ function InquiryButton() {
   });
 
   const onInquiry = function () {
-    navigation.navigate('BO_Inquiry');
+    navigation.navigate(routeName);
   };
 
   return (

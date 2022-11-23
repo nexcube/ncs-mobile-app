@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-function BO_SettingPush({navigation, route}) {
+function HO_SettingPushTime({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Branch Office Setting Push</Text>
+      <Text>Head Office Setting Push Time</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BO_SettingPush;
+export default HO_SettingPushTime;

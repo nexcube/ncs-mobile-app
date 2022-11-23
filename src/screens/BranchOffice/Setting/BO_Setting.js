@@ -16,7 +16,7 @@ function BO_Setting({navigation, route}) {
 
   return (
     <SafeAreaView style={[styles.fullscreen]}>
-      <Text>Head Office Setting</Text>
+      <Text>Branch Office Setting</Text>
       <Button title="푸시알림" onPress={onSettingPush} />
       <Button title="사용자설정" onPress={onSettingUserSetting} />
       <Button title="사용자추가" onPress={onSettingAddUser} />

@@ -1,11 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, Button} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-function HO_Dashboard() {
+function HO_SharedInfo({navigation, route}) {
+  const onDetail = () => navigation.navigate('HO_Detail');
   return (
     <SafeAreaView style={[styles.fullscreen]}>
-      <Text>Head Office Dashboard</Text>
+      <Text>Head Office SharedInfo</Text>
+      <Button title="Head Office Detail" onPress={onDetail} />
     </SafeAreaView>
   );
 }
@@ -18,4 +20,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HO_Dashboard;
+export default HO_SharedInfo;

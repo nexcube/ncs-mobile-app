@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 function LoginScreen({navigation, route}) {
   const onHO = function () {
-    navigation.navigate('HO_MainTab');
+    navigation.navigate('HO_MainStack');
   };
   const onBO = function () {
     navigation.navigate('BO_MainStack');

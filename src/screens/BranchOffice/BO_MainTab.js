@@ -26,7 +26,10 @@ function BO_MainTab() {
       <Tab.Screen
         name="BO_Setting"
         component={BO_Setting}
-        options={{headerShown: false, tabBarIcon: ({color}) => <Icon name="settings" size={24} color={color} />}}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({color}) => <Icon name="settings" size={24} color={color} />,
+        }}
       />
     </Tab.Navigator>
   );
