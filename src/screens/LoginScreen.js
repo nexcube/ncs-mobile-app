@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Button,
   KeyboardAvoidingView,
@@ -9,33 +9,54 @@ import {
   Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import axios from 'axios';
 
 function LoginScreen({navigation, route}) {
-  const onHO = function () {
-    navigation.navigate('HO_MainStack');
+  const [email, setEmail] = useState('test@test.com');
+  const [password, setPassword] = useState('');
+
+  const onLogin = () => {
+    axios
+      .post('/login', JSON.stringify({email: email, password: password}), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        console.log(res.status);
+        console.log(res.data.token);
+      })
+      .catch(error => console.log(error));
   };
-  const onBO = function () {
-    navigation.navigate('BO_MainStack');
-  };
+
+  // 전역 axios 기본값
+
+  axios.defaults.baseURL = Platform.select({ios: 'http://localhost', android: 'http:/10.0.2.2'});
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ios: 'padding', android: undefined})}
       style={styles.avoid}>
       <View style={[styles.fullscreen]}>
-        <Text>SignInScreen</Text>
-        <View style={[styles.row]}>
-          <Button title="Head Office" onPress={onHO} />
-          <Button title="Branch Office" onPress={onBO} />
-        </View>
+        {mockupUI({navigation})}
         <View>
-          <Button title="test" />
-          <Button title="test" />
-          <Button title="test" />
-          <Button title="test" />
-          <Button title="test" />
-          <Button title="test" />
-          <TextInput placeholder="아이디를 입력하세요" style={[styles.input]} />
+          <TextInput
+            placeholder="이메일 입력하세요"
+            style={[styles.input]}
+            keyboardType="email-address"
+            returnKeyType="next"
+            autoCapitalize="none"
+            onChangeText={setEmail}
+          />
+          <TextInput
+            placeholder="비밀번호를 입력하세요."
+            style={[styles.input]}
+            returnKeyType="go"
+            secureTextEntry={true}
+            autoCapitalize="none"
+            onChangeText={setPassword}
+          />
+          <Button title="로그인" onPress={onLogin} />
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -66,5 +87,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+function mockupUI({navigation}) {
+  const onHO = () => navigation.navigate('HO_MainStack');
+  const onBO = () => navigation.navigate('BO_MainStack');
+
+  return (
+    <>
+      <Text>SignInScreen</Text>
+      <View style={[styles.row]}>
+        <Button title="Head Office" onPress={onHO} />
+        <Button title="Branch Office" onPress={onBO} />
+      </View>
+    </>
+  );
+}
 
 export default LoginScreen;

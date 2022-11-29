@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import InquiryList from '../../../Components/InquiryList';
+import InquiryList from '../../../components/InquiryList';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {

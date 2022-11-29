@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["todos"]
+  "cSpell.words": ["todos"],
+  "editor.formatOnSave": true
 }
