@@ -8,8 +8,8 @@ import {
   View,
   Platform,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
+import deviceStorage from '../services/DeviceStorage';
 
 function LoginScreen({navigation, route}) {
   const [email, setEmail] = useState('test@test.com');
@@ -22,16 +22,20 @@ function LoginScreen({navigation, route}) {
           'Content-Type': 'application/json',
         },
       })
-      .then(res => {
-        console.log(res.status);
-        console.log(res.data.token);
+      .then(async res => {
+        await deviceStorage.saveItem('email', email);
+        await deviceStorage.saveItem('password', password);
+        await deviceStorage.saveItem('token', res.data.token);
+        await deviceStorage.saveItem('role', res.data.role);
+
+        if (res.data.role === '관리자') {
+          navigation.navigate('HO_MainStack');
+        } else {
+          navigation.navigate('BO_MainStack');
+        }
       })
       .catch(error => console.log(error));
   };
-
-  // 전역 axios 기본값
-
-  axios.defaults.baseURL = Platform.select({ios: 'http://localhost', android: 'http:/10.0.2.2'});
 
   return (
     <KeyboardAvoidingView
@@ -47,6 +51,7 @@ function LoginScreen({navigation, route}) {
             returnKeyType="next"
             autoCapitalize="none"
             onChangeText={setEmail}
+            value={email}
           />
           <TextInput
             placeholder="비밀번호를 입력하세요."
@@ -55,6 +60,7 @@ function LoginScreen({navigation, route}) {
             secureTextEntry={true}
             autoCapitalize="none"
             onChangeText={setPassword}
+            value={password}
           />
           <Button title="로그인" onPress={onLogin} />
         </View>
