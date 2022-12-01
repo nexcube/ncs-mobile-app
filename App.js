@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Platform, StatusBar, StyleSheet} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 import Config from 'react-native-config';
@@ -12,7 +12,12 @@ function App() {
   });
   return (
     <NavigationContainer>
-      <StatusBar animated={true} hidden={false} />
+      <StatusBar
+        backgroundColor="#1E5CB3"
+        animated={true}
+        hidden={false}
+        barStyle="light-content"
+      />
       <RootStack />
     </NavigationContainer>
   );

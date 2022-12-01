@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {Button, KeyboardAvoidingView, StyleSheet, Text, Image, View, Platform} from 'react-native';
+import {
+  Button,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  Image,
+  View,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
