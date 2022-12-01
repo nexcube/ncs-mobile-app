@@ -1,14 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  Image,
-  View,
-  Platform,
-  StatusBar,
-} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, Image, View, Platform} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
@@ -98,8 +89,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
-    // width: '100%',
-    // height: '100%',
   },
   input: {
     // flex: 1,
@@ -125,20 +114,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-function mockupUI({navigation}) {
-  const onHO = () => navigation.navigate('HO_MainStack');
-  const onBO = () => navigation.navigate('BO_MainStack');
-
-  return (
-    <>
-      <Text>SignInScreen</Text>
-      <View style={[styles.row]}>
-        <Button title="Head Office" onPress={onHO} />
-        <Button title="Branch Office" onPress={onBO} />
-      </View>
-    </>
-  );
-}
 
 export default LoginScreen;
