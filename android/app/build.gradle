@@ -1,5 +1,16 @@
 apply plugin: "com.android.application"
 
+project.ext.envConfigFiles = [
+    developdebug: "env/.env.develop",
+    developrelease: "env/.env.develop",
+    stagedebug: "env/.env.stage",
+    stagerelease: "env/.env.stage",
+    productdebug: "env/.env.product",
+    productrelease: "env/.env.product",
+    anothercustombuild: ".env",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -135,12 +146,25 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.ncsmobileapp"
+        applicationId project.env.get("APP_ID")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode project.env.get("BUILD_VERSION").toInteger()
+        versionName project.env.get('APP_VERSION')
+        resValue "string", "app_name", project.env.get("APP_NAME")
+        resValue "string", "build_config_package", "com.ncsmobileapp"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+        // parkcom
+        flavorDimensions "version"
+        productFlavors {
+            develop {
+            }
+            stage {
+            }
+            product {
+            }
+        }
 
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
@@ -318,3 +342,4 @@ project.ext.vectoricons = [
     iconFontNames: [ 'MaterialIcons.ttf' ] // Name of the font files you want to copy
 ]
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+

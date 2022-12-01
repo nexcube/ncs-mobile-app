@@ -3,11 +3,25 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "-android": "react-native run-android",
+    "-ios": "react-native run-ios",
+    "android": "react-native run-android --variant=developdebug",
+    "ios": "react-native run-ios --scheme Develop --configuration Debug --simulator='iPhone 14'",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android:dev:d": "react-native run-android --variant=developdebug",
+    "android:dev:r": "react-native run-android --variant=developrelease",
+    "android:stg:d": "react-native run-android --variant=stagedebug",
+    "android:stg:r": "react-native run-android --variant=stagerelease",
+    "android:prd:d": "react-native run-android --variant=productdebug",
+    "android:prd:r": "react-native run-android --variant=productrelease",
+    "ios:dev:d": "react-native run-ios --scheme Develop --configuration Debug --simulator='iPhone 14'",
+    "ios:dev:r": "react-native run-ios --scheme Develop --configuration Release --device 'TEST iPhone'",
+    "ios:stg:d": "react-native run-ios --scheme Stage --configuration Debug --simulator='iPhone 14'",
+    "ios:stg:r": "react-native run-ios --scheme Stage --configuration Release --simulator='iPhone 14'",
+    "ios:prd:d": "react-native run-ios --scheme Product --configuration Debug --simulator='iPhone 14'",
+    "ios:prd:r": "react-native run-ios --scheme Product --configuration Release --device 'TEST iPhone'"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",

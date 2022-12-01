@@ -1,34 +1,31 @@
 import React, {useState} from 'react';
-import {
-  Button,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Platform,
-} from 'react-native';
+import {Button, KeyboardAvoidingView, StyleSheet, Text, Image, View, Platform} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
+import CustomButton from '../components/CustomButton';
+import BorderedInput from '../components/BorderedInput';
+
 function LoginScreen({navigation, route}) {
-  const [email, setEmail] = useState('test@test.com');
+  // 본사 직원: hk89131 / YAjPr5YLys
+  // 지점 원장: schae / YAjPr5YLys
+
+  const [id, setEmail] = useState(''); //
   const [password, setPassword] = useState('');
 
   const onLogin = () => {
     axios
-      .post('/login', JSON.stringify({email: email, password: password}), {
+      .post('/login', JSON.stringify({id: id, password: password}), {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then(async res => {
-        await deviceStorage.saveItem('email', email);
-        await deviceStorage.saveItem('password', password);
-        await deviceStorage.saveItem('token', res.data.token);
-        await deviceStorage.saveItem('role', res.data.role);
+        await deviceStorage.saveItem('jwt', res.data.token);
+        await deviceStorage.saveItem('userData', JSON.stringify(res.data.userData));
 
-        if (res.data.role === '관리자') {
+        console.log(res.data);
+        if (res.data.loginType === 'staff') {
           navigation.navigate('HO_MainStack');
         } else {
           navigation.navigate('BO_MainStack');
@@ -42,27 +39,34 @@ function LoginScreen({navigation, route}) {
       behavior={Platform.select({ios: 'padding', android: undefined})}
       style={styles.avoid}>
       <View style={[styles.fullscreen]}>
-        {mockupUI({navigation})}
-        <View>
-          <TextInput
-            placeholder="이메일 입력하세요"
-            style={[styles.input]}
-            keyboardType="email-address"
+        <Image
+          source={require('../../assets/images/EDUPLEX-Logo-back.png')}
+          style={[styles.logoBack]}
+        />
+
+        <View style={[styles.logo]}>
+          <Image source={require('../../assets/images/EDUPLEX-Logo.png')} />
+        </View>
+        <View style={[styles.input]}>
+          <BorderedInput
+            hasMarginBottom
+            keyboardType="default"
             returnKeyType="next"
             autoCapitalize="none"
+            placeholder="NEMS 아이디"
+            value={id}
             onChangeText={setEmail}
-            value={email}
           />
-          <TextInput
-            placeholder="비밀번호를 입력하세요."
-            style={[styles.input]}
+          <BorderedInput
+            hasMarginBottom
             returnKeyType="go"
             secureTextEntry={true}
             autoCapitalize="none"
+            placeholder="NEMS 암호"
             onChangeText={setPassword}
             value={password}
           />
-          <Button title="로그인" onPress={onLogin} />
+          <CustomButton onPress={onLogin} title="로그인" hasMarginBottom={false} />
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -70,23 +74,42 @@ function LoginScreen({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
-  block: {
-    flex: 1,
-  },
   fullscreen: {
+    flex: 1,
+    paddingHorizontal: 12,
+    backgroundColor: '#1E5CB3',
+  },
+  logo: {
+    // backgroundColor: 'yellow',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  row: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+  logoBack: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    // width: '100%',
+    // height: '100%',
   },
   input: {
-    fontSize: 16,
-    paddingVertical: 18,
+    // flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  textInput: {
+    fontSize: 17,
+    backgroundColor: '#FFFFFF',
+    display: 'flex',
+    flexDirection: 'row',
+    borderRadius: 6,
+    marginVertical: 10,
+    paddingVertical: 20,
+  },
+  button: {
+    backgroundColor: '#0067CC',
   },
 
   avoid: {
