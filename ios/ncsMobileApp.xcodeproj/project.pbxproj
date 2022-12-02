@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ncsMobileAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ncsMobileAppTests.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-ncsMobileApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ncsMobileApp.a */; };
+		0E778CB30A314D10882E60FD /* Happiness-Sans-Title.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C9D030FA07A4540B1728C58 /* Happiness-Sans-Title.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4886EC70F8BF4C5D81090C08 /* Happiness-Sans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC262CFBC9D14C11AD6525A9 /* Happiness-Sans-Bold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-ncsMobileApp-ncsMobileAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ncsMobileApp-ncsMobileAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		9DFAE83874494BA9A1B381DC /* Happiness-Sans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E554E2540C04E83971A316F /* Happiness-Sans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +61,11 @@
 		713154EE29385A28004D2F92 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		713154EF29387538004D2F92 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		713154F92938DB7E004D2F92 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		7C9D030FA07A4540B1728C58 /* Happiness-Sans-Title.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Happiness-Sans-Title.ttf"; path = "../assets/fonts/Happiness-Sans-Title.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ncsMobileApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-ncsMobileApp-ncsMobileAppTests/Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		8E554E2540C04E83971A316F /* Happiness-Sans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Happiness-Sans-Regular.ttf"; path = "../assets/fonts/Happiness-Sans-Regular.ttf"; sourceTree = "<group>"; };
+		BC262CFBC9D14C11AD6525A9 /* Happiness-Sans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Happiness-Sans-Bold.ttf"; path = "../assets/fonts/Happiness-Sans-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -123,6 +129,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		49E19E968C214AD8AFFD01DF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BC262CFBC9D14C11AD6525A9 /* Happiness-Sans-Bold.ttf */,
+				8E554E2540C04E83971A316F /* Happiness-Sans-Regular.ttf */,
+				7C9D030FA07A4540B1728C58 /* Happiness-Sans-Title.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		713154F029387538004D2F92 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +168,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				49E19E968C214AD8AFFD01DF /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -296,6 +314,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4886EC70F8BF4C5D81090C08 /* Happiness-Sans-Bold.ttf in Resources */,
+				9DFAE83874494BA9A1B381DC /* Happiness-Sans-Regular.ttf in Resources */,
+				0E778CB30A314D10882E60FD /* Happiness-Sans-Title.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

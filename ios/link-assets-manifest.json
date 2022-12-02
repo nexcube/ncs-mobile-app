@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Happiness-Sans-Bold.ttf",
+      "sha1": "2b7441cc78be18cb08567c2dadac0fd324508163"
+    },
+    {
+      "path": "assets/fonts/Happiness-Sans-Regular.ttf",
+      "sha1": "d218e112bb009d3aa67e15d792f0a855870a3daa"
+    },
+    {
+      "path": "assets/fonts/Happiness-Sans-Title.ttf",
+      "sha1": "ffbadf3976badbdc0d93538205d529308cf0baff"
+    }
+  ]
+}

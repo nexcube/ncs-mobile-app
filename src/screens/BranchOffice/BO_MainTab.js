@@ -18,6 +18,7 @@ function BO_MainTab() {
         name="BO_Dashboard"
         component={BO_Dashboard}
         options={{
+          title: '대시보드',
           headerShown: false,
           tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
         }}
@@ -27,6 +28,7 @@ function BO_MainTab() {
         name="BO_Setting"
         component={BO_Setting}
         options={{
+          title: '환경설정',
           headerShown: false,
           tabBarIcon: ({color}) => <Icon name="settings" size={24} color={color} />,
         }}

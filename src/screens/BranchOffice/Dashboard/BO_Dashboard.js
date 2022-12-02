@@ -1,14 +1,10 @@
-import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import InquiryList from '../../../components/InquiryList';
+import React, {useRef, useState} from 'react';
+import {Animated, Button, StyleSheet, Text, View, FlatList, StatusBar, Image} from 'react-native';
+import InquiryCard from '../../../components/Inquiry/InquiryCard';
+import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {
-  const onDetail = function () {
-    navigation.navigate('BO_Detail');
-  };
-
   const [todos, setTodos] = useState([
     {id: 1, text: '우리나라 대한민국'},
     {id: 2, text: '가나다라마바사아차'},
@@ -24,21 +20,47 @@ function BO_Dashboard({navigation, route}) {
     {id: 12, text: '가나다라마바사아차'},
   ]);
 
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
   return (
-    <SafeAreaView style={[styles.fullscreen]}>
-      <InquiryList todos={todos} />
-      <Text>Branch Office Dashboard</Text>
-      <Button title="Branch Office Detail" onPress={onDetail} />
+    <View style={[styles.container]}>
+      <InquiryStatus animHeaderValue={scrollOffsetY} />
+
+      <FlatList
+        contentContainerStyle={[styles.list]}
+        data={todos}
+        renderItem={({item}) => <InquiryCard />}
+        keyExtractor={item => item.id.toString()}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: scrollOffsetY,
+                },
+              },
+            },
+          ],
+          {useNativeDriver: false},
+        )}
+        scrollEventThrottle={1}
+        ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+      />
       <InquiryButton routeName="BO_Inquiry" />
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  fullscreen: {
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  list: {
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+  },
+  itemSeparator: {
+    height: 14,
   },
 });
 

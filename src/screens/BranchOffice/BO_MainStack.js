@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 function BO_MainStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="BO_MainTab" component={BO_MainTab} />
+      <Stack.Screen name="BO_MainTab" component={BO_MainTab} options={{headerShown: false}} />
       <Stack.Screen name="BO_Detail" component={BO_Detail} />
       <Stack.Screen name="BO_Detail_Modify" component={BO_DetailModify} />
       <Stack.Screen name="BO_Detail_Image_Viewer" component={BO_DetailImageViewer} />

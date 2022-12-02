@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
       {
         translateX: -27,
       },
+      {
+        translateY: 17,
+      },
     ],
     ...Platform.select({
       ios: {

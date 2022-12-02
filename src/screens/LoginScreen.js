@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, Image, View, Platform} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, Image, View, Platform, StatusBar} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
@@ -10,8 +10,8 @@ function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
 
-  const [id, setEmail] = useState(''); //
-  const [password, setPassword] = useState('');
+  const [id, setEmail] = useState('schae'); //
+  const [password, setPassword] = useState('YAjPr5YLys');
 
   const onLogin = () => {
     axios

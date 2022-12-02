@@ -1,9 +1,30 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Platform, StatusBar} from 'react-native';
+import {Button, Platform, StatusBar, Text, TextInput} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 import Config from 'react-native-config';
+import {setCustomText} from 'react-native-global-props';
+
+const customTextProps = {
+  style: {
+    fontFamily: 'Happiness-Sans-Regular',
+  },
+};
+
+setCustomText(customTextProps);
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.style = {fontFamily: 'Happiness-Sans-Regular'};
+Button.defaultProps = Button.defaultProps || {};
+Button.defaultProps.style = {fontFamily: 'Happiness-Sans-Regular'};
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.style = {fontFamily: 'Happiness-Sans-Regular'};
+
+StatusBar.setBarStyle('light-content');
+if (Platform.OS === 'android') {
+  StatusBar.setBackgroundColor('rgba(0,0,0,0)');
+  StatusBar.setTranslucent(true);
+}
 
 function App() {
   axios.defaults.baseURL = Platform.select({
@@ -12,12 +33,6 @@ function App() {
   });
   return (
     <NavigationContainer>
-      <StatusBar
-        backgroundColor="#1E5CB3"
-        animated={true}
-        hidden={false}
-        barStyle="light-content"
-      />
       <RootStack />
     </NavigationContainer>
   );
