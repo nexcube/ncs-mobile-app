@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Feather';
 import HO_Dashboard from './Dashboard/HO_Dashboard';
 import HO_SharedInfo from './SharedInfo/HO_SharedInfo';
 import HO_Search from './Search/HO_Search';

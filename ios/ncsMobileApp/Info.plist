@@ -36,10 +36,10 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>MaterialIcons.ttf</string>
+		<string>Feather.ttf</string>
 		<string>Happiness-Sans-Bold.ttf</string>
 		<string>Happiness-Sans-Regular.ttf</string>
 		<string>Happiness-Sans-Title.ttf</string>

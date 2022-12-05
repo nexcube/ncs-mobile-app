@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Feather';
 
 const TABBAR_HEIGHT = 49;
 
@@ -28,7 +28,7 @@ function InquiryButton({routeName}) {
           }}
           style={styles.circle}
           onPress={onInquiry}>
-          <Icon name="add" color="white" size={24} />
+          <Icon name="plus" color="white" size={24} />
         </Pressable>
       </View>
     </>
