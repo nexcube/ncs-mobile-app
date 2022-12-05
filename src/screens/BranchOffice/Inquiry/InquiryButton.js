@@ -3,6 +3,7 @@ import React from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
+import globalStyles from '../../../styles/global';
 
 const TABBAR_HEIGHT = 49;
 
@@ -24,11 +25,11 @@ function InquiryButton({routeName}) {
       <View style={[styles.wrapper, {bottom}]}>
         <Pressable
           android_ripple={{
-            color: '#ffffff',
+            color: globalStyles.color.white,
           }}
           style={styles.circle}
           onPress={onInquiry}>
-          <Icon name="plus" color="white" size={24} />
+          <Icon name="plus" color={globalStyles.color.white} size={24} />
         </Pressable>
       </View>
     </>
@@ -38,17 +39,17 @@ function InquiryButton({routeName}) {
 const styles = StyleSheet.create({
   wrapper: {
     zIndex: 5,
-    borderRadius: 27,
-    height: 54,
-    width: 54,
+    borderRadius: 28,
+    height: 56,
+    width: 56,
     position: 'absolute',
     left: '90%',
     transform: [
       {
-        translateX: -27,
+        translateX: Platform.select({ios: -29, android: -20}),
       },
       {
-        translateY: 17,
+        translateY: Platform.select({ios: 45, android: 17}),
       },
     ],
     ...Platform.select({
@@ -65,10 +66,10 @@ const styles = StyleSheet.create({
     }),
   },
   circle: {
-    backgroundColor: '#6200ee',
-    borderRadius: 27,
-    height: 54,
-    width: 54,
+    backgroundColor: '#0067CC',
+    borderRadius: 28,
+    height: 56,
+    width: 56,
     alignItems: 'center',
     justifyContent: 'center',
   },

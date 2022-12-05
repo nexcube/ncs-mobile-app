@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
+import globalStyles from '../styles/global';
 
 function BorderedInput({hasMarginBottom, ...rest}) {
   return <TextInput style={[styles.input, hasMarginBottom && styles.margin]} {...rest} />;
@@ -7,15 +8,15 @@ function BorderedInput({hasMarginBottom, ...rest}) {
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: '#bdbdbd',
+    borderColor: globalStyles.color.grayLight,
     borderWidth: 1,
     paddingHorizontal: 16,
     borderRadius: 4,
     height: 48,
-    backgroundColor: 'white',
-    fontFamily: 'Happiness-Sans-Regular',
+    backgroundColor: globalStyles.color.white,
+    fontFamily: globalStyles.font.regular,
     fontSize: 17,
-    color: '#333333',
+    color: globalStyles.color.text,
   },
   margin: {
     marginBottom: 16,

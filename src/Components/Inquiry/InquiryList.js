@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import {FlatList, View, Text, StyleSheet, ScrollView, Animated} from 'react-native';
+import React from 'react';
+import {FlatList, View, Text, StyleSheet} from 'react-native';
 
 function InquiryList({todos}) {
   return (

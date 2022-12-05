@@ -1,24 +1,25 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import globalStyles from '../../styles/global';
 
-export default function InquiryHeader() {
+export default function InquiryHeader({newCount = 0, proceedingCount = 0, completedCount = 0}) {
   return (
     <View style={[styles.container]}>
       <Text style={styles.headerText}>문의현황</Text>
       <View style={[styles.row]}>
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>신규</Text>
-          <Text style={[styles.rowChangeText]}> 1</Text>
+          <Text style={[styles.rowChangeText]}> {newCount}</Text>
         </View>
         <View style={[styles.verticalLine]} />
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>진행중 </Text>
-          <Text style={[styles.rowChangeText]}> 2</Text>
+          <Text style={[styles.rowChangeText]}> {proceedingCount}</Text>
         </View>
         <View style={[styles.verticalLine]} />
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>완료 </Text>
-          <Text style={[styles.rowChangeText]}> 12</Text>
+          <Text style={[styles.rowChangeText]}> {completedCount}</Text>
         </View>
       </View>
     </View>
@@ -31,9 +32,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
-    color: '#CCCCCC',
+    fontFamily: globalStyles.font.title,
+    color: globalStyles.color.grayLight,
     fontSize: 15,
-    fontWeight: '900',
     textAlign: 'center',
   },
   row: {
@@ -43,12 +44,14 @@ const styles = StyleSheet.create({
   },
 
   rowText: {
+    fontFamily: globalStyles.font.title,
     color: '#999999',
     fontSize: 15,
     fontWeight: '900',
   },
   rowChangeText: {
-    color: '#FFFFFF',
+    fontFamily: globalStyles.font.title,
+    color: globalStyles.color.white,
     fontSize: 32,
     fontWeight: '900',
   },
@@ -56,6 +59,6 @@ const styles = StyleSheet.create({
     height: 32,
     width: 1,
     backgroundColor: '#909090',
-    margin: 8,
+    margin: 12,
   },
 });

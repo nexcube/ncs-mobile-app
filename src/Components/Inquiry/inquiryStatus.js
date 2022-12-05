@@ -1,9 +1,10 @@
 import React from 'react';
-import {Animated, Image, ImageBackground, StyleSheet, View} from 'react-native';
+import {Animated, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
-import BorderedInput from '../BorderedInput';
 import InquiryHeader from './InquiryHeader';
 import LogoBack from '../../../assets/images/EDUPLEX-Logo-back.svg';
+import SearchTextInput from './SearchTextInput';
+import globalStyles from '../../styles/global';
 
 const Header_Max_Height = 200;
 const Header_Min_Height = 70;
@@ -20,12 +21,12 @@ function InquiryStatus({animHeaderValue}) {
       <View style={[styles.statusBar]} />
       <LogoBack style={[styles.logoBack]} />
       <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
-        <InquiryHeader />
+        <InquiryHeader newCount={1} proceedingCount={2} completedCount={12} />
 
-        <BorderedInput
+        <SearchTextInput
           hasMarginBottom
           keyboardType="default"
-          returnKeyType="next"
+          returnKeyType="search"
           autoCapitalize="none"
           placeholder="제목, 내용, 댓글, 담당자로 검색"
           // value={id}
@@ -39,7 +40,7 @@ function InquiryStatus({animHeaderValue}) {
 const styles = StyleSheet.create({
   statusBar: {
     height: getStatusBarHeight(false),
-    backgroundColor: '#332D41',
+    backgroundColor: globalStyles.color.purple,
   },
   header: {
     justifyContent: 'flex-end',
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 10,
     paddingHorizontal: 12,
-    backgroundColor: '#332D41',
+    backgroundColor: globalStyles.color.purple,
   },
   logoBack: {
     position: 'absolute',

@@ -10,17 +10,8 @@ function BO_MainTab() {
   return (
     <Tab.Navigator
       screenOptions={{
-        // tabBarActiveTintColor: '##0067CC',
-        // tabBarInactiveTintColor: 'color: #999999;',
-        tabBarLabelStyle: {
-          textAlign: 'center',
-          textTransform: 'none',
-        },
-        tabBarIndicatorStyle: {
-          borderBottomColor: '#C2D5A8',
-          borderBottomWidth: 2,
-        },
-        // tabBarStyle: {backgroundColor: 'red'},
+        tabBarActiveTintColor: '#0054A7',
+        tabBarInactiveTintColor: 'color: #999999;',
       }}>
       <Tab.Screen
         name="BO_Dashboard"

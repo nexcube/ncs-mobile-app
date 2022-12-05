@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, View, Platform, Text} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
@@ -7,12 +7,14 @@ import CustomButton from '../components/CustomButton';
 import BorderedInput from '../components/BorderedInput';
 import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
 import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
+import LinearGradient from 'react-native-linear-gradient';
+import CustomToast, {Toast} from '../components/CustomToast';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
 
-  const [id, setEmail] = useState('schae'); //
+  const [id, setEmail] = useState('schaeg'); //
   const [password, setPassword] = useState('YAjPr5YLys');
 
   const onLogin = () => {
@@ -33,14 +35,25 @@ function LoginScreen({navigation, route}) {
           navigation.navigate('BO_MainStack');
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        console.log(error);
+      });
   };
 
+  Toast.show({
+    type: 'errorMsg',
+    props: {
+      message:
+        '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
+    },
+  });
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ios: 'padding', android: undefined})}
       style={styles.avoid}>
-      <View style={[styles.fullscreen]}>
+      <LinearGradient
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.6)']}
+        style={[styles.fullscreen]}>
         <LogoBack style={[styles.logoBack]} />
         <View style={[styles.logo]}>
           <EDUPLEXLogo />
@@ -66,7 +79,8 @@ function LoginScreen({navigation, route}) {
           />
           <CustomButton onPress={onLogin} title="로그인" hasMarginBottom={false} />
         </View>
-      </View>
+      </LinearGradient>
+      <CustomToast />
     </KeyboardAvoidingView>
   );
 }
@@ -78,7 +92,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E5CB3',
   },
   logo: {
-    // backgroundColor: 'yellow',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

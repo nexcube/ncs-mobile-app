@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
+import globalStyles from '../styles/global';
 
 function CustomButton({onPress, title, hasMarginBottom}) {
   return (
@@ -8,7 +9,7 @@ function CustomButton({onPress, title, hasMarginBottom}) {
         onPress={onPress}
         style={({pressed}) => [styles.wrapper, Platform.OS === 'ios' && pressed && {opacity: 0.5}]}
         android_ripple={{
-          color: '#ffffff',
+          color: globalStyles.color.white,
         }}>
         <Text style={[styles.text]}>{title}</Text>
       </Pressable>
@@ -26,12 +27,12 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0067CC',
+    backgroundColor: globalStyles.color.blue,
   },
   text: {
-    fontFamily: 'Happiness-Sans-Bold',
+    fontFamily: globalStyles.font.regular,
     fontSize: 17,
-    color: 'white',
+    color: globalStyles.color.white,
   },
   margin: {
     marginBottom: 8,
