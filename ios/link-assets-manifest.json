@@ -12,6 +12,10 @@
     {
       "path": "assets/fonts/Happiness-Sans-Title.ttf",
       "sha1": "ffbadf3976badbdc0d93538205d529308cf0baff"
+    },
+    {
+      "path": "assets/fonts/HappinessSansVF.ttf",
+      "sha1": "8466ac4827abc798f8ba9c0c655590e6023ba85d"
     }
   ]
 }

@@ -3,6 +3,7 @@ import {Animated, Image, ImageBackground, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import BorderedInput from '../BorderedInput';
 import InquiryHeader from './InquiryHeader';
+import LogoBack from '../../../assets/images/EDUPLEX-Logo-back.svg';
 
 const Header_Max_Height = 200;
 const Header_Min_Height = 70;
@@ -17,10 +18,7 @@ function InquiryStatus({animHeaderValue}) {
   return (
     <View>
       <View style={[styles.statusBar]} />
-      <Image
-        source={require('../../../assets/images/EDUPLEX-Logo-back.png')}
-        style={[styles.logoBack]}
-      />
+      <LogoBack style={[styles.logoBack]} />
       <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
         <InquiryHeader />
 

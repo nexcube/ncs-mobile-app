@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     height: 48,
     backgroundColor: 'white',
+    fontFamily: 'Happiness-Sans-Regular',
+    fontSize: 17,
+    color: '#333333',
   },
   margin: {
     marginBottom: 16,

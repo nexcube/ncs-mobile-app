@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0067CC',
   },
   text: {
-    fontWeight: 'bold',
+    fontFamily: 'Happiness-Sans-Bold',
     fontSize: 17,
     color: 'white',
   },

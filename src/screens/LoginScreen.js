@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, Image, View, Platform, StatusBar} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
 import CustomButton from '../components/CustomButton';
 import BorderedInput from '../components/BorderedInput';
+import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
+import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -39,13 +41,9 @@ function LoginScreen({navigation, route}) {
       behavior={Platform.select({ios: 'padding', android: undefined})}
       style={styles.avoid}>
       <View style={[styles.fullscreen]}>
-        <Image
-          source={require('../../assets/images/EDUPLEX-Logo-back.png')}
-          style={[styles.logoBack]}
-        />
-
+        <LogoBack style={[styles.logoBack]} />
         <View style={[styles.logo]}>
-          <Image source={require('../../assets/images/EDUPLEX-Logo.png')} />
+          <EDUPLEXLogo />
         </View>
         <View style={[styles.input]}>
           <BorderedInput
@@ -84,6 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    resizeMode: 'center',
   },
   logoBack: {
     position: 'absolute',
@@ -96,18 +95,6 @@ const styles = StyleSheet.create({
     marginBottom: 36,
     marginLeft: 10,
     marginRight: 10,
-  },
-  textInput: {
-    fontSize: 17,
-    backgroundColor: '#FFFFFF',
-    display: 'flex',
-    flexDirection: 'row',
-    borderRadius: 6,
-    marginVertical: 10,
-    paddingVertical: 20,
-  },
-  button: {
-    backgroundColor: '#0067CC',
   },
 
   avoid: {

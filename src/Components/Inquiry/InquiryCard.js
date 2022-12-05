@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   title: {
-    fontFamily: 'Happiness-Sans-Regular',
+    fontFamily: 'Happiness-Sans-Bold',
     fontSize: 15,
-    fontWeight: '700',
+    // fontWeight: '600',
     color: '#333333',
   },
   content: {
