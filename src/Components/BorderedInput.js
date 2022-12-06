@@ -2,8 +2,13 @@ import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 import globalStyles from '../styles/global';
 
-function BorderedInput({hasMarginBottom, ...rest}) {
-  return <TextInput style={[styles.input, hasMarginBottom && styles.margin]} {...rest} />;
+function BorderedInput({hasMarginBottom, height, ...rest}) {
+  return (
+    <TextInput
+      style={[styles.input, hasMarginBottom && styles.margin, height && {height}]}
+      {...rest}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

@@ -11,18 +11,39 @@ import BO_Setting from './Setting/BO_Setting';
 import BO_SettingPush from './Setting/BO_SettingPush';
 import BO_SettingUser from './Setting/BO_SettingUser';
 import BO_SettingAddUser from './Setting/BO_SettingAddUser';
+import globalStyles from '../../styles/global';
+import Icon from 'react-native-vector-icons/Feather';
+import {Button, Image, Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
+function BackButton() {
+  return (
+    <Image
+      source={require('../../../assets/images/chevron-left.png')}
+      style={{marginLeft: 10, width: 22, height: 22}}
+    />
+  );
+}
+
 function BO_MainStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: globalStyles.color.white,
+        headerBackTitle: '',
+        headerTitleAlign: 'center',
+        headerBackImageSource:
+          Platform.OS === 'android'
+            ? require('../../../assets/images/chevron-left.png')
+            : {uri: 'back', width: 24, height: 24},
+      }}>
       <Stack.Screen name="BO_MainTab" component={BO_MainTab} options={{headerShown: false}} />
       <Stack.Screen name="BO_Detail" component={BO_Detail} />
       <Stack.Screen name="BO_Detail_Modify" component={BO_DetailModify} />
       <Stack.Screen name="BO_Detail_Image_Viewer" component={BO_DetailImageViewer} />
       <Stack.Screen name="BO_Detail_Add_Comment" component={BO_DetailAddComment} />
-      <Stack.Screen name="BO_Inquiry" component={BO_Inquiry} />
+      <Stack.Screen name="BO_Inquiry" component={BO_Inquiry} options={{title: '문의하기'}} />
       <Stack.Screen name="BO_Inquiry_Classify" component={BO_InquiryClassify} />
       <Stack.Screen name="BO_Setting" component={BO_Setting} />
       <Stack.Screen name="BO_Setting_Push" component={BO_SettingPush} />

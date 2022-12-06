@@ -4,6 +4,8 @@ import {Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 import Config from 'react-native-config';
+import globalStyles from './src/styles/global';
+import {DefaultTheme} from '@react-navigation/native';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -17,10 +19,19 @@ function App() {
     android: Config.SERVER_URL_ANDROID,
   });
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       <RootStack />
     </NavigationContainer>
   );
 }
 
 export default App;
+
+const navigationTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    card: globalStyles.color.purple,
+    text: globalStyles.color.text,
+  },
+};

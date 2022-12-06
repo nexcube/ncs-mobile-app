@@ -13,7 +13,7 @@ import CustomToast, {Toast} from '../components/CustomToast';
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
-  const [id, setEmail] = useState('schaeg'); //
+  const [id, setEmail] = useState('schae'); //
   const [password, setPassword] = useState('YAjPr5YLys');
 
   // 로그인 처리

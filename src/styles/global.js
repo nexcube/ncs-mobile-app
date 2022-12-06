@@ -10,6 +10,7 @@ const globalStyles = StyleSheet.create({
     purple: '#332D41',
     white: '#ffffff',
     red: '#B3261E',
+    background: '#1E1E1E',
   },
 
   font: {
