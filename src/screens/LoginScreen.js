@@ -13,11 +13,12 @@ import CustomToast, {Toast} from '../components/CustomToast';
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
-
   const [id, setEmail] = useState('schaeg'); //
   const [password, setPassword] = useState('YAjPr5YLys');
 
-  const onLogin = () => {
+  // 로그인 처리
+  const onLogin = async () => {
+    Toast.hide();
     axios
       .post('/login', JSON.stringify({id: id, password: password}), {
         headers: {
@@ -37,16 +38,17 @@ function LoginScreen({navigation, route}) {
       })
       .catch(error => {
         console.log(error);
+        Toast.show({
+          type: 'errorMsg',
+          visibilityTime: 3000,
+          props: {
+            message:
+              '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
+          },
+        });
       });
   };
 
-  Toast.show({
-    type: 'errorMsg',
-    props: {
-      message:
-        '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
-    },
-  });
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ios: 'padding', android: undefined})}
