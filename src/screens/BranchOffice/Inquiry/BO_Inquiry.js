@@ -2,14 +2,14 @@ import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import BorderedInput from '../../../components/BorderedInput';
-
 import HeaderButton from '../../../components/HeaderButton';
 import SelectionList from '../../../components/SelectionList';
 import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
-import MultiImagePicker from '../../../components/MultiImagePicker';
+import Attachments from '../../../components/Inquiry/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryBottomBar from '../../../components/Inquiry/InquiryBottomBar';
 import {launchCamera} from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
 
 function BO_Inquiry() {
   const navigation = useNavigation();
@@ -35,11 +35,21 @@ function BO_Inquiry() {
   const [selected, setSelected] = React.useState('');
 
   const [images, setImages] = useState([]);
-  const onDelete = value => {
-    const result = images.filter(
-      item => item?.localIdentifier && item?.localIdentifier !== value?.localIdentifier,
-    );
+  const [files, setFiles] = useState([]);
+  const [cameras, setCameras] = useState([]);
+
+  const onDeleteImage = value => {
+    const result = images.filter(item => item?.path && item?.path !== value?.path);
     setImages(result);
+  };
+  const onDeleteFile = value => {
+    const result = files.filter(item => item?.uri && item?.uri !== value?.uri);
+    setFiles(result);
+  };
+
+  const onDeleteCamera = value => {
+    const result = cameras.filter(item => item?.uri && item?.uri !== value?.uri);
+    setCameras(result);
   };
 
   const onImage = async () => {
@@ -52,37 +62,62 @@ function BO_Inquiry() {
         doneTitle: '추가',
         cancelTitle: '취소',
       });
-      console.log('response: ', response);
-      setImages(response);
+
+      const dupResult = [...images, ...response];
+      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.path === v.path) === i);
+
+      setImages([...result]);
     } catch (e) {
       console.log(e.code, e.message);
     }
   };
   const onCamera = async () => {
     try {
-      const result = await launchCamera({
-        // mediaType: 'photo',
-        // cameraType: 'back',
+      const response = await launchCamera({
+        mediaType: 'photo',
+        cameraType: 'back',
         // saveToPhotos: true,
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-        },
       });
-      if (result.didCancel) {
+      if (response.didCancel) {
         return null;
       }
-      // const localUri = result.assets[0].uri;
-      // const uriPath = localUri.split('//').pop();
-      // const imageName = localUri.split('/').pop();
-      console.log(result.assets[0]);
-      setImages([...images, result.assets[0]]);
+
+      setCameras([...cameras, response.assets[0]]);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const onFile = async () => console.log('onFile');
+  const onFile = async () => {
+    try {
+      const response = await DocumentPicker.pickMultiple({
+        type: [
+          DocumentPicker.types.audio,
+          DocumentPicker.types.csv,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.plainText,
+          DocumentPicker.types.ppt,
+          DocumentPicker.types.pptx,
+          DocumentPicker.types.xls,
+          DocumentPicker.types.xlsx,
+          DocumentPicker.types.zip,
+        ],
+      });
+
+      const dupResult = [...files, ...response];
+      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.uri === v.uri) === i);
+
+      setFiles([...result]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('Canceled from single doc picker');
+      } else {
+        console.log('Unknown Error: ' + JSON.stringify(err));
+        throw err;
+      }
+    }
+  };
 
   return (
     <SafeAreaView edges={['bottom']} style={[{flex: 1}]}>
@@ -115,7 +150,14 @@ function BO_Inquiry() {
           autoCapitalize="none"
           placeholder=" 내용 입력"
         />
-        <MultiImagePicker images={images} setImages={setImages} onDelete={onDelete} />
+        <Attachments
+          images={images}
+          files={files}
+          cameras={cameras}
+          onDeleteImage={onDeleteImage}
+          onDeleteFile={onDeleteFile}
+          onDeleteCamera={onDeleteCamera}
+        />
       </ScrollView>
       <InquiryBottomBar onImage={onImage} onFile={onFile} onCamera={onCamera} />
     </SafeAreaView>
