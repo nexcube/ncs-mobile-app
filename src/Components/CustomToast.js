@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Feather';
 const CustomToast = () => <Toast config={toastConfig} />;
 
 const toastConfig = {
-  errorMsg: ({text1, props}) => (
+  errorMsg: ({props}) => (
     <View style={[styles.container]}>
       <Text style={[styles.toastText]} numberOfLines={3}>
         {props.message}

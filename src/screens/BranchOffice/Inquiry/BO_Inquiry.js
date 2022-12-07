@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect, useRef, useState, useCallback, useMemo} from 'react';
+import {StyleSheet, ScrollView, View, Text} from 'react-native';
 import BorderedInput from '../../../components/BorderedInput';
 import HeaderButton from '../../../components/HeaderButton';
 import SelectionList from '../../../components/SelectionList';
@@ -13,7 +13,6 @@ import DocumentPicker from 'react-native-document-picker';
 
 function BO_Inquiry() {
   const navigation = useNavigation();
-
   // 헤더 버튼 추가.
   useEffect(() => {
     navigation.setOptions({
@@ -21,9 +20,7 @@ function BO_Inquiry() {
     });
   });
 
-  function onRegistration() {
-    console.log('onRegistration...');
-  }
+  function onRegistration() {}
 
   const data = [
     {key: '1', value: '서초동'},
@@ -159,6 +156,7 @@ function BO_Inquiry() {
           onDeleteCamera={onDeleteCamera}
         />
       </ScrollView>
+
       <InquiryBottomBar onImage={onImage} onFile={onFile} onCamera={onCamera} />
     </SafeAreaView>
   );
@@ -175,6 +173,10 @@ const styles = StyleSheet.create({
     borderRadius: 64,
     width: 128,
     height: 128,
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
