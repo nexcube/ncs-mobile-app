@@ -34,7 +34,11 @@ function BO_MainStack() {
       <Stack.Screen name="BO_Detail_Image_Viewer" component={BO_DetailImageViewer} />
       <Stack.Screen name="BO_Detail_Add_Comment" component={BO_DetailAddComment} />
       <Stack.Screen name="BO_Inquiry" component={BO_Inquiry} options={{title: '문의하기'}} />
-      <Stack.Screen name="BO_Inquiry_Classify" component={BO_InquiryClassify} />
+      <Stack.Screen
+        name="BO_Inquiry_Classify"
+        component={BO_InquiryClassify}
+        options={{title: '분류 선택'}}
+      />
       <Stack.Screen name="BO_Setting" component={BO_Setting} />
       <Stack.Screen name="BO_Setting_Push" component={BO_SettingPush} />
       <Stack.Screen name="BO_Setting_User_Setting" component={BO_SettingUser} />

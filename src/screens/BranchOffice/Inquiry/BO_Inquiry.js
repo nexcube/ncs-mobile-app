@@ -27,6 +27,7 @@ function BO_Inquiry() {
   });
 
   const [title, setTitle] = useState('');
+  const [classSelection, setClassSelection] = useState(-1);
 
   const data = [
     {key: '1', value: '서초동'},
@@ -41,14 +42,16 @@ function BO_Inquiry() {
   const [files, setFiles] = useState([]);
   const [cameras, setCameras] = useState([]);
 
-  const onInquiryClassify = () => {
-    navigation.navigate('BO_Inquiry_Classify');
-  };
-
   const [sheetStatus, setSheetStatus] = useState({
     visible: false,
     format: InquiryAction.Registration,
   });
+
+  const test = () => console.log('function test');
+
+  const onInquiryClassify = () => {
+    navigation.navigate('BO_Inquiry_Classify', {itemId: 86, otherParam: test});
+  };
 
   function onRegistration() {
     if (title.length < 1) {
@@ -114,7 +117,7 @@ function BO_Inquiry() {
           value={title}
           onChangeText={setTitle}
         />
-        <SelectionButton hasMarginBottom title=" 분류선택" onPress={onInquiryClassify} />
+        <SelectionButton title=" 분류선택" hasMarginBottom onPress={onInquiryClassify} />
 
         <SelectionList hasMarginBottom data={data} setSelected={setSelected} />
         <CustomInput

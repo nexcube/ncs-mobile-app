@@ -33,5 +33,6 @@ const navigationTheme = {
     ...DefaultTheme.colors,
     card: globalStyles.color.purple,
     text: globalStyles.color.text,
+    background: '#f5f5f5',
   },
 };

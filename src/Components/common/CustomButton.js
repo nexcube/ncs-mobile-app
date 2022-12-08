@@ -8,9 +8,11 @@ function CustomButton({
   hasMarginBottom,
   fontColor = globalStyles.color.white,
   backgroundColor = globalStyles.color.blue,
+  ...restStyle
 }) {
+  console.log(restStyle);
   return (
-    <View style={[styles.block, styles.overflow, hasMarginBottom && styles.margin]}>
+    <View style={[styles.overflow, hasMarginBottom && styles.margin, restStyle['customStyle']]}>
       <Pressable
         onPress={onPress}
         style={({pressed}) => [
