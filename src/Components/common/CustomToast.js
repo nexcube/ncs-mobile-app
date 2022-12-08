@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import globalStyles from '../styles/global';
+import globalStyles from '../../styles/global';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#B3261E',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     padding: 20,
   },
   toastText: {
+    flex: 1,
     color: globalStyles.color.white,
     fontFamily: globalStyles.font.regular,
     fontSize: 15,

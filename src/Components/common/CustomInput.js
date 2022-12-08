@@ -1,10 +1,11 @@
 import React from 'react';
-import {StyleSheet, TextInput} from 'react-native';
-import globalStyles from '../styles/global';
+import {StyleSheet, TextInput, Text} from 'react-native';
+import globalStyles from '../../styles/global';
 
-function BorderedInput({hasMarginBottom, height, ...rest}) {
+function CustomInput({hasMarginBottom, height, ...rest}) {
   return (
     <TextInput
+      placeholderTextColor={globalStyles.color.grayLight}
       style={[styles.input, hasMarginBottom && styles.margin, height && {height}]}
       {...rest}
     />
@@ -28,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BorderedInput;
+export default CustomInput;

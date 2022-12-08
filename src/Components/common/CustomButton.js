@@ -1,17 +1,27 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
-import globalStyles from '../styles/global';
+import globalStyles from '../../styles/global';
 
-function CustomButton({onPress, title, hasMarginBottom}) {
+function CustomButton({
+  onPress,
+  title,
+  hasMarginBottom,
+  fontColor = globalStyles.color.white,
+  backgroundColor = globalStyles.color.blue,
+}) {
   return (
     <View style={[styles.block, styles.overflow, hasMarginBottom && styles.margin]}>
       <Pressable
         onPress={onPress}
-        style={({pressed}) => [styles.wrapper, Platform.OS === 'ios' && pressed && {opacity: 0.5}]}
+        style={({pressed}) => [
+          styles.wrapper,
+          {backgroundColor: backgroundColor},
+          Platform.OS === 'ios' && pressed && {opacity: 0.5},
+        ]}
         android_ripple={{
           color: globalStyles.color.white,
         }}>
-        <Text style={[styles.text]}>{title}</Text>
+        <Text style={[styles.text, {color: fontColor}]}>{title}</Text>
       </Pressable>
     </View>
   );

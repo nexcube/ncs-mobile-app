@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, Pressable, Platform} from 'react-native';
-import globalStyles from '../styles/global';
+import globalStyles from '../../styles/global';
 
 function HeaderButton({title, onPress}) {
   return (

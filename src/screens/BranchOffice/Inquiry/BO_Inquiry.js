@@ -1,16 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
-import BorderedInput from '../../../components/BorderedInput';
-import HeaderButton from '../../../components/HeaderButton';
-import SelectionList from '../../../components/SelectionList';
-import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
+import CustomInput from '../../../components/common/CustomInput';
+import HeaderButton from '../../../components/common/HeaderButton';
+import SelectionList from '../../../components/common/SelectionList';
 import Attachments from '../../../components/Inquiry/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryBottomBar from '../../../components/Inquiry/InquiryBottomBar';
-import {launchCamera} from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
-import {permissionCheck} from '../../../services/PermissionCheck';
+import BottomSheet, {InquiryAction} from '../../../components/common/bottomsheet/BottomSheet';
+import HeaderBackButton from '../../../components/common/HeaderBackButton';
+import produce from 'immer';
+import CustomToast, {Toast} from '../../../components/common/CustomToast';
+import CustomButton from '../../../components/common/CustomButton';
+import globalStyles from '../../../styles/global';
+import SelectionButton from '../../../components/common/SelectionButton';
 
 function BO_Inquiry() {
   const navigation = useNavigation();
@@ -18,10 +21,12 @@ function BO_Inquiry() {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => <HeaderButton title="등록" onPress={onRegistration} />,
+      headerBackVisible: false,
+      headerLeft: () => <HeaderBackButton t onPress={onBack} />,
     });
   });
 
-  function onRegistration() {}
+  const [title, setTitle] = useState('');
 
   const data = [
     {key: '1', value: '서초동'},
@@ -36,110 +41,83 @@ function BO_Inquiry() {
   const [files, setFiles] = useState([]);
   const [cameras, setCameras] = useState([]);
 
-  const onDeleteImage = value => {
-    const result = images.filter(item => item?.path && item?.path !== value?.path);
-    setImages(result);
-  };
-  const onDeleteFile = value => {
-    const result = files.filter(item => item?.uri && item?.uri !== value?.uri);
-    setFiles(result);
+  const onInquiryClassify = () => {
+    navigation.navigate('BO_Inquiry_Classify');
   };
 
-  const onDeleteCamera = value => {
-    const result = cameras.filter(item => item?.uri && item?.uri !== value?.uri);
-    setCameras(result);
-  };
+  const [sheetStatus, setSheetStatus] = useState({
+    visible: false,
+    format: InquiryAction.Registration,
+  });
 
-  const onImage = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        selectedAssets: images,
-        isExportThumbnail: false,
-        maxVideo: 1,
-        usedCameraButton: false,
-        doneTitle: '추가',
-        cancelTitle: '취소',
+  function onRegistration() {
+    if (title.length < 1) {
+      Toast.show({
+        type: 'errorMsg',
+        visibilityTime: 3000,
+        position: 'bottom',
+        props: {
+          message: '제목을 입력하세요',
+        },
       });
-
-      const dupResult = [...images, ...response];
-      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.path === v.path) === i);
-
-      setImages([...result]);
-    } catch (e) {
-      console.log(e.code, e.message);
+      return;
     }
-  };
-  const onCamera = async () => {
-    permissionCheck('카메라');
-    try {
-      const response = await launchCamera({
-        mediaType: 'photo',
-        cameraType: 'back',
-        // saveToPhotos: true,
-      });
-      if (response.didCancel) {
-        return null;
-      }
 
-      setCameras([...cameras, response.assets[0]]);
-    } catch (err) {
-      console.log(err);
+    const newSheetStatus = produce(sheetStatus, draft => {
+      draft.visible = true;
+      draft.format = InquiryAction.Registration;
+    });
+    setSheetStatus(newSheetStatus);
+  }
+
+  function onBack() {
+    const newSheetStatus = produce(sheetStatus, draft => {
+      draft.visible = true;
+      draft.format = InquiryAction.CancelInquiry;
+    });
+    setSheetStatus(newSheetStatus);
+  }
+
+  function onBSConfirm() {
+    const newSheetStatus = produce(sheetStatus, draft => {
+      draft.visible = false;
+    });
+    setSheetStatus(newSheetStatus);
+
+    switch (sheetStatus.format) {
+      case InquiryAction.Registration:
+        break;
+      case InquiryAction.CancelInquiry:
+        navigation.goBack();
+        break;
+      case InquiryAction.Error:
+        break;
     }
-  };
+  }
 
-  const onFile = async () => {
-    try {
-      const response = await DocumentPicker.pickMultiple({
-        type: [
-          DocumentPicker.types.audio,
-          DocumentPicker.types.csv,
-          DocumentPicker.types.docx,
-          DocumentPicker.types.pdf,
-          DocumentPicker.types.plainText,
-          DocumentPicker.types.ppt,
-          DocumentPicker.types.pptx,
-          DocumentPicker.types.xls,
-          DocumentPicker.types.xlsx,
-          DocumentPicker.types.zip,
-        ],
-      });
-
-      const dupResult = [...files, ...response];
-      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.uri === v.uri) === i);
-
-      setFiles([...result]);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err)) {
-        console.log('Canceled from single doc picker');
-      } else {
-        console.log('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  };
+  function onBSContinue() {
+    const newSheetStatus = produce(sheetStatus, draft => {
+      draft.visible = false;
+    });
+    setSheetStatus(newSheetStatus);
+  }
 
   return (
-    <SafeAreaView edges={['bottom']} style={[{flex: 1}]}>
+    <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
       <ScrollView style={[styles.container]}>
-        <BorderedInput
+        <CustomInput
           hasMarginBottom
           keyboardType="default"
           returnKeyType="next"
           autoCapitalize="none"
           placeholder=" 제목"
-          // value={id}
-          // onChangeText={setEmail}
+          value={title}
+          onChangeText={setTitle}
         />
-        <BorderedInput
-          hasMarginBottom
-          keyboardType="default"
-          returnKeyType="next"
-          autoCapitalize="none"
-          placeholder=" 분류선택"
-          editable={false}
-        />
+        <SelectionButton hasMarginBottom title=" 분류선택" onPress={onInquiryClassify} />
+
         <SelectionList hasMarginBottom data={data} setSelected={setSelected} />
-        <BorderedInput
+        <CustomInput
           hasMarginBottom
           textAlignVertical="top"
           multiline={true}
@@ -151,20 +129,32 @@ function BO_Inquiry() {
         />
         <Attachments
           images={images}
+          setImages={setImages}
           files={files}
+          setFiles={setFiles}
           cameras={cameras}
-          onDeleteImage={onDeleteImage}
-          onDeleteFile={onDeleteFile}
-          onDeleteCamera={onDeleteCamera}
+          setCameras={setCameras}
         />
       </ScrollView>
 
-      <InquiryBottomBar onImage={onImage} onFile={onFile} onCamera={onCamera} />
+      <InquiryBottomBar
+        images={images}
+        setImages={setImages}
+        files={files}
+        setFiles={setFiles}
+        cameras={cameras}
+        setCameras={setCameras}
+      />
+      <BottomSheet sheetStatus={sheetStatus} onOk={onBSConfirm} onCancel={onBSContinue} />
+      <CustomToast />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  fullscreen: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 12,

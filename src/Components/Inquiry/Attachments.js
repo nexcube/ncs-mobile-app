@@ -6,7 +6,21 @@ import {AttachmentFileFrame} from './AttachmentFile';
 const {width} = Dimensions.get('window');
 export const IMAGE_WIDTH = (width - 24 - 18 - 6) / 4;
 
-function Attachments({images, files, cameras, onDeleteImage, onDeleteFile, onDeleteCamera}) {
+function Attachments({images, setImages, files, setFiles, cameras, setCameras}) {
+  const onDeleteImage = value => {
+    const result = images.filter(item => item?.path && item?.path !== value?.path);
+    setImages(result);
+  };
+  const onDeleteFile = value => {
+    const result = files.filter(item => item?.uri && item?.uri !== value?.uri);
+    setFiles(result);
+  };
+
+  const onDeleteCamera = value => {
+    const result = cameras.filter(item => item?.uri && item?.uri !== value?.uri);
+    setCameras(result);
+  };
+
   return (
     <View style={[styles.container]}>
       {/* 이미지 표현 */}
@@ -36,7 +50,7 @@ function Attachments({images, files, cameras, onDeleteImage, onDeleteFile, onDel
           key={`fileFrame_${index}`}
           index={index}
           item={item}
-          onDeleteFile={onDeleteFile}
+          onDelete={onDeleteFile}
           imageWidth={IMAGE_WIDTH}
         />
       ))}

@@ -3,12 +3,12 @@ import {KeyboardAvoidingView, StyleSheet, View, Platform, Text} from 'react-nati
 import axios from 'axios';
 import deviceStorage from '../services/DeviceStorage';
 
-import CustomButton from '../components/CustomButton';
-import BorderedInput from '../components/BorderedInput';
+import CustomButton from '../components/common/CustomButton';
+import CustomInput from '../components/common/CustomInput';
 import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
 import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
 import LinearGradient from 'react-native-linear-gradient';
-import CustomToast, {Toast} from '../components/CustomToast';
+import CustomToast, {Toast} from '../components/common/CustomToast';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -61,7 +61,7 @@ function LoginScreen({navigation, route}) {
           <EDUPLEXLogo />
         </View>
         <View style={[styles.input]}>
-          <BorderedInput
+          <CustomInput
             hasMarginBottom
             keyboardType="default"
             returnKeyType="next"
@@ -70,7 +70,7 @@ function LoginScreen({navigation, route}) {
             value={id}
             onChangeText={setEmail}
           />
-          <BorderedInput
+          <CustomInput
             hasMarginBottom
             returnKeyType="go"
             secureTextEntry={true}
