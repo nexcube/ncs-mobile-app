@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState, useCallback, useMemo} from 'react';
-import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, ScrollView} from 'react-native';
 import BorderedInput from '../../../components/BorderedInput';
 import HeaderButton from '../../../components/HeaderButton';
 import SelectionList from '../../../components/SelectionList';
@@ -10,6 +10,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryBottomBar from '../../../components/Inquiry/InquiryBottomBar';
 import {launchCamera} from 'react-native-image-picker';
 import DocumentPicker from 'react-native-document-picker';
+import {permissionCheck} from '../../../services/PermissionCheck';
 
 function BO_Inquiry() {
   const navigation = useNavigation();
@@ -69,6 +70,7 @@ function BO_Inquiry() {
     }
   };
   const onCamera = async () => {
+    permissionCheck('카메라');
     try {
       const response = await launchCamera({
         mediaType: 'photo',

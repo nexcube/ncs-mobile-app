@@ -12,19 +12,9 @@ import BO_SettingPush from './Setting/BO_SettingPush';
 import BO_SettingUser from './Setting/BO_SettingUser';
 import BO_SettingAddUser from './Setting/BO_SettingAddUser';
 import globalStyles from '../../styles/global';
-import Icon from 'react-native-vector-icons/Feather';
-import {Button, Image, Platform} from 'react-native';
+import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator();
-
-function BackButton() {
-  return (
-    <Image
-      source={require('../../../assets/images/chevron-left.png')}
-      style={{marginLeft: 10, width: 22, height: 22}}
-    />
-  );
-}
 
 function BO_MainStack() {
   return (

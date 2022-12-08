@@ -1,14 +1,13 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, Platform} from 'react-native';
 import globalStyles from '../../styles/global';
 import Icon from 'react-native-vector-icons/Feather';
-import {white} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 export function AttachmentFileFrame({index, item, onDelete, imageWidth}) {
   return (
     <View key={`file_${index}`}>
       <View width={imageWidth} style={[styles.image, {width: imageWidth, height: imageWidth}]}>
-        <Icon name="file" size={32} />
+        <Icon name="file" size={Platform.select({ios: 24, android: 32})} />
         <Text style={[styles.text]} numberOfLines={1} ellipsizeMode="tail">
           {item.name}
         </Text>
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: globalStyles.color.grayLight,
     alignItems: 'center',
-    paddingVertical: 25,
+    paddingVertical: Platform.select({ios: 20, android: 25}),
   },
   buttonDelete: {
     padding: 4,

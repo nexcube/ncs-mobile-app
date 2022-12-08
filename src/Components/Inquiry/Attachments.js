@@ -12,6 +12,7 @@ function Attachments({images, files, cameras, onDeleteImage, onDeleteFile, onDel
       {/* 이미지 표현 */}
       {images.map((item, index) => (
         <AttachmentImageFrame
+          key={`imageFrame_${index}`}
           index={index}
           item={item}
           onDelete={onDeleteImage}
@@ -21,6 +22,7 @@ function Attachments({images, files, cameras, onDeleteImage, onDeleteFile, onDel
       {/* 카메라 이미지 표현 */}
       {cameras.map((item, index) => (
         <AttachmentImageFrame
+          key={`cameraFrame_${index}`}
           index={index}
           item={item}
           onDelete={onDeleteCamera}
@@ -31,6 +33,7 @@ function Attachments({images, files, cameras, onDeleteImage, onDeleteFile, onDel
       {/* 파일 표현 */}
       {files.map((item, index) => (
         <AttachmentFileFrame
+          key={`fileFrame_${index}`}
           index={index}
           item={item}
           onDeleteFile={onDeleteFile}

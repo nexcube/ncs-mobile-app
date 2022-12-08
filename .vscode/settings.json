@@ -1,5 +1,14 @@
 {
-  "cSpell.words": ["baronha", "EDUPLEX", "gorhom", "NEMS", "safearea", "schae", "todos"],
+  "cSpell.words": [
+    "baronha",
+    "EDUPLEX",
+    "ellipsize",
+    "gorhom",
+    "NEMS",
+    "safearea",
+    "schae",
+    "todos"
+  ],
   "editor.formatOnSave": true,
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#3399ff",
