@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, View, Platform, Text} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 import axios from 'axios';
-import deviceStorage from '../services/DeviceStorage';
 
 import CustomButton from '../components/common/CustomButton';
 import CustomInput from '../components/common/CustomInput';
@@ -9,6 +8,7 @@ import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
 import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
+import userData from '../services/DeviceStorage';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -26,10 +26,9 @@ function LoginScreen({navigation, route}) {
         },
       })
       .then(async res => {
-        await deviceStorage.saveItem('jwt', res.data.token);
-        await deviceStorage.saveItem('userData', JSON.stringify(res.data.userData));
+        userData.setToken(res.data.token);
+        userData.setUserData(res.data.userData);
 
-        console.log(res.data);
         if (res.data.loginType === 'staff') {
           navigation.navigate('HO_MainStack');
         } else {

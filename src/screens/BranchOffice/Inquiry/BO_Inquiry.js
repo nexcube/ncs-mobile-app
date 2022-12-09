@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import CustomInput from '../../../components/common/CustomInput';
@@ -11,9 +10,10 @@ import BottomSheet, {InquiryAction} from '../../../components/common/bottomsheet
 import HeaderBackButton from '../../../components/common/HeaderBackButton';
 import produce from 'immer';
 import CustomToast, {Toast} from '../../../components/common/CustomToast';
-import CustomButton from '../../../components/common/CustomButton';
 import globalStyles from '../../../styles/global';
 import SelectionButton from '../../../components/common/SelectionButton';
+import axios from 'axios';
+import userData from '../../../services/DeviceStorage';
 
 function BO_Inquiry({navigation, route}) {
   // 헤더 버튼 추가.
@@ -34,6 +34,23 @@ function BO_Inquiry({navigation, route}) {
       setClassSelection(name);
     }
   }, [route.params]);
+
+  useEffect(() => {
+    getBranchOfficeList();
+  });
+
+  async function getBranchOfficeList() {
+    const staffId = await userData.getStaffId();
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+    axios
+      .get('/inquiry/branchOfficeList', {
+        headers: {authorization: token},
+        params: {id: staffId},
+      })
+      .then(res => console.log(res.data))
+      .catch(error => console.error(error));
+  }
 
   const [title, setTitle] = useState('');
   const [classSelection, setClassSelection] = useState(' 분류선택');

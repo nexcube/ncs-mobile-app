@@ -3,7 +3,6 @@ import {StyleSheet, View, Pressable, Platform, Text, Image} from 'react-native';
 import globalStyles from '../../styles/global';
 
 function SelectionButton({hasMarginBottom, onPress, title, ...rest}) {
-  console.log(rest);
   return (
     <Pressable
       // disabled={true}

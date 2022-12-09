@@ -1,0 +1,22 @@
+{
+  "code": 200,
+  "message": "토큰이 발급되었습니다.",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiSldUIiwiZGF0YSI6eyJzdGFmZklkIjoiMDIwODEiLCJsb2dpbklkIjoic2NoYWUiLCJzdGFmZk5hbWUiOiLssYTshJ0iLCJtb2JpbGVObyI6IjAxMC0yMDI1LTU1MzciLCJkZXBhcnRDb2RlIjoiRVBYMDE3NiIsImRlcGFydE5hbWUiOiLrs7Trnbzrp6QiLCJmYWNpbGl0eUNvZGUiOiJFUFgwMTc2IiwiZmFjaWxpdHlUeXBlIjoiQlJBTkNIIiwicmFua0NvZGUiOiJMMTAiLCJkdXR5Q29kZSI6bnVsbCwicG9zaXRpb25Db2RlIjpudWxsLCJyYW5rTmFtZSI6IuybkOyepSIsImpvaW5EYXRlIjoiMjAxNS0wMi0wMlQwMDowMDowMC4wMDBaIiwib3V0RGF0ZSI6IjIyMDAtMTItMzFUMDA6MDA6MDAuMDAwWiIsInByb2ZpbGVfaWR4Ijo2M30sImlhdCI6MTY3MDU2NzkxOCwiZXhwIjoxNjcwNTc4NzE4LCJpc3MiOiLthqDtgbDrsJzquInsnpAifQ._Ig9Qh5OXA2hTUPK2sLx61MP_APZJpNnnv4MCudM2jA",
+  "userData": {
+    "departCode": "EPX0176",
+    "departName": "보라매",
+    "dutyCode": null,
+    "facilityCode": "EPX0176",
+    "facilityType": "BRANCH",
+    "joinDate": "2015-02-02T00:00:00.000Z",
+    "loginId": "schae",
+    "mobileNo": "010-2025-5537",
+    "outDate": "2200-12-31T00:00:00.000Z",
+    "positionCode": null,
+    "profile_idx": 63,
+    "rankCode": "L10",
+    "rankName": "원장",
+    "staffId": "02081",
+    "staffName": "채석"
+  }
+}
