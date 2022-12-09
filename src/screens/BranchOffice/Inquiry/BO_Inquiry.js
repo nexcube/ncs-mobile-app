@@ -15,8 +15,7 @@ import CustomButton from '../../../components/common/CustomButton';
 import globalStyles from '../../../styles/global';
 import SelectionButton from '../../../components/common/SelectionButton';
 
-function BO_Inquiry() {
-  const navigation = useNavigation();
+function BO_Inquiry({navigation, route}) {
   // 헤더 버튼 추가.
   useEffect(() => {
     navigation.setOptions({
@@ -26,8 +25,20 @@ function BO_Inquiry() {
     });
   });
 
+  useEffect(() => {
+    if (route.params) {
+      const {selectionChoice, selectionItem, name} = route.params;
+      console.log('choice:', selectionChoice);
+      console.log('item:', selectionItem);
+      console.log('name:', name);
+      setClassSelection(name);
+    }
+  }, [route.params]);
+
   const [title, setTitle] = useState('');
-  const [classSelection, setClassSelection] = useState(-1);
+  const [classSelection, setClassSelection] = useState(' 분류선택');
+  const [branchSelection, setBranchSelection] = useState(-1);
+  const [contents, setContents] = useState('');
 
   const data = [
     {key: '1', value: '서초동'},
@@ -36,7 +47,6 @@ function BO_Inquiry() {
     {key: '4', value: '부산시 동래구', disabled: true},
     {key: '5', value: '강원도 춘천시'},
   ];
-  const [selected, setSelected] = React.useState('');
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -47,10 +57,8 @@ function BO_Inquiry() {
     format: InquiryAction.Registration,
   });
 
-  const test = () => console.log('function test');
-
   const onInquiryClassify = () => {
-    navigation.navigate('BO_Inquiry_Classify', {itemId: 86, otherParam: test});
+    navigation.navigate('BO_Inquiry_Classify');
   };
 
   function onRegistration() {
@@ -117,9 +125,14 @@ function BO_Inquiry() {
           value={title}
           onChangeText={setTitle}
         />
-        <SelectionButton title=" 분류선택" hasMarginBottom onPress={onInquiryClassify} />
+        <SelectionButton
+          title={classSelection}
+          style={classSelection !== ' 분류선택' ? {color: globalStyles.color.text} : {}}
+          hasMarginBottom
+          onPress={onInquiryClassify}
+        />
 
-        <SelectionList hasMarginBottom data={data} setSelected={setSelected} />
+        <SelectionList hasMarginBottom data={data} setSelected={setBranchSelection} />
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"

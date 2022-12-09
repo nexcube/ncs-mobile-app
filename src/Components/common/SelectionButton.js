@@ -3,40 +3,37 @@ import {StyleSheet, View, Pressable, Platform, Text, Image} from 'react-native';
 import globalStyles from '../../styles/global';
 
 function SelectionButton({hasMarginBottom, onPress, title, ...rest}) {
+  console.log(rest);
   return (
-    <View style={[styles.container, hasMarginBottom && styles.margin]}>
-      <Pressable
-        // disabled={true}
-        onPress={onPress}
-        style={({pressed}) => [styles.wrapper, Platform.OS === 'ios' && pressed && {opacity: 0.5}]}
-        android_ripple={{color: globalStyles.color.white}}>
-        <Text style={[styles.text]} disabled={true}>
-          {title}
-        </Text>
-        <Image
-          source={require('../../../assets/images/chevron-right.png')}
-          style={[styles.image]}
-        />
-      </Pressable>
-    </View>
+    <Pressable
+      // disabled={true}
+      onPress={onPress}
+      style={({pressed}) => [
+        styles.wrapper,
+        hasMarginBottom && styles.margin,
+        Platform.OS === 'ios' && pressed && {opacity: 0.5},
+      ]}
+      android_ripple={{color: globalStyles.color.white}}>
+      <Text style={[styles.text, {...rest.style}]} disabled={true}>
+        {title}
+      </Text>
+      <Image source={require('../../../assets/images/chevron-right.png')} style={[styles.image]} />
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     borderColor: globalStyles.color.grayLight,
     borderWidth: 1,
-    paddingHorizontal: 16,
     borderRadius: 4,
     height: 48,
-    backgroundColor: globalStyles.color.white,
-    justifyContent: 'center',
-  },
-  wrapper: {
+    paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingRight: 5,
+    backgroundColor: globalStyles.color.white,
   },
   text: {
     fontFamily: globalStyles.font.regular,
@@ -46,6 +43,7 @@ const styles = StyleSheet.create({
   image: {
     width: 16,
     height: 16,
+    marginRight: 16,
   },
   margin: {
     marginBottom: 16,

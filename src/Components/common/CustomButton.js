@@ -10,7 +10,6 @@ function CustomButton({
   backgroundColor = globalStyles.color.blue,
   ...restStyle
 }) {
-  console.log(restStyle);
   return (
     <View style={[styles.overflow, hasMarginBottom && styles.margin, restStyle['customStyle']]}>
       <Pressable

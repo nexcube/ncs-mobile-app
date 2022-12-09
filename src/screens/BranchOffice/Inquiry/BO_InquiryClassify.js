@@ -1,45 +1,26 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import ChoiceButton from '../../../components/common/ChoiceButton';
 import CustomButton from '../../../components/common/CustomButton';
 import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
-import ClassList from '../../../components/InquiryClassify/ClassList';
+import ClassifyList from '../../../components/InquiryClassify/ClassifyList';
 import globalStyles from '../../../styles/global';
 
 function BO_InquiryClassify({navigation, route}) {
-  const buttons = ['로열티', '교육', '개별지도', '인사/노무', '지점 오픈', 'NEMS'];
-  const list = [
-    '루트코스',
-    '사례 연구',
-    '재입사',
-    '직무전환',
-    '학점관리',
-    '루트코스',
-    '사례 연구',
-    '재입사',
-    '직무전환',
-    '학점관리',
-    '루트코스',
-    '사례 연구',
-    '재입사',
-    '직무전환',
-    '학점관리',
-    '루트코스',
-    '사례 연구',
-    '재입사',
-    '직무전환',
-    '학점관리',
-  ];
+  const [selectionChoice, setSelectionChoice] = useState(-1);
 
-  const [selection, setSelection] = useState(-1);
-  const {itemId, otherParam} = route.params;
-  console.log(itemId);
-  // otherParam();
+  const onPressChoice = index => {
+    setSelectionChoice(index);
+  };
 
-  const onPress = index => {
-    console.log(index);
-    setSelection(index);
+  const onPressItem = (index, name) => {
+    navigation.navigate({
+      name: 'BO_Inquiry',
+      screen: 'BO_Inquiry',
+      params: {selectionChoice: selectionChoice, selectionItem: index, name: name},
+      merge: true,
+    });
   };
 
   return (
@@ -54,18 +35,18 @@ function BO_InquiryClassify({navigation, route}) {
         />
         <View style={[styles.wrapper]}>
           {buttons.map((item, index) => {
-            return <ChoiceButton title={item} onPress={() => onPress(index)} />;
+            return <ChoiceButton key={index} title={item} onPress={() => onPressChoice(index)} />;
           })}
         </View>
       </View>
-      <View style={[styles.listWrapper, selection === -1 && styles.noSelection]}>
-        {selection === -1 ? (
+      <View style={[styles.listWrapper, selectionChoice === -1 && styles.noSelection]}>
+        {selectionChoice === -1 ? (
           <View>
             <Text>위에서 종류를 먼저 선택하시거나 검색하세요.</Text>
             <Image style={[styles.image]} source={require('../../../../assets/images/Find.png')} />
           </View>
         ) : (
-          <ClassList list={list} />
+          <ClassifyList list={list} onPress={onPressItem} />
         )}
       </View>
     </View>
@@ -100,3 +81,27 @@ const styles = StyleSheet.create({
 });
 
 export default BO_InquiryClassify;
+
+const buttons = ['로열티', '교육', '개별지도', '인사/노무', '지점 오픈', 'NEMS'];
+const list = [
+  '루트코스',
+  '사례 연구',
+  '재입사',
+  '직무전환',
+  '학점관리',
+  '루트코스',
+  '사례 연구',
+  '재입사',
+  '직무전환',
+  '학점관리',
+  '루트코스',
+  '사례 연구',
+  '재입사',
+  '직무전환',
+  '학점관리',
+  '루트코스',
+  '사례 연구',
+  '재입사',
+  '직무전환',
+  '학점관리',
+];

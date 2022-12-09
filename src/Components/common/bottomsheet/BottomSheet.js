@@ -11,7 +11,6 @@ export const InquiryAction = {
 };
 
 const BottomSheet = ({sheetStatus, onOk, onCancel, children}) => {
-  console.log(sheetStatus);
   const panY = new Animated.Value(Dimensions.get('screen').height);
   const top = panY.interpolate({
     inputRange: [-1, 0, 1],
@@ -30,7 +29,6 @@ const BottomSheet = ({sheetStatus, onOk, onCancel, children}) => {
   });
 
   useEffect(() => {
-    console.log('useEffect');
     if (sheetStatus.visible) {
       resetPositionAnim.start();
     }
