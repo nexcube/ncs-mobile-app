@@ -1,7 +1,9 @@
-import React, {useRef, useState} from 'react';
-import {Animated, Button, StyleSheet, Text, View, FlatList, StatusBar, Image} from 'react-native';
+import axios from 'axios';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, View, FlatList} from 'react-native';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
+import userData from '../../../services/DeviceStorage';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {
@@ -19,6 +21,24 @@ function BO_Dashboard({navigation, route}) {
     {id: 11, text: '가나다라마바사아차'},
     {id: 12, text: '가나다라마바사아차'},
   ]);
+
+  // useEffect(() => {
+  //   getInquiryList();
+  // }, []);
+
+  // const getInquiryList = async () => {
+  //   const jwt = await userData.getJWT();
+  //   const token = `${jwt}`;
+
+  //   axios
+  //     .get('/inquiry/list', {
+  //       headers: {authorization: token},
+  //     })
+  //     .then(res => {
+  //       console.log(res.data);
+  //     })
+  //     .catch(error => console.log(error));
+  // };
 
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 

@@ -1,8 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback} from 'react';
+import axios from 'axios';
+import React, {useCallback, useMemo} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
+import userData from '../../../services/DeviceStorage';
 import globalStyles from '../../../styles/global';
 
 const TABBAR_HEIGHT = 49;
@@ -11,13 +13,28 @@ function InquiryButton({routeName}) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
-  const bottom = Platform.select({
-    android: TABBAR_HEIGHT / 2,
-    ios: TABBAR_HEIGHT / 2 + insets.bottom - 4,
-  });
+  const bottom = useMemo(() => {
+    return Platform.select({
+      android: TABBAR_HEIGHT / 2,
+      ios: TABBAR_HEIGHT / 2 + insets.bottom - 4,
+    });
+  }, [insets.bottom]);
 
-  const onInquiry = useCallback(() => {
-    navigation.navigate(routeName);
+  const onInquiry = useCallback(async () => {
+    const staffId = await userData.getStaffId();
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+    axios
+      .get('/inquiry/branchOfficeList', {
+        headers: {authorization: token},
+        params: {id: staffId},
+      })
+      .then(res => {
+        const params = res.data.map(item => item);
+
+        navigation.navigate(routeName, {branchOfficeList: params});
+      })
+      .catch(error => console.error(error));
   }, [navigation, routeName]);
 
   return (
@@ -28,7 +45,7 @@ function InquiryButton({routeName}) {
             color: globalStyles.color.white,
           }}
           style={styles.circle}
-          onPress={onInquiry}>
+          onPress={async () => await onInquiry()}>
           <Icon name="plus" color={globalStyles.color.white} size={24} />
         </Pressable>
       </View>

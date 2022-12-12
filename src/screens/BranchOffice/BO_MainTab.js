@@ -1,13 +1,33 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {useEffect} from 'react';
 import BO_Dashboard from './Dashboard/BO_Dashboard';
 import BO_Setting from './Setting/BO_Setting';
 import Icon from 'react-native-vector-icons/Feather';
 import globalStyles from '../../styles/global';
+import userData from '../../services/DeviceStorage';
+import axios from 'axios';
 
 const Tab = createBottomTabNavigator();
 
 function BO_MainTab() {
+  useEffect(() => {
+    getInquiryList();
+  }, []);
+
+  const getInquiryList = async () => {
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+
+    axios
+      .get('/inquiry/list', {
+        headers: {authorization: token},
+      })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => console.log(error));
+  };
+
   return (
     <Tab.Navigator
       screenOptions={{

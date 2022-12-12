@@ -3,11 +3,17 @@ import {FlatList, Platform, Pressable, StyleSheet, Text, View} from 'react-nativ
 import globalStyles from '../../styles/global';
 
 const ClassifyList = ({list, onPress}) => {
+  console.log(list);
   return (
     <FlatList
       data={list}
       renderItem={({item, index}) => (
-        <ClassifyItem key={index} index={index} title={item} onPress={onPress} />
+        <ClassifyItem
+          key={index}
+          index={item.it_QnaCatIdx}
+          title={item.st_QnaCatName}
+          onPress={onPress}
+        />
       )}
       keyExtractor={(item, index) => index}
       ItemSeparatorComponent={() => <View style={[styles.separator]} />}
@@ -23,9 +29,7 @@ const ClassifyItem = ({index, title, onPress}) => (
       android_ripple={{
         color: globalStyles.color.white,
       }}>
-      <Text style={[styles.item]}>
-        {index}:{title}
-      </Text>
+      <Text style={[styles.item]}>{title}</Text>
     </Pressable>
   </View>
 );

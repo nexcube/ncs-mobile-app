@@ -2,16 +2,22 @@ import React from 'react';
 import {View, Pressable, StyleSheet, Text, Platform} from 'react-native';
 import globalStyles from '../../styles/global';
 
-export default function ChoiceButton({title, onPress}) {
+export default function ChoiceButton({title, onPress, selection, index}) {
   return (
     <View>
       <Pressable
         onPress={onPress}
-        style={({pressed}) => [styles.button, Platform.OS === 'ios' && pressed && {opacity: 0.5}]}
+        style={({pressed}) => [
+          styles.button,
+          index === selection && {backgroundColor: globalStyles.color.blue},
+          Platform.OS === 'ios' && pressed && {opacity: 0.5},
+        ]}
         android_ripple={{
           color: globalStyles.color.white,
         }}>
-        <Text style={[styles.text]}>{title}</Text>
+        <Text style={[styles.text, index === selection && {color: globalStyles.color.white}]}>
+          {title}
+        </Text>
       </Pressable>
     </View>
   );

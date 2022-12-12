@@ -8,127 +8,73 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryBottomBar from '../../../components/Inquiry/InquiryBottomBar';
 import BottomSheet, {InquiryAction} from '../../../components/common/bottomsheet/BottomSheet';
 import HeaderBackButton from '../../../components/common/HeaderBackButton';
-import produce from 'immer';
-import CustomToast, {Toast} from '../../../components/common/CustomToast';
+import CustomToast from '../../../components/common/CustomToast';
 import globalStyles from '../../../styles/global';
 import SelectionButton from '../../../components/common/SelectionButton';
-import axios from 'axios';
+import {
+  onBack,
+  onBSConfirm,
+  onBSContinue,
+  onRegistration,
+  onInquiryClassify,
+} from './BO_Inquiry.handler';
 import userData from '../../../services/DeviceStorage';
+import axios from 'axios';
+
+const initialBranchSelection = {branchName: '', cMain: false, facilityCode: ''};
+const initialClass = {name: ' 분류선택', index: -1};
 
 function BO_Inquiry({navigation, route}) {
+  const branchOfficeList = route.params?.branchOfficeList;
+
   // 헤더 버튼 추가.
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title="등록" onPress={onRegistration} />,
+      headerRight: () => (
+        <HeaderButton
+          title="등록"
+          onPress={() =>
+            onRegistration({
+              title,
+              classSelection,
+              defaultClassString: initialClass,
+              branchSelection,
+              contents,
+              visibleBS,
+              setVisibleBS,
+              InquiryAction,
+            })
+          }
+        />
+      ),
       headerBackVisible: false,
-      headerLeft: () => <HeaderBackButton t onPress={onBack} />,
+      headerLeft: () => (
+        <HeaderBackButton onPress={() => onBack({InquiryAction, visibleBS, setVisibleBS})} />
+      ),
     });
   });
 
+  //파라미터 처리
   useEffect(() => {
-    if (route.params) {
-      const {selectionChoice, selectionItem, name} = route.params;
-      console.log('choice:', selectionChoice);
-      console.log('item:', selectionItem);
-      console.log('name:', name);
-      setClassSelection(name);
+    if (route.params?.selection) {
+      setClassSelection(route.params.selection);
     }
   }, [route.params]);
 
-  useEffect(() => {
-    getBranchOfficeList();
-  });
-
-  async function getBranchOfficeList() {
-    const staffId = await userData.getStaffId();
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    axios
-      .get('/inquiry/branchOfficeList', {
-        headers: {authorization: token},
-        params: {id: staffId},
-      })
-      .then(res => console.log(res.data))
-      .catch(error => console.error(error));
-  }
-
   const [title, setTitle] = useState('');
-  const [classSelection, setClassSelection] = useState(' 분류선택');
-  const [branchSelection, setBranchSelection] = useState(-1);
+  const [classSelection, setClassSelection] = useState(initialClass);
+  const [branchSelection, setBranchSelection] = useState(initialBranchSelection);
   const [contents, setContents] = useState('');
-
-  const data = [
-    {key: '1', value: '서초동'},
-    {key: '2', value: '송파구 잠실동'},
-    {key: '3', value: '인천시 수정구 '},
-    {key: '4', value: '부산시 동래구', disabled: true},
-    {key: '5', value: '강원도 춘천시'},
-  ];
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
   const [cameras, setCameras] = useState([]);
 
-  const [sheetStatus, setSheetStatus] = useState({
+  // BottomSheet visible 설정.
+  const [visibleBS, setVisibleBS] = useState({
     visible: false,
     format: InquiryAction.Registration,
   });
-
-  const onInquiryClassify = () => {
-    navigation.navigate('BO_Inquiry_Classify');
-  };
-
-  function onRegistration() {
-    if (title.length < 1) {
-      Toast.show({
-        type: 'errorMsg',
-        visibilityTime: 3000,
-        position: 'bottom',
-        props: {
-          message: '제목을 입력하세요',
-        },
-      });
-      return;
-    }
-
-    const newSheetStatus = produce(sheetStatus, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.Registration;
-    });
-    setSheetStatus(newSheetStatus);
-  }
-
-  function onBack() {
-    const newSheetStatus = produce(sheetStatus, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.CancelInquiry;
-    });
-    setSheetStatus(newSheetStatus);
-  }
-
-  function onBSConfirm() {
-    const newSheetStatus = produce(sheetStatus, draft => {
-      draft.visible = false;
-    });
-    setSheetStatus(newSheetStatus);
-
-    switch (sheetStatus.format) {
-      case InquiryAction.Registration:
-        break;
-      case InquiryAction.CancelInquiry:
-        navigation.goBack();
-        break;
-      case InquiryAction.Error:
-        break;
-    }
-  }
-
-  function onBSContinue() {
-    const newSheetStatus = produce(sheetStatus, draft => {
-      draft.visible = false;
-    });
-    setSheetStatus(newSheetStatus);
-  }
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
@@ -143,13 +89,13 @@ function BO_Inquiry({navigation, route}) {
           onChangeText={setTitle}
         />
         <SelectionButton
-          title={classSelection}
-          style={classSelection !== ' 분류선택' ? {color: globalStyles.color.text} : {}}
+          title={classSelection.name}
+          style={classSelection.name !== initialClass.name ? {color: globalStyles.color.text} : {}}
           hasMarginBottom
-          onPress={onInquiryClassify}
+          onPress={() => onInquiryClassify({navigation})}
         />
 
-        <SelectionList hasMarginBottom data={data} setSelected={setBranchSelection} />
+        <SelectionList hasMarginBottom data={branchOfficeList} setSelected={setBranchSelection} />
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"
@@ -159,6 +105,7 @@ function BO_Inquiry({navigation, route}) {
           returnKeyType="next"
           autoCapitalize="none"
           placeholder=" 내용 입력"
+          onChangeText={setContents}
         />
         <Attachments
           images={images}
@@ -178,7 +125,22 @@ function BO_Inquiry({navigation, route}) {
         cameras={cameras}
         setCameras={setCameras}
       />
-      <BottomSheet sheetStatus={sheetStatus} onOk={onBSConfirm} onCancel={onBSContinue} />
+      <BottomSheet
+        sheetStatus={visibleBS}
+        onOk={() =>
+          onBSConfirm({
+            visibleBS,
+            setVisibleBS,
+            InquiryAction,
+            title,
+            classSelection,
+            branchSelection,
+            contents,
+            navigation,
+          })
+        }
+        onCancel={() => onBSContinue({visibleBS, setVisibleBS})}
+      />
       <CustomToast />
     </SafeAreaView>
   );
