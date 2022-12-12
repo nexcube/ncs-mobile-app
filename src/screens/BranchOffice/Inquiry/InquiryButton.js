@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
@@ -16,9 +16,9 @@ function InquiryButton({routeName}) {
     ios: TABBAR_HEIGHT / 2 + insets.bottom - 4,
   });
 
-  const onInquiry = function () {
+  const onInquiry = useCallback(() => {
     navigation.navigate(routeName);
-  };
+  }, [navigation, routeName]);
 
   return (
     <>

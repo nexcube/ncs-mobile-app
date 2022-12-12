@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Platform, StatusBar} from 'react-native';
+import {LogBox, Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 import Config from 'react-native-config';
@@ -14,6 +14,11 @@ if (Platform.OS === 'android') {
 }
 
 function App() {
+  // TODO 나중에 제거 되어야 됨.
+  LogBox.ignoreLogs([
+    'Could not find image file:///Users/parkcom/Library/Developer/CoreSimulator/Devices/',
+  ]);
+
   axios.defaults.baseURL = Platform.select({
     ios: Config.SERVER_URL_IOS,
     android: Config.SERVER_URL_ANDROID,
