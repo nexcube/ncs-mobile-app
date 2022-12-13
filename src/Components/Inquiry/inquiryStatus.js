@@ -1,20 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import InquiryHeader from './InquiryHeader';
 import LogoBack from '../../../assets/images/EDUPLEX-Logo-back.svg';
 import SearchTextInput from './SearchTextInput';
 import globalStyles from '../../styles/global';
+import axios from 'axios';
+import userData from '../../services/DeviceStorage';
 
 const Header_Max_Height = 200;
 const Header_Min_Height = 70;
 
-function InquiryStatus({animHeaderValue}) {
+function InquiryStatus({animHeaderValue, onSearchSubmit}) {
   const animateHeaderHeight = animHeaderValue.interpolate({
     inputRange: [0, Header_Max_Height - Header_Min_Height],
     outputRange: [Header_Max_Height, Header_Min_Height],
     extrapolate: 'clamp',
   });
+
+  const [searchString, setSearchString] = useState('');
+
+  const onSubmitEditing = () => {
+    onSearchSubmit(searchString);
+  };
 
   return (
     <View>
@@ -24,13 +32,14 @@ function InquiryStatus({animHeaderValue}) {
         <InquiryHeader newCount={1} proceedingCount={2} completedCount={12} />
 
         <SearchTextInput
+          onSubmitEditing={onSubmitEditing}
           hasMarginBottom
           keyboardType="default"
           returnKeyType="search"
           autoCapitalize="none"
           placeholder="제목, 내용, 댓글, 담당자로 검색"
-          // value={id}
-          // onChangeText={setEmail}
+          value={searchString}
+          onChangeText={setSearchString}
         />
       </Animated.View>
     </View>

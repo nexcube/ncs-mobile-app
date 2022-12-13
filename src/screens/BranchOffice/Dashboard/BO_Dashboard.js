@@ -5,14 +5,16 @@ import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
 import userData from '../../../services/DeviceStorage';
-import globalStyles from '../../../styles/global';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {
+  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
   const [inquiryList, setInquiryList] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [noMore, setNoMore] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const fetchCount = 7;
 
   useEffect(() => {
@@ -20,7 +22,9 @@ function BO_Dashboard({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getInquiryList = async () => {
+  const getInquiryList = async searchString => {
+    console.log(searchString);
+    setIsRefreshing(value => !value);
     if (loading) {
       return;
     }
@@ -28,34 +32,63 @@ function BO_Dashboard({navigation, route}) {
 
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
+    let url = '/inquiry/list';
+    const params = {
+      offset: offset,
+      fetchCount: fetchCount,
+    };
+
+    if (searchString?.length > 0) {
+      params.searchString = searchString;
+      params.offset = 0;
+      url = '/inquiry/search';
+    }
+
+    if (isRefreshing) {
+      params.offset = 0;
+      console.log(params);
+    }
 
     axios
-      .get('/inquiry/list', {
+      .get(url, {
         headers: {authorization: token},
-        params: {offset: offset, fetchCount: fetchCount},
+        params: params,
       })
       .then(res => {
         console.log(res.data);
         if (res.data.length === 0) {
           setNoMore(true);
         }
-        setInquiryList([...inquiryList, ...res.data]);
+        if (searchString?.length > 0 && params.offset === 0) {
+          setInquiryList([...res.data]);
+        } else {
+          setInquiryList([...inquiryList, ...res.data]);
+        }
+
         setOffset(offset + fetchCount);
       })
       .then(() => setLoading(false))
       .catch(error => {
         setLoading(false);
-        console.log(error);
+        console.error(error);
       });
-  };
 
-  const scrollOffsetY = useRef(new Animated.Value(0)).current;
+    setIsRefreshing(false);
+  };
 
   const onEndReached = () => !noMore && getInquiryList();
 
+  const onSearchSubmit = data => {
+    getInquiryList(data);
+  };
+
+  const onRefresh = () => {
+    getInquiryList();
+  };
+
   return (
     <View style={[styles.container]}>
-      <InquiryStatus animHeaderValue={scrollOffsetY} />
+      <InquiryStatus animHeaderValue={scrollOffsetY} onSearchSubmit={onSearchSubmit} />
 
       <FlatList
         contentContainerStyle={[styles.list]}
@@ -91,6 +124,8 @@ function BO_Dashboard({navigation, route}) {
         onEndReached={onEndReached}
         onEndReachedThreshold={0.8}
         ListFooterComponent={loading && <ActivityIndicator size={'large'} color="0067CC" />}
+        onRefresh={onRefresh}
+        refreshing={isRefreshing}
       />
       <InquiryButton routeName="BO_Inquiry" />
     </View>
