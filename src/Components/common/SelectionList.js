@@ -14,7 +14,9 @@ function SelectionList({hasMarginBottom, data, setSelected}) {
         fontFamily={globalStyles.font.regular}
         setSelected={val => {
           setIsSelect(true);
-          setSelected(data);
+          const selected = data.filter(item => item.branchName === val);
+          // console.log('selected:', selected);
+          setSelected(selected[0]);
         }}
         boxStyles={[styles.boxStyles]}
         inputStyles={[styles.inputStyles, isSelect && {color: globalStyles.color.text}]}

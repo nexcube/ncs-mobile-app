@@ -1,0 +1,1 @@
+select * from tb_Qna where st_QnaTitle LIKE '%가%' OR st_QnaContent LIKE '%가%'

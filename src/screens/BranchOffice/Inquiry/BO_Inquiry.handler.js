@@ -38,6 +38,7 @@ async function onBSConfirm({
       const jwt = await userData.getJWT();
       const token = `${jwt}`;
       const staffId = await userData.getStaffId();
+      console.log(staffId);
 
       axios
         .post(
@@ -46,6 +47,7 @@ async function onBSConfirm({
             title: title,
             content: contents,
             categoryIndex: classSelection.index,
+            facilityCode: branchSelection.facilityCode,
             staffId: staffId,
             status: 'NEW',
           }),

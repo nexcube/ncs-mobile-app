@@ -10,24 +10,6 @@ import axios from 'axios';
 const Tab = createBottomTabNavigator();
 
 function BO_MainTab() {
-  useEffect(() => {
-    getInquiryList();
-  }, []);
-
-  const getInquiryList = async () => {
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-
-    axios
-      .get('/inquiry/list', {
-        headers: {authorization: token},
-      })
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(error => console.log(error));
-  };
-
   return (
     <Tab.Navigator
       screenOptions={{

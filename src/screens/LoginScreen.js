@@ -26,6 +26,7 @@ function LoginScreen({navigation, route}) {
         },
       })
       .then(async res => {
+        console.log(res.data);
         userData.setToken(res.data.token);
         userData.setUserData(res.data.userData);
 

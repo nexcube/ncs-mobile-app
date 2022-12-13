@@ -7,7 +7,7 @@ function InquiryCardHeader({status, commentCount}) {
     <View
       style={[
         styles.container,
-        {backgroundColor: status === 'hold' ? globalStyles.color.gray : globalStyles.color.purple},
+        {backgroundColor: status === 'HOLD' ? globalStyles.color.gray : globalStyles.color.purple},
       ]}>
       <View
         style={[
@@ -15,7 +15,7 @@ function InquiryCardHeader({status, commentCount}) {
           // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor:
-              status === 'new'
+              status === 'NEW'
                 ? globalStyles.color.white
                 : status === 'proceeding'
                 ? '#FF5B05'
@@ -26,13 +26,13 @@ function InquiryCardHeader({status, commentCount}) {
           style={[
             styles.statusText,
             // eslint-disable-next-line react-native/no-inline-styles
-            {color: status === 'new' ? globalStyles.color.text : globalStyles.color.white},
+            {color: status === 'NEW' ? globalStyles.color.text : globalStyles.color.white},
           ]}>
-          {status === 'new'
+          {status === 'NEW'
             ? '신규'
-            : status === 'proceeding'
+            : status === 'INPROGRESS'
             ? '진행중'
-            : status === 'hold'
+            : status === 'HOLD'
             ? '보류'
             : '완료'}
         </Text>
