@@ -4,7 +4,9 @@ import {Animated, StyleSheet, View, FlatList} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
+import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
 import userData from '../../../services/DeviceStorage';
+import globalStyles from '../../../styles/global';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {
@@ -15,8 +17,10 @@ function BO_Dashboard({navigation, route}) {
   const [loading, setLoading] = useState(false);
   const [noMore, setNoMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [searchString, setSearchString] = useState('');
   const fetchCount = 7;
 
+  // 기본 리스트 가져오기
   useEffect(() => {
     getInquiryList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -24,14 +28,12 @@ function BO_Dashboard({navigation, route}) {
 
   useEffect(() => {
     if (isRefreshing) {
-      console.log('isRefreshing useEffect');
       getInquiryList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRefreshing]);
 
   const getInquiryList = async searchString => {
-    console.log(searchString);
     if (loading) {
       return;
     }
@@ -57,7 +59,6 @@ function BO_Dashboard({navigation, route}) {
         params: params,
       })
       .then(res => {
-        // console.log(res.data);
         if (res.data.length === 0) {
           setNoMore(true);
         }
@@ -80,11 +81,12 @@ function BO_Dashboard({navigation, route}) {
 
   const onEndReached = () => !noMore && getInquiryList();
 
-  const onSearchSubmit = data => {
-    getInquiryList(data);
+  const onSearchSubmit = () => {
+    getInquiryList(searchString);
   };
 
   const onRefresh = () => {
+    setSearchString('');
     setOffset(0);
     setNoMore(false);
     setInquiryList([]);
@@ -93,11 +95,19 @@ function BO_Dashboard({navigation, route}) {
 
   return (
     <View style={[styles.container]}>
-      <InquiryStatus
-        isRefresh={isRefreshing}
-        animHeaderValue={scrollOffsetY}
-        onSearchSubmit={onSearchSubmit}
-      />
+      <InquiryStatus animHeaderValue={scrollOffsetY} />
+      <View style={[styles.searchArea]}>
+        <SearchTextInput
+          onSubmitEditing={onSearchSubmit}
+          hasMarginBottom
+          keyboardType="default"
+          returnKeyType="search"
+          autoCapitalize="none"
+          placeholder="제목, 내용, 댓글, 담당자로 검색"
+          value={searchString}
+          onChangeText={setSearchString}
+        />
+      </View>
 
       <FlatList
         contentContainerStyle={[styles.list]}
@@ -131,7 +141,7 @@ function BO_Dashboard({navigation, route}) {
         scrollEventThrottle={1}
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.8}
+        onEndReachedThreshold={0.01}
         ListFooterComponent={loading && <ActivityIndicator size={'large'} color="0067CC" />}
         onRefresh={onRefresh}
         refreshing={isRefreshing}
@@ -145,6 +155,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  searchArea: {
+    paddingHorizontal: 12,
+    backgroundColor: globalStyles.color.purple,
+  },
+
   list: {
     paddingHorizontal: 12,
     paddingVertical: 14,

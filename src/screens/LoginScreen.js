@@ -20,13 +20,11 @@ function LoginScreen({navigation, route}) {
 
   // 자동 로그인
   useEffect(() => {
-    console.log('autoLogin...');
     autoLogin();
   }, []);
 
   useEffect(() => {
     if (auto) {
-      console.log('call onLogin');
       onLogin();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,8 +33,6 @@ function LoginScreen({navigation, route}) {
   const autoLogin = async () => {
     const savedId = await userData.getId();
     const savedPassword = await userData.getPassword();
-    console.log(savedId);
-    console.log(savedPassword);
     if (savedId !== null && savedPassword !== null) {
       setId(savedId);
       setPassword(savedPassword);
