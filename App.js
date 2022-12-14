@@ -20,8 +20,8 @@ function App() {
   ]);
 
   axios.defaults.baseURL = Platform.select({
-    ios: Config.SERVER_URL_IOS,
-    android: Config.SERVER_URL_ANDROID,
+    ios: 'http://192.168.0.37',
+    android: 'http://192.168.0.37',
   });
   return (
     <NavigationContainer theme={navigationTheme}>

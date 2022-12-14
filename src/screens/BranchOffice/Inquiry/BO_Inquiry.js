@@ -82,6 +82,13 @@ function BO_Inquiry({navigation, route}) {
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
   const [cameras, setCameras] = useState([]);
+  const [attachments, setAttachments] = useState([]);
+
+  useEffect(() => {
+    console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
+    attachments.map(item => console.log(item));
+    console.log('end   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
+  }, [attachments]);
 
   // BottomSheet visible 설정.
   const [visibleBS, setVisibleBS] = useState({
@@ -128,6 +135,8 @@ function BO_Inquiry({navigation, route}) {
           setFiles={setFiles}
           cameras={cameras}
           setCameras={setCameras}
+          attachments={attachments}
+          setAttachments={setAttachments}
         />
       </ScrollView>
 
@@ -138,6 +147,8 @@ function BO_Inquiry({navigation, route}) {
         setFiles={setFiles}
         cameras={cameras}
         setCameras={setCameras}
+        attachments={attachments}
+        setAttachments={setAttachments}
       />
       <BottomSheet
         sheetStatus={visibleBS}

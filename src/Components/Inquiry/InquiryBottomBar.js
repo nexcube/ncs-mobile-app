@@ -7,11 +7,25 @@ import {permissionCheck} from '../../services/PermissionCheck';
 import DocumentPicker from 'react-native-document-picker';
 import {launchCamera} from 'react-native-image-picker';
 
-const InquiryBottomBar = ({images, setImages, files, setFiles, cameras, setCameras}) => {
+const removeDuplicates = (first, second) => {
+  const combined = [...first, ...second];
+  const result = combined.filter((v, i, a) => a.findIndex(t => t.path === v.path) === i);
+  return result;
+};
+
+const InquiryBottomBar = ({
+  images,
+  setImages,
+  files,
+  setFiles,
+  cameras,
+  setCameras,
+  attachments,
+  setAttachments,
+}) => {
   const onImage = async () => {
     try {
-      const response = await MultipleImagePicker.openPicker({
-        selectedAssets: images,
+      const result = await MultipleImagePicker.openPicker({
         isExportThumbnail: false,
         maxVideo: 1,
         usedCameraButton: false,
@@ -19,10 +33,11 @@ const InquiryBottomBar = ({images, setImages, files, setFiles, cameras, setCamer
         cancelTitle: '취소',
       });
 
-      const dupResult = [...images, ...response];
-      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.path === v.path) === i);
+      const reformedResults = result.map(item => ({name: '', type: item.type, path: item.path}));
+      console.log(reformedResults);
 
-      setImages([...result]);
+      const finalResults = removeDuplicates(attachments, reformedResults);
+      setAttachments([...finalResults]);
     } catch (e) {
       console.log(e.code, e.message);
     }
@@ -31,16 +46,21 @@ const InquiryBottomBar = ({images, setImages, files, setFiles, cameras, setCamer
   const onCamera = async () => {
     permissionCheck('카메라');
     try {
-      const response = await launchCamera({
+      const result = await launchCamera({
         mediaType: 'photo',
         cameraType: 'back',
-        // saveToPhotos: true,
       });
-      if (response.didCancel) {
+      if (result.didCancel) {
         return null;
       }
-
-      setCameras([...cameras, response.assets[0]]);
+      console.log(result.assets[0]);
+      const reformedResult = {
+        name: '',
+        type: result.assets[0].type,
+        path: result.assets[0].uri,
+      };
+      console.log(reformedResult);
+      setAttachments([...attachments, reformedResult]);
     } catch (err) {
       console.log(err);
     }
@@ -48,7 +68,7 @@ const InquiryBottomBar = ({images, setImages, files, setFiles, cameras, setCamer
 
   const onFile = async () => {
     try {
-      const response = await DocumentPicker.pickMultiple({
+      const results = await DocumentPicker.pickMultiple({
         type: [
           DocumentPicker.types.audio,
           DocumentPicker.types.csv,
@@ -63,10 +83,16 @@ const InquiryBottomBar = ({images, setImages, files, setFiles, cameras, setCamer
         ],
       });
 
-      const dupResult = [...files, ...response];
-      const result = dupResult.filter((v, i, a) => a.findIndex(t => t.uri === v.uri) === i);
-
-      setFiles([...result]);
+      console.log(results);
+      const reformedResults = results.map(item => ({
+        name: item.name,
+        type: item.type,
+        path: item.uri,
+      }));
+      console.log(reformedResults);
+      const finalResults = removeDuplicates(attachments, reformedResults);
+      setAttachments([...finalResults]);
+      // setFiles([...result]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('Canceled from single doc picker');

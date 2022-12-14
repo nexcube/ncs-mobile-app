@@ -14,8 +14,8 @@ import {useEffect} from 'react/cjs/react.development';
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
-  const [id, setId] = useState(''); //
-  const [password, setPassword] = useState('');
+  const [id, setId] = useState('schae'); //
+  const [password, setPassword] = useState('YAjPr5YLys');
   const [auto, setAuto] = useState(false);
 
   // 자동 로그인
@@ -42,6 +42,7 @@ function LoginScreen({navigation, route}) {
 
   // 로그인 처리
   const onLogin = async () => {
+    console.log('onLogin');
     Toast.hide();
     axios
       .post('/login', JSON.stringify({id: id, password: password}), {
