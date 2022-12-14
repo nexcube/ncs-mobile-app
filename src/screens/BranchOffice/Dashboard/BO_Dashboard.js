@@ -116,6 +116,7 @@ function BO_Dashboard({navigation, route}) {
           <InquiryCard
             key={item.idx}
             title={item.title}
+            content={item.content}
             mainCatName={item.mainCatName}
             subCatName={item.subCatName}
             branchOfficeName={item.branchOfficeName}

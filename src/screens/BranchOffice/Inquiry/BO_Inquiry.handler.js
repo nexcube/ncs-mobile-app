@@ -4,12 +4,16 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import userData from '../../../services/DeviceStorage';
 
 // 앱바 백 버튼 처리
-function onBack({InquiryAction, visibleBS, setVisibleBS}) {
-  const newSheetStatus = produce(visibleBS, draft => {
-    draft.visible = true;
-    draft.format = InquiryAction.CancelInquiry;
-  });
-  setVisibleBS(newSheetStatus);
+function onBack({navigation, title, content, InquiryAction, visibleBS, setVisibleBS}) {
+  if (title.length > 0 || content.length > 0) {
+    const newSheetStatus = produce(visibleBS, draft => {
+      draft.visible = true;
+      draft.format = InquiryAction.CancelInquiry;
+    });
+    setVisibleBS(newSheetStatus);
+  } else {
+    navigation.pop();
+  }
 }
 
 // 바텀시트 ok 클릭시
@@ -58,7 +62,10 @@ async function onBSConfirm({
             },
           },
         )
-        .then(res => console.log(res.data))
+        .then(res => {
+          console.log(res.data);
+          navigation.pop();
+        })
         .catch(error => console.error(error));
 
       break;

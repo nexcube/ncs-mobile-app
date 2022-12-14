@@ -2,40 +2,36 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../styles/global';
 
-function InquiryCardHeader({status, commentCount}) {
+function InquiryCardHeader({status, commentCount, forDetail}) {
+  const containerStyle = {
+    backgroundColor: forDetail
+      ? globalStyles.color.white
+      : status === 'HOLD'
+      ? globalStyles.color.gray
+      : globalStyles.color.purple,
+  };
+  const statusStyle = {
+    backgroundColor:
+      status === 'NEW' ? globalStyles.color.white : status === 'INPROGRESS' ? '#FF5B05' : '#00B578',
+  };
+
+  const statusTextStyle = {
+    color: status === 'NEW' ? globalStyles.color.text : globalStyles.color.white,
+  };
+
+  const statusText =
+    status === 'NEW'
+      ? '신규'
+      : status === 'INPROGRESS'
+      ? '진행중'
+      : status === 'HOLD'
+      ? '보류'
+      : '완료';
+
   return (
-    <View
-      style={[
-        styles.container,
-        {backgroundColor: status === 'HOLD' ? globalStyles.color.gray : globalStyles.color.purple},
-      ]}>
-      <View
-        style={[
-          styles.status,
-          // eslint-disable-next-line react-native/no-inline-styles
-          {
-            backgroundColor:
-              status === 'NEW'
-                ? globalStyles.color.white
-                : status === 'proceeding'
-                ? '#FF5B05'
-                : '#00B578',
-          },
-        ]}>
-        <Text
-          style={[
-            styles.statusText,
-            // eslint-disable-next-line react-native/no-inline-styles
-            {color: status === 'NEW' ? globalStyles.color.text : globalStyles.color.white},
-          ]}>
-          {status === 'NEW'
-            ? '신규'
-            : status === 'INPROGRESS'
-            ? '진행중'
-            : status === 'HOLD'
-            ? '보류'
-            : '완료'}
-        </Text>
+    <View style={[styles.container, containerStyle]}>
+      <View style={[styles.status, statusStyle]}>
+        <Text style={[styles.statusText, statusTextStyle]}>{statusText}</Text>
       </View>
       {commentCount === 0 || (
         <View style={[styles.comment]}>
@@ -48,7 +44,7 @@ function InquiryCardHeader({status, commentCount}) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

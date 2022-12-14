@@ -18,8 +18,6 @@ import {
   onRegistration,
   onInquiryClassify,
 } from './BO_Inquiry.handler';
-import userData from '../../../services/DeviceStorage';
-import axios from 'axios';
 
 const initialBranchSelection = {branchName: '', cMain: false, facilityCode: ''};
 const initialClass = {name: ' 분류선택', index: -1};
@@ -36,10 +34,10 @@ function BO_Inquiry({navigation, route}) {
           onPress={() =>
             onRegistration({
               title,
-              classSelection,
+              classSelection: classify,
               defaultClassString: initialClass,
-              branchSelection,
-              contents,
+              branchSelection: branch,
+              contents: content,
               visibleBS,
               setVisibleBS,
               InquiryAction,
@@ -49,7 +47,18 @@ function BO_Inquiry({navigation, route}) {
       ),
       headerBackVisible: false,
       headerLeft: () => (
-        <HeaderBackButton onPress={() => onBack({InquiryAction, visibleBS, setVisibleBS})} />
+        <HeaderBackButton
+          onPress={() =>
+            onBack({
+              navigation,
+              title,
+              content,
+              InquiryAction,
+              visibleBS,
+              setVisibleBS,
+            })
+          }
+        />
       ),
     });
   });
@@ -57,14 +66,18 @@ function BO_Inquiry({navigation, route}) {
   //파라미터 처리
   useEffect(() => {
     if (route.params?.selection) {
-      setClassSelection(route.params.selection);
+      setClassify(route.params.selection);
     }
   }, [route.params]);
 
+  // 제목
   const [title, setTitle] = useState('');
-  const [classSelection, setClassSelection] = useState(initialClass);
-  const [branchSelection, setBranchSelection] = useState(initialBranchSelection);
-  const [contents, setContents] = useState('');
+  // 분류선택
+  const [classify, setClassify] = useState(initialClass);
+  // 관련 지점
+  const [branch, setBranch] = useState(initialBranchSelection);
+  // 내용
+  const [content, setContent] = useState('');
 
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
@@ -80,6 +93,7 @@ function BO_Inquiry({navigation, route}) {
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
       <ScrollView style={[styles.container]}>
         <CustomInput
+          maxLength={100}
           hasMarginBottom
           keyboardType="default"
           returnKeyType="next"
@@ -89,13 +103,13 @@ function BO_Inquiry({navigation, route}) {
           onChangeText={setTitle}
         />
         <SelectionButton
-          title={classSelection.name}
-          style={classSelection.name !== initialClass.name ? {color: globalStyles.color.text} : {}}
+          title={classify.name}
+          style={classify.name !== initialClass.name ? {color: globalStyles.color.text} : {}}
           hasMarginBottom
           onPress={() => onInquiryClassify({navigation})}
         />
 
-        <SelectionList hasMarginBottom data={branchOfficeList} setSelected={setBranchSelection} />
+        <SelectionList hasMarginBottom data={branchOfficeList} setSelected={setBranch} />
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"
@@ -105,7 +119,7 @@ function BO_Inquiry({navigation, route}) {
           returnKeyType="next"
           autoCapitalize="none"
           placeholder=" 내용 입력"
-          onChangeText={setContents}
+          onChangeText={setContent}
         />
         <Attachments
           images={images}
@@ -133,9 +147,9 @@ function BO_Inquiry({navigation, route}) {
             setVisibleBS,
             InquiryAction,
             title,
-            classSelection,
-            branchSelection,
-            contents,
+            classSelection: classify,
+            branchSelection: branch,
+            contents: content,
             navigation,
           })
         }

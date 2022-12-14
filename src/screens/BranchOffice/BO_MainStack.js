@@ -29,10 +29,22 @@ function BO_MainStack() {
             : {uri: 'back', width: 24, height: 24},
       }}>
       <Stack.Screen name="BO_MainTab" component={BO_MainTab} options={{headerShown: false}} />
-      <Stack.Screen name="BO_Detail" component={BO_Detail} />
-      <Stack.Screen name="BO_Detail_Modify" component={BO_DetailModify} />
-      <Stack.Screen name="BO_Detail_Image_Viewer" component={BO_DetailImageViewer} />
-      <Stack.Screen name="BO_Detail_Add_Comment" component={BO_DetailAddComment} />
+      <Stack.Screen name="BO_Detail" component={BO_Detail} options={{title: '상세 보기'}} />
+      <Stack.Screen
+        name="BO_Detail_Modify"
+        component={BO_DetailModify}
+        options={{title: '수정하기'}}
+      />
+      <Stack.Screen
+        name="BO_Detail_Image_Viewer"
+        component={BO_DetailImageViewer}
+        options={{title: '첨부된 이미지'}}
+      />
+      <Stack.Screen
+        name="BO_Detail_Add_Comment"
+        component={BO_DetailAddComment}
+        options={{title: '댓글 작성'}}
+      />
       <Stack.Screen name="BO_Inquiry" component={BO_Inquiry} options={{title: '문의하기'}} />
       <Stack.Screen
         name="BO_Inquiry_Classify"
