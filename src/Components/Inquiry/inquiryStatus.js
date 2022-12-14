@@ -5,13 +5,12 @@ import InquiryHeader from './InquiryHeader';
 import LogoBack from '../../../assets/images/EDUPLEX-Logo-back.svg';
 import SearchTextInput from './SearchTextInput';
 import globalStyles from '../../styles/global';
-import axios from 'axios';
-import userData from '../../services/DeviceStorage';
+import {useEffect} from 'react/cjs/react.development';
 
 const Header_Max_Height = 200;
 const Header_Min_Height = 70;
 
-function InquiryStatus({animHeaderValue, onSearchSubmit}) {
+function InquiryStatus({init: isRefresh, animHeaderValue, onSearchSubmit}) {
   const animateHeaderHeight = animHeaderValue.interpolate({
     inputRange: [0, Header_Max_Height - Header_Min_Height],
     outputRange: [Header_Max_Height, Header_Min_Height],
@@ -23,6 +22,12 @@ function InquiryStatus({animHeaderValue, onSearchSubmit}) {
   const onSubmitEditing = () => {
     onSearchSubmit(searchString);
   };
+
+  useEffect(() => {
+    if (isRefresh) {
+      setSearchString('');
+    }
+  }, [isRefresh]);
 
   return (
     <View>

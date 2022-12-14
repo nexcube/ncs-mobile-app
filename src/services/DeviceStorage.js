@@ -1,7 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const USER_DATA = 'userData';
 const JWT = 'jwt';
+const ID = 'id';
+const PASSWORD = 'password';
 
 const deviceStorage = {
   async setItem(key, value) {
@@ -24,29 +27,56 @@ const deviceStorage = {
 };
 
 const userData = {
+  // 유저 로그인 정보
   async setUserData(value) {
     await deviceStorage.setItem(USER_DATA, value);
   },
 
-  async setToken(value) {
-    await deviceStorage.setItem(JWT, value);
+  async getUserData() {
+    const result = await deviceStorage.getItem(USER_DATA);
+    return result;
   },
 
   async getStaffId() {
-    try {
-      const data = await deviceStorage.getItem(USER_DATA);
-      return data.staffId;
-    } catch (error) {
-      console.log(error.message);
-    }
+    const result = await deviceStorage.getItem(USER_DATA);
+    return result.staffId;
+  },
+
+  // JWT
+  async setJWT(value) {
+    await deviceStorage.setItem(JWT, value);
   },
 
   async getJWT() {
+    const result = await deviceStorage.getItem(JWT);
+    return result;
+  },
+
+  // ID
+  async setId(value) {
+    await deviceStorage.setItem(ID, value);
+  },
+
+  async getId() {
+    const result = await deviceStorage.getItem(ID);
+    return result;
+  },
+
+  // PASSWORD
+  async setPassword(value) {
     try {
-      const data = await deviceStorage.getItem(JWT);
-      return data;
+      await EncryptedStorage.setItem(PASSWORD, value);
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
+    }
+  },
+
+  async getPassword() {
+    try {
+      const result = await EncryptedStorage.getItem(PASSWORD);
+      return result;
+    } catch (error) {
+      console.error(error);
     }
   },
 };

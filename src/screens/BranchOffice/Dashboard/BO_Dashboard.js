@@ -22,9 +22,16 @@ function BO_Dashboard({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (isRefreshing) {
+      console.log('isRefreshing useEffect');
+      getInquiryList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefreshing]);
+
   const getInquiryList = async searchString => {
     console.log(searchString);
-    setIsRefreshing(value => !value);
     if (loading) {
       return;
     }
@@ -44,18 +51,13 @@ function BO_Dashboard({navigation, route}) {
       url = '/inquiry/search';
     }
 
-    if (isRefreshing) {
-      params.offset = 0;
-      console.log(params);
-    }
-
     axios
       .get(url, {
         headers: {authorization: token},
         params: params,
       })
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.length === 0) {
           setNoMore(true);
         }
@@ -83,12 +85,19 @@ function BO_Dashboard({navigation, route}) {
   };
 
   const onRefresh = () => {
-    getInquiryList();
+    setOffset(0);
+    setNoMore(false);
+    setInquiryList([]);
+    setIsRefreshing(true);
   };
 
   return (
     <View style={[styles.container]}>
-      <InquiryStatus animHeaderValue={scrollOffsetY} onSearchSubmit={onSearchSubmit} />
+      <InquiryStatus
+        isRefresh={isRefreshing}
+        animHeaderValue={scrollOffsetY}
+        onSearchSubmit={onSearchSubmit}
+      />
 
       <FlatList
         contentContainerStyle={[styles.list]}

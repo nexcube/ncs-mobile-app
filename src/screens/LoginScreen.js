@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 import axios from 'axios';
 
@@ -9,12 +9,40 @@ import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
 import userData from '../services/DeviceStorage';
+import {useEffect} from 'react/cjs/react.development';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
-  const [id, setEmail] = useState('schae'); //
-  const [password, setPassword] = useState('YAjPr5YLys');
+  const [id, setId] = useState(''); //
+  const [password, setPassword] = useState('');
+  const [auto, setAuto] = useState(false);
+
+  // 자동 로그인
+  useEffect(() => {
+    console.log('autoLogin...');
+    autoLogin();
+  }, []);
+
+  useEffect(() => {
+    if (auto) {
+      console.log('call onLogin');
+      onLogin();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auto]);
+
+  const autoLogin = async () => {
+    const savedId = await userData.getId();
+    const savedPassword = await userData.getPassword();
+    console.log(savedId);
+    console.log(savedPassword);
+    if (savedId !== null && savedPassword !== null) {
+      setId(savedId);
+      setPassword(savedPassword);
+      setAuto(true);
+    }
+  };
 
   // 로그인 처리
   const onLogin = async () => {
@@ -26,8 +54,10 @@ function LoginScreen({navigation, route}) {
         },
       })
       .then(async res => {
-        console.log(res.data);
-        userData.setToken(res.data.token);
+        userData.setId(id);
+        userData.setPassword(password);
+        console.log(JSON.stringify(res.data, null, '  '));
+        userData.setJWT(res.data.token);
         userData.setUserData(res.data.userData);
 
         if (res.data.loginType === 'staff') {
@@ -68,7 +98,7 @@ function LoginScreen({navigation, route}) {
             autoCapitalize="none"
             placeholder="NEMS 아이디"
             value={id}
-            onChangeText={setEmail}
+            onChangeText={setId}
           />
           <CustomInput
             hasMarginBottom
