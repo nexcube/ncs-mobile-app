@@ -19,10 +19,11 @@ import {
   onInquiryClassify,
 } from './BO_Inquiry.handler';
 
-const initialBranchSelection = {branchName: '', cMain: false, facilityCode: ''};
-const initialClass = {name: ' 분류선택', index: -1};
+const initialBranch = {name: '', cMain: false, facilityCode: ''};
+const initialClassify = {name: ' 분류선택', index: -1, mainName: '', mainIndex: -1};
 
 function BO_Inquiry({navigation, route}) {
+  // 라우터 파라미터
   const branchOfficeList = route.params?.branchOfficeList;
 
   // 헤더 버튼 추가.
@@ -34,9 +35,9 @@ function BO_Inquiry({navigation, route}) {
           onPress={() =>
             onRegistration({
               title,
-              classSelection: classify,
-              defaultClassString: initialClass,
-              branchSelection: branch,
+              classify,
+              defaultClassifyString: initialClassify,
+              branch: branch,
               contents: content,
               visibleBS,
               setVisibleBS,
@@ -63,19 +64,20 @@ function BO_Inquiry({navigation, route}) {
     });
   });
 
-  //파라미터 처리
+  //분류선택 페이지에서 온 파라미터 처리
   useEffect(() => {
     if (route.params?.selection) {
       setClassify(route.params.selection);
     }
   }, [route.params]);
 
+  // status ////////////////////////////////////////////////////////////////////////////////////////
   // 제목
   const [title, setTitle] = useState('');
   // 분류선택
-  const [classify, setClassify] = useState(initialClass);
+  const [classify, setClassify] = useState(initialClassify);
   // 관련 지점
-  const [branch, setBranch] = useState(initialBranchSelection);
+  const [branch, setBranch] = useState(initialBranch);
   // 내용
   const [content, setContent] = useState('');
 
@@ -110,8 +112,10 @@ function BO_Inquiry({navigation, route}) {
           onChangeText={setTitle}
         />
         <SelectionButton
-          title={classify.name}
-          style={classify.name !== initialClass.name ? {color: globalStyles.color.text} : {}}
+          title={
+            classify.mainName.length > 1 ? classify.mainName + ' > ' + classify.name : classify.name
+          }
+          style={classify.name !== initialClassify.name ? {color: globalStyles.color.text} : {}}
           hasMarginBottom
           onPress={() => onInquiryClassify({navigation})}
         />

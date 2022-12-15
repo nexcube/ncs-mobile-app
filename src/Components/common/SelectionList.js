@@ -3,8 +3,9 @@ import {StyleSheet, View} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import globalStyles from '../../styles/global';
 
-function SelectionList({hasMarginBottom, data, setSelected}) {
+function SelectionList({hasMarginBottom, data, setSelected, defaultSelection = ''}) {
   const [isSelect, setIsSelect] = useState(false);
+  const hasDefault = defaultSelection.length > 1;
 
   return (
     <View style={[hasMarginBottom && styles.margin]}>
@@ -13,16 +14,24 @@ function SelectionList({hasMarginBottom, data, setSelected}) {
         search={false}
         fontFamily={globalStyles.font.regular}
         setSelected={val => {
-          setIsSelect(true);
-          const selected = data.filter(item => item.branchName === val);
-          // console.log('selected:', selected);
-          setSelected(selected[0]);
+          setIsSelect(val);
+          const selected = data.filter(item => item.name === val);
+          if (selected.length > 0) {
+            setSelected(selected[0]);
+          }
         }}
         boxStyles={[styles.boxStyles]}
-        inputStyles={[styles.inputStyles, isSelect && {color: globalStyles.color.text}]}
+        inputStyles={[
+          styles.inputStyles,
+          (isSelect || hasDefault) && {color: globalStyles.color.text},
+        ]}
         dropdownTextStyles={[styles.dropdownTextStyles]}
-        data={data.map(item => item.branchName)}
+        data={data.map(item => item.name)}
         save="value"
+        defaultOption={{
+          key: hasDefault && data.findIndex(item => item.name === defaultSelection),
+          value: hasDefault && defaultSelection,
+        }}
       />
     </View>
   );

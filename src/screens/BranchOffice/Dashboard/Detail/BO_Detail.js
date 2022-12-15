@@ -1,38 +1,41 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {useEffect} from 'react/cjs/react.development';
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
-import Icon from 'react-native-vector-icons/Feather';
 import TopMenu from '../../../../components/Detail/TopMenu';
 
 function BO_Detail({navigation, route}) {
-  const item = route.params;
+  const inquiryItem = route.params;
+  console.log(JSON.stringify(inquiryItem, null, '\t'));
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <TopMenu />,
+      headerRight: () => <TopMenu inquiryItem={inquiryItem} />,
     });
   });
   return (
     <View style={[styles.fullscreen]}>
       <View style={[styles.header]}>
         <InquiryCard
-          key={item.idx}
-          title={item.title}
-          content={item.content}
-          mainCatName={item.mainCatName}
-          subCatName={item.subCatName}
-          branchOfficeName={item.branchOfficeName}
-          inquirer={item.inquirer}
-          levelName={item.levelName}
-          updateDate={item.updateDate}
-          status={item.status}
+          mode="contained"
+          key={inquiryItem.idx}
+          title={inquiryItem.title}
+          content={inquiryItem.content}
+          mainCatName={inquiryItem.mainCatName}
+          subCatName={inquiryItem.subCatName}
+          branchOfficeName={inquiryItem.branchOfficeName}
+          inquirer={inquiryItem.inquirer}
+          levelName={inquiryItem.levelName}
+          updateDate={inquiryItem.updateDate}
+          status={inquiryItem.status}
+          commentCount={inquiryItem.commentCount}
           forDetail={true}
         />
       </View>
+      <View style={[styles.separator]} />
       <View style={[styles.contentContainer]}>
-        <Text style={[styles.content]}> {item.content}</Text>
+        <Text style={[styles.content]}> {inquiryItem.content}</Text>
       </View>
     </View>
   );
@@ -53,6 +56,12 @@ const styles = StyleSheet.create({
   content: {
     fontFamily: globalStyles.font.regular,
     fontSize: 15,
+  },
+  separator: {
+    backgroundColor: globalStyles.color.grayLight,
+
+    height: 1,
+    width: '100%',
   },
 });
 

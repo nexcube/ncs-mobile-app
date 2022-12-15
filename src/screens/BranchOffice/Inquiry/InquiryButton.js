@@ -30,9 +30,7 @@ function InquiryButton({routeName}) {
         params: {id: staffId},
       })
       .then(res => {
-        const params = res.data.map(item => item);
-
-        navigation.navigate(routeName, {branchOfficeList: params});
+        navigation.navigate(routeName, {branchOfficeList: res.data});
       })
       .catch(error => console.error(error));
   }, [navigation, routeName]);

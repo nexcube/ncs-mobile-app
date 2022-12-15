@@ -1,11 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useState} from 'react';
-import {Button, Platform, Pressable, StyleSheet, Text} from 'react-native';
+import {Button, StyleSheet} from 'react-native';
 import {Divider, Menu} from 'react-native-paper';
-import {Icon} from 'react-native-vector-icons/Feather';
+import userData from '../../services/DeviceStorage';
+
 import globalStyles from '../../styles/global';
 
-function TopMenu({}) {
+function TopMenu({inquiryItem}) {
   const navigation = useNavigation();
 
   const openMenu = () => {
@@ -16,13 +18,27 @@ function TopMenu({}) {
     setVisible(false);
   };
 
-  const onModify = () => {
+  const onModify = async () => {
     setVisible(false);
-    navigation.navigate('BO_Detail_Modify');
+    const staffId = await userData.getStaffId();
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+    axios
+      .get('/inquiry/branchOfficeList', {
+        headers: {authorization: token},
+        params: {id: staffId},
+      })
+      .then(res => {
+        const result = res.data.map(value => value);
+        // console.log(inquiryItem);
+        const params = {inquiryItem: inquiryItem, branchOfficeList: result};
+
+        navigation.navigate('BO_Detail_Modify', params);
+      })
+      .catch(error => console.error(error));
   };
 
   const onDelete = () => {
-    console.log('Delete!!!');
     setVisible(false);
   };
 

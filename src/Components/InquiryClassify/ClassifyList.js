@@ -3,7 +3,6 @@ import {FlatList, Platform, Pressable, StyleSheet, Text, View} from 'react-nativ
 import globalStyles from '../../styles/global';
 
 const ClassifyList = ({list, onPress}) => {
-  console.log(list);
   return (
     <FlatList
       data={list}

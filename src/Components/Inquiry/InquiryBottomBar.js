@@ -34,7 +34,7 @@ const InquiryBottomBar = ({
       });
 
       const reformedResults = result.map(item => ({name: '', type: item.type, path: item.path}));
-      console.log(reformedResults);
+      // console.log(reformedResults);
 
       const finalResults = removeDuplicates(attachments, reformedResults);
       setAttachments([...finalResults]);

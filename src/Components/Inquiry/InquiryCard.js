@@ -15,13 +15,14 @@ const InquiryCard = ({
   updateDate,
   status,
   forDetail,
-  commentCount = 99,
+  commentCount = 17,
+  mode = 'elevated',
 }) => {
   // 타임존 제거
   const date = new Date(updateDate.slice(0, -1));
 
   return (
-    <Card style={[styles.container]} mode="contained">
+    <Card style={[styles.container]} mode={mode}>
       <InquiryCardHeader forDetail={forDetail} status={status} commentCount={commentCount} />
 
       <View

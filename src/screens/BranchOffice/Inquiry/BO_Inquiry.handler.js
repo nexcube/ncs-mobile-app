@@ -88,23 +88,24 @@ function onBSContinue({visibleBS, setVisibleBS}) {
 // 등록 버튼 처리
 function onRegistration({
   title,
-  classSelection,
-  defaultClassString,
-  branchSelection,
+  classify,
+  defaultClassifyString,
+  branch,
   contents,
   visibleBS,
   setVisibleBS,
   InquiryAction,
 }) {
+  console.log(branch);
   if (title.length < 1) {
     displayToast('제목을 입력하세요');
     return;
   }
-  if (classSelection === defaultClassString) {
+  if (classify === defaultClassifyString) {
     displayToast('분류선택을 지정해 주세요');
     return;
   }
-  if (branchSelection.branchName === '') {
+  if (branch.name === '') {
     displayToast('관련지점을 선택해 주세요');
     return;
   }
@@ -129,7 +130,10 @@ const onInquiryClassify = async ({navigation}) => {
       headers: {authorization: token},
     })
     .then(res => {
-      navigation.navigate('BO_Inquiry_Classify', {qnaCategory: res.data});
+      navigation.navigate('BO_Inquiry_Classify', {
+        returnRouteName: 'BO_Inquiry',
+        qnaCategory: res.data,
+      });
     })
     .catch(error => console.error(error));
 };

@@ -6,6 +6,7 @@ import axios from 'axios';
 import Config from 'react-native-config';
 import globalStyles from './src/styles/global';
 import {DefaultTheme} from '@react-navigation/native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -24,9 +25,11 @@ function App() {
     android: 'http://192.168.0.37',
   });
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <RootStack />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer theme={navigationTheme}>
+        <RootStack />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

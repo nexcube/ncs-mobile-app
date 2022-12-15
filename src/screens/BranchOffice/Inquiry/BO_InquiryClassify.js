@@ -7,7 +7,10 @@ import globalStyles from '../../../styles/global';
 
 function BO_InquiryClassify({navigation, route}) {
   const qnaCategoryData = route?.params?.qnaCategory;
-  const [mainCategoryIndex, setMainCategoryIndex] = useState(-1);
+  const returnRouteName = route.params?.returnRouteName;
+
+  const [mainCategory, setMainCategory] = useState({});
+
   const [searchString, setSearchString] = useState('');
 
   const mainCategoryList = useMemo(
@@ -20,23 +23,25 @@ function BO_InquiryClassify({navigation, route}) {
       ? qnaCategoryData.filter(value => value.it_ParentQnaCatIdx === choiceIndex)
       : qnaCategoryData.filter(value => value.st_QnaCatName.includes(search));
 
-  const isNotSelected = mainCategoryIndex === -1 && searchString === '';
+  const isNotSelected = mainCategory.index === -1 && searchString === '';
 
   const onPressMainCategory = item => {
     setSearchString(prev => '');
-    setMainCategoryIndex(item.it_QnaCatIdx);
+    setMainCategory({index: item.it_QnaCatIdx, name: item.st_QnaCatName});
   };
 
   const onChangeSearch = text => {
-    setMainCategoryIndex(-1);
+    setMainCategory({});
     setSearchString(text);
   };
 
   const onPressSecondaryCategory = (index, name) => {
     navigation.navigate({
-      name: 'BO_Inquiry',
-      screen: 'BO_Inquiry',
-      params: {selection: {index, name: name}},
+      name: returnRouteName,
+      screen: returnRouteName,
+      params: {
+        selection: {index, name: name, mainIndex: mainCategory.index, mainName: mainCategory.name},
+      },
       merge: true,
     });
   };
@@ -60,7 +65,7 @@ function BO_InquiryClassify({navigation, route}) {
                 key={index}
                 index={item.it_QnaCatIdx}
                 title={item.st_QnaCatName}
-                selection={mainCategoryIndex}
+                selection={mainCategory.index}
                 onPress={() => onPressMainCategory(item)}
               />
             );
@@ -75,7 +80,7 @@ function BO_InquiryClassify({navigation, route}) {
           </View>
         ) : (
           <ClassifyList
-            list={secondaryCategoryList(mainCategoryIndex, searchString)}
+            list={secondaryCategoryList(mainCategory.index, searchString)}
             onPress={onPressSecondaryCategory}
           />
         )}
