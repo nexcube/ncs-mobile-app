@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Paragraph} from 'react-native-paper';
@@ -8,7 +7,6 @@ import InquiryCardHeader from './InquiryCardHeader';
 
 const InquiryCard = ({
   title,
-  content,
   mainCatName,
   subCatName,
   branchOfficeName,
@@ -22,32 +20,13 @@ const InquiryCard = ({
   // 타임존 제거
   const date = new Date(updateDate.slice(0, -1));
 
-  const navigation = useNavigation();
-
-  const onPress = () => {
-    const params = {
-      title,
-      content,
-      mainCatName,
-      subCatName,
-      branchOfficeName,
-      inquirer,
-      levelName,
-      updateDate,
-      status,
-      commentCount,
-    };
-    console.log(params);
-    navigation.navigate('BO_Detail', params);
-  };
-
   return (
-    <Card style={[styles.container]} mode="contained" onPress={onPress}>
+    <Card style={[styles.container]} mode="contained">
       <InquiryCardHeader forDetail={forDetail} status={status} commentCount={commentCount} />
 
       <View
         // eslint-disable-next-line react-native/no-inline-styles
-        style={[{opacity: status === 'hold' ? 0.6 : 1}]}>
+        style={[{opacity: status === 'HOLD' ? 0.6 : 1}]}>
         <Card.Title titleStyle={[styles.title]} title={title} titleNumberOfLines={2} />
         <View style={[styles.separator]} />
         <Card.Content>

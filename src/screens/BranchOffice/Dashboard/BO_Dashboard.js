@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, StyleSheet, View, FlatList} from 'react-native';
+import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
@@ -85,6 +85,23 @@ function BO_Dashboard({navigation, route}) {
     getInquiryList(searchString);
   };
 
+  const onItemSelected = item => {
+    const params = {
+      title: item.title,
+      content: item.content,
+      mainCatName: item.mainCatName,
+      subCatName: item.subCatName,
+      branchOfficeName: item.branchOfficeName,
+      inquirer: item.inquirer,
+      levelName: item.levelName,
+      updateDate: item.updateDate,
+      status: item.updateDate,
+      commentCount: 17,
+    };
+    console.log(params);
+    navigation.navigate('BO_Detail', params);
+  };
+
   const onRefresh = () => {
     setSearchString('');
     setOffset(0);
@@ -113,18 +130,19 @@ function BO_Dashboard({navigation, route}) {
         contentContainerStyle={[styles.list]}
         data={inquiryList}
         renderItem={({item}) => (
-          <InquiryCard
-            key={item.idx}
-            title={item.title}
-            content={item.content}
-            mainCatName={item.mainCatName}
-            subCatName={item.subCatName}
-            branchOfficeName={item.branchOfficeName}
-            inquirer={item.inquirer}
-            levelName={item.levelName}
-            updateDate={item.updateDate}
-            status={item.status}
-          />
+          <Pressable onPress={() => onItemSelected(item)}>
+            <InquiryCard
+              key={item.idx}
+              title={item.title}
+              mainCatName={item.mainCatName}
+              subCatName={item.subCatName}
+              branchOfficeName={item.branchOfficeName}
+              inquirer={item.inquirer}
+              levelName={item.levelName}
+              updateDate={item.updateDate}
+              status={item.status}
+            />
+          </Pressable>
         )}
         keyExtractor={item => item.idx}
         onScroll={Animated.event(

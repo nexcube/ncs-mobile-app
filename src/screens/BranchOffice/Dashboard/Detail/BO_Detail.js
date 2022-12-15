@@ -4,13 +4,14 @@ import {useEffect} from 'react/cjs/react.development';
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
 import Icon from 'react-native-vector-icons/Feather';
+import TopMenu from '../../../../components/Detail/TopMenu';
 
 function BO_Detail({navigation, route}) {
   const item = route.params;
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Text>dfadfa</Text>,
+      headerRight: () => <TopMenu />,
     });
   });
   return (
