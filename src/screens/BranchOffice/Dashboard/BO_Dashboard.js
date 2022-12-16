@@ -38,7 +38,7 @@ function BO_Dashboard({navigation, route}) {
   }, [isRefreshing]);
 
   // 검색어로 리스트 가져오기
-  const getInquiryList = async searchString => {
+  const getInquiryList = async () => {
     if (loading) {
       return;
     }
@@ -100,18 +100,18 @@ function BO_Dashboard({navigation, route}) {
   const onItemSelected = item => {
     const params = {
       index: item.idx,
-      title: item.title,
-      content: item.content,
-      mainCatName: item.mainCatName,
-      subCatName: item.subCatName,
-      branchOfficeName: item.branchOfficeName,
-      inquirer: item.inquirer,
-      levelName: item.levelName,
-      updateDate: item.updateDate,
-      status: item.status,
-      catIdx: item.catIdx,
-      facilityCode: item.facilityCode,
-      commentCount: 17,
+      // title: item.title,
+      // content: item.content,
+      // mainCatName: item.mainCatName,
+      // subCatName: item.subCatName,
+      // branchOfficeName: item.branchOfficeName,
+      // inquirer: item.inquirer,
+      // levelName: item.levelName,
+      // updateDate: item.updateDate,
+      // status: item.status,
+      // catIdx: item.catIdx,
+      // facilityCode: item.facilityCode,
+      // commentCount: 17,
     };
     console.log(params);
     navigation.navigate('BO_Detail', params);

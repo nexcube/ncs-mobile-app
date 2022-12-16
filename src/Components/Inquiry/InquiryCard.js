@@ -19,7 +19,7 @@ const InquiryCard = ({
   mode = 'elevated',
 }) => {
   // 타임존 제거
-  const date = new Date(updateDate.slice(0, -1));
+  const date = new Date(updateDate?.slice(0, -1));
 
   return (
     <Card style={[styles.container]} mode={mode}>

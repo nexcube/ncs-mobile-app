@@ -36,7 +36,7 @@ function BO_Inquiry({navigation, route}) {
             onRegistration({
               title,
               classify,
-              defaultClassifyString: initialClassify,
+              initialClassify,
               branch: branch,
               contents: content,
               visibleBS,
@@ -80,23 +80,19 @@ function BO_Inquiry({navigation, route}) {
   const [branch, setBranch] = useState(initialBranch);
   // 내용
   const [content, setContent] = useState('');
-
-  const [images, setImages] = useState([]);
-  const [files, setFiles] = useState([]);
-  const [cameras, setCameras] = useState([]);
+  // 첨부파일
   const [attachments, setAttachments] = useState([]);
+  // BottomSheet visible 설정.
+  const [visibleBS, setVisibleBS] = useState({
+    visible: false,
+    format: InquiryAction.Registration,
+  });
 
   useEffect(() => {
     console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
     attachments.map(item => console.log(item));
     console.log('end   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
   }, [attachments]);
-
-  // BottomSheet visible 설정.
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: InquiryAction.Registration,
-  });
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
@@ -132,28 +128,10 @@ function BO_Inquiry({navigation, route}) {
           placeholder=" 내용 입력"
           onChangeText={setContent}
         />
-        <Attachments
-          images={images}
-          setImages={setImages}
-          files={files}
-          setFiles={setFiles}
-          cameras={cameras}
-          setCameras={setCameras}
-          attachments={attachments}
-          setAttachments={setAttachments}
-        />
+        <Attachments attachments={attachments} setAttachments={setAttachments} />
       </ScrollView>
 
-      <InquiryBottomBar
-        images={images}
-        setImages={setImages}
-        files={files}
-        setFiles={setFiles}
-        cameras={cameras}
-        setCameras={setCameras}
-        attachments={attachments}
-        setAttachments={setAttachments}
-      />
+      <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet
         sheetStatus={visibleBS}
         onOk={() =>

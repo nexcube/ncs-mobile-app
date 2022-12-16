@@ -89,7 +89,7 @@ function onBSContinue({visibleBS, setVisibleBS}) {
 function onRegistration({
   title,
   classify,
-  defaultClassifyString,
+  initialClassify,
   branch,
   contents,
   visibleBS,
@@ -101,7 +101,7 @@ function onRegistration({
     displayToast('제목을 입력하세요');
     return;
   }
-  if (classify === defaultClassifyString) {
+  if (classify === initialClassify) {
     displayToast('분류선택을 지정해 주세요');
     return;
   }

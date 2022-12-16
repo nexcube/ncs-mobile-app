@@ -1,19 +1,95 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {useEffect} from 'react/cjs/react.development';
+import React, {useEffect, useState} from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
+
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
 import TopMenu from '../../../../components/Detail/TopMenu';
+import userData from '../../../../services/DeviceStorage';
+import axios from 'axios';
 
 function BO_Detail({navigation, route}) {
-  const inquiryItem = route.params;
-  console.log(JSON.stringify(inquiryItem, null, '\t'));
+  const index = route.params.index;
 
+  // Status ////////////////////////////////////////////////////////////////////////////////////////\
+  const [inquiryItem, setInquiryItem] = useState({});
+  const [isRefresh, setIsRefresh] = useState(false);
+
+  // 마운트 될때
+  useEffect(() => {
+    getInquiryListItem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 데이타가 바뀔때 마다.
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <TopMenu inquiryItem={inquiryItem} />,
+      headerRight: () => <TopMenu onModify={onModify} onDelete={onDelete} />,
     });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inquiryItem]);
+
+  //
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getInquiryListItem();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    if (isRefresh) {
+      getInquiryListItem();
+    }
+    return setIsRefresh(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRefresh]);
+
+  const getInquiryListItem = async () => {
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+    let url = `/inquiry/list/${index}`;
+
+    axios
+      .get(url, {
+        headers: {authorization: token},
+      })
+      // 성공
+      .then(res => {
+        console.log(`/inquiry/list/${index}`);
+        console.log(JSON.stringify(res.data[0], null, '\t'));
+        setInquiryItem(res.data[0]);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  // Event Handler /////////////////////////////////////////////////////////////////////////////////
+  const onModify = async () => {
+    const staffId = await userData.getStaffId();
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+    axios
+      .get('/inquiry/branchOfficeList', {
+        headers: {authorization: token},
+        params: {id: staffId},
+      })
+      .then(res => {
+        const result = res.data.map(value => value);
+        // console.log(inquiryItem);
+        const params = {inquiryItem: inquiryItem, branchOfficeList: result};
+
+        navigation.navigate('BO_Detail_Modify', params);
+      })
+      .catch(error => console.error(error));
+  };
+
+  const onDelete = () => {
+    console.log(inquiryItem);
+  };
+
   return (
     <View style={[styles.fullscreen]}>
       <View style={[styles.header]}>

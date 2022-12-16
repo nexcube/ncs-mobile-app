@@ -13,16 +13,7 @@ const removeDuplicates = (first, second) => {
   return result;
 };
 
-const InquiryBottomBar = ({
-  images,
-  setImages,
-  files,
-  setFiles,
-  cameras,
-  setCameras,
-  attachments,
-  setAttachments,
-}) => {
+const InquiryBottomBar = ({attachments, setAttachments}) => {
   const onImage = async () => {
     try {
       const result = await MultipleImagePicker.openPicker({

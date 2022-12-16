@@ -1,14 +1,11 @@
-import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import React, {useState} from 'react';
 import {Button, StyleSheet} from 'react-native';
 import {Divider, Menu} from 'react-native-paper';
-import userData from '../../services/DeviceStorage';
 
 import globalStyles from '../../styles/global';
 
-function TopMenu({inquiryItem}) {
-  const navigation = useNavigation();
+function TopMenu({onModify, onDelete}) {
+  const [visible, setVisible] = useState(false);
 
   const openMenu = () => {
     setVisible(true);
@@ -18,31 +15,15 @@ function TopMenu({inquiryItem}) {
     setVisible(false);
   };
 
-  const onModify = async () => {
+  const onPressModify = async () => {
     setVisible(false);
-    const staffId = await userData.getStaffId();
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    axios
-      .get('/inquiry/branchOfficeList', {
-        headers: {authorization: token},
-        params: {id: staffId},
-      })
-      .then(res => {
-        const result = res.data.map(value => value);
-        // console.log(inquiryItem);
-        const params = {inquiryItem: inquiryItem, branchOfficeList: result};
-
-        navigation.navigate('BO_Detail_Modify', params);
-      })
-      .catch(error => console.error(error));
+    onModify();
   };
 
-  const onDelete = () => {
+  const onPressDelete = () => {
     setVisible(false);
+    onDelete();
   };
-
-  const [visible, setVisible] = useState(false);
 
   return (
     <Menu
@@ -51,9 +32,9 @@ function TopMenu({inquiryItem}) {
       anchor={<Button onPress={openMenu} title="..." color="#fff" />}
       anchorPosition="bottom"
       contentStyle={[styles.menu]}>
-      <Menu.Item titleStyle={[styles.text]} onPress={onModify} title="수정하기" />
+      <Menu.Item titleStyle={[styles.text]} onPress={onPressModify} title="수정하기" />
       <Divider horizontalInset={true} style={[styles.separator]} />
-      <Menu.Item titleStyle={[styles.text]} onPress={onDelete} title="삭제하기" />
+      <Menu.Item titleStyle={[styles.text]} onPress={onPressDelete} title="삭제하기" />
     </Menu>
   );
 }

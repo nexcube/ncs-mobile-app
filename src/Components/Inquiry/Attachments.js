@@ -5,16 +5,7 @@ import Attachment from './Attachment';
 const {width} = Dimensions.get('window');
 export const IMAGE_WIDTH = (width - 24 - 18 - 6) / 4;
 
-function Attachments({
-  images,
-  setImages,
-  files,
-  setFiles,
-  cameras,
-  setCameras,
-  attachments,
-  setAttachments,
-}) {
+function Attachments({attachments, setAttachments}) {
   const onDelete = value => {
     const result = attachments.filter(item => item?.path && item.path !== value.path);
     setAttachments(result);
