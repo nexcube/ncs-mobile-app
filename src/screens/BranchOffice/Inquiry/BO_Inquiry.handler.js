@@ -1,5 +1,6 @@
 import axios from 'axios';
 import produce from 'immer';
+import RNFS, {DocumentDirectoryPath, TemporaryDirectoryPath} from 'react-native-fs';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import userData from '../../../services/DeviceStorage';
 
@@ -22,10 +23,11 @@ async function onBSConfirm({
   setVisibleBS,
   InquiryAction,
   title,
-  classSelection,
-  branchSelection,
-  contents,
+  classify,
+  branch,
+  content,
   navigation,
+  attachments,
 }) {
   const newSheetStatus = produce(visibleBS, draft => {
     draft.visible = false;
@@ -35,38 +37,79 @@ async function onBSConfirm({
   switch (visibleBS.format) {
     case InquiryAction.Registration:
       console.log(title);
-      console.log(classSelection);
-      console.log(branchSelection);
-      console.log(contents);
+      console.log(classify);
+      console.log(branch);
+      console.log(content);
 
       const jwt = await userData.getJWT();
       const token = `${jwt}`;
       const staffId = await userData.getStaffId();
-      console.log(staffId);
 
-      axios
-        .post(
-          '/inquiry/register',
-          JSON.stringify({
-            title: title,
-            content: contents,
-            categoryIndex: classSelection.index,
-            facilityCode: branchSelection.facilityCode,
-            staffId: staffId,
-            status: 'NEW',
-          }),
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              authorization: token,
-            },
-          },
-        )
-        .then(res => {
-          console.log(res.data);
-          navigation.pop();
+      console.log(attachments);
+      const uploadFiles = attachments.map(file => ({
+        name: file.path.split('/').pop().split('.')[0],
+        filename: file.path.split('/').pop(),
+        filepath: TemporaryDirectoryPath + '/' + file.path.split('/').pop(),
+        filetype: file.type,
+      }));
+      console.log(JSON.stringify(uploadFiles, null, '\t'));
+      console.log(axios.defaults.baseURL);
+      RNFS.uploadFiles({
+        toUrl: `${axios.defaults.baseURL}/inquiry/register`,
+        files: uploadFiles,
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          authorization: token,
+        },
+        fields: {
+          title: title,
+          content: content,
+          categoryIndex: classify.index,
+          facilityCode: branch.facilityCode,
+          staffId: staffId,
+          status: 'NEW',
+        },
+        begin: uploadBegin,
+        progress: uploadProgress,
+      })
+        .promise.then(response => {
+          if (response.statusCode === 200) {
+            console.log('FILES UPLOADED!');
+          } else {
+            console.log('SERVER ERROR');
+          }
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          if (error.description === 'cancelled') {
+            console.log('Canceled');
+          }
+          console.error(error);
+        });
+
+      // axios
+      //   .post(
+      //     '/inquiry/register',
+      //     JSON.stringify({
+      //       title: title,
+      //       content: content,
+      //       categoryIndex: classify.index,
+      //       facilityCode: branch.facilityCode,
+      //       staffId: staffId,
+      //       status: 'NEW',
+      //     }),
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //         authorization: token,
+      //       },
+      //     },
+      //   )
+      //   .then(res => {
+      //     console.log(res.data);
+      //     navigation.pop();
+      //   })
+      //   .catch(error => console.error(error));
 
       break;
     case InquiryAction.CancelInquiry:
@@ -76,6 +119,16 @@ async function onBSConfirm({
       break;
   }
 }
+
+const uploadBegin = response => {
+  const jobId = response.jobId;
+  console.log('UPLOAD HAS BEGUN! JobId: ' + jobId);
+};
+
+const uploadProgress = response => {
+  const percentage = Math.floor(response.totalBytesSent / response.totalBytesExpectedToSend) * 100;
+  console.log('UPLOAD IS ' + percentage + '% DONE!');
+};
 
 // 바텀시티 continue 클릭시
 function onBSContinue({visibleBS, setVisibleBS}) {

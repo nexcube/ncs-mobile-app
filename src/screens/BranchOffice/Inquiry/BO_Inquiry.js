@@ -140,10 +140,11 @@ function BO_Inquiry({navigation, route}) {
             setVisibleBS,
             InquiryAction,
             title,
-            classSelection: classify,
-            branchSelection: branch,
-            contents: content,
+            classify,
+            branch,
+            content,
             navigation,
+            attachments,
           })
         }
         onCancel={() => onBSContinue({visibleBS, setVisibleBS})}
