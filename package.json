@@ -7,6 +7,7 @@
     "-ios": "react-native run-ios",
     "android": "react-native run-android --variant=developdebug",
     "ios": "react-native run-ios --scheme Develop --configuration Debug --simulator='iPhone 14'",
+    "ios-real": "react-native run-ios --scheme Develop --configuration Debug --device='Koh의 iPhone'",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",

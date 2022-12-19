@@ -42,7 +42,7 @@ function LoginScreen({navigation, route}) {
 
   // 로그인 처리
   const onLogin = async () => {
-    console.log('onLogin');
+    console.log('onLogin : ' + axios.defaults.baseURL);
     Toast.hide();
     axios
       .post('/login', JSON.stringify({id: id, password: password}), {

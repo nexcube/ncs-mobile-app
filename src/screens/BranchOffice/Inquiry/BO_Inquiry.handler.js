@@ -1,5 +1,6 @@
 import axios from 'axios';
 import produce from 'immer';
+import {Platform} from 'react-native';
 import RNFS, {DocumentDirectoryPath, TemporaryDirectoryPath} from 'react-native-fs';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import userData from '../../../services/DeviceStorage';
@@ -46,46 +47,93 @@ async function onBSConfirm({
       const staffId = await userData.getStaffId();
 
       console.log(attachments);
+
       const uploadFiles = attachments.map(file => ({
-        name: file.path.split('/').pop().split('.')[0],
-        filename: file.path.split('/').pop(),
-        filepath: TemporaryDirectoryPath + '/' + file.path.split('/').pop(),
-        filetype: file.type,
+        name: file.name,
+        uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+        type: file.type,
       }));
+
       console.log(JSON.stringify(uploadFiles, null, '\t'));
       console.log(axios.defaults.baseURL);
-      RNFS.uploadFiles({
-        toUrl: `${axios.defaults.baseURL}/inquiry/register`,
-        files: uploadFiles,
+
+      const formData = new FormData();
+      // formData.append('images', uploadFiles);
+      uploadFiles.map(item => formData.append('image', item));
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('categoryIndex', classify.index);
+      formData.append('facilityCode', branch.facilityCode);
+      formData.append('staffId', staffId);
+      formData.append('status', 'NEW');
+
+      const requestOptions = {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          authorization: token,
-        },
-        fields: {
-          title: title,
-          content: content,
-          categoryIndex: classify.index,
-          facilityCode: branch.facilityCode,
-          staffId: staffId,
-          status: 'NEW',
-        },
-        begin: uploadBegin,
-        progress: uploadProgress,
-      })
-        .promise.then(response => {
-          if (response.statusCode === 200) {
-            console.log('FILES UPLOADED!');
-          } else {
-            console.log('SERVER ERROR');
-          }
-        })
-        .catch(error => {
-          if (error.description === 'cancelled') {
-            console.log('Canceled');
-          }
-          console.error(error);
-        });
+        body: formData,
+        // redirect: 'follow',
+        headers: {'Content-Type': 'multipart/form-data', authorization: token}, // 헤더를 지정해줄거면 multipart/form-data로 지정해주어야함
+        // headers를 위처럼 따로 지정해 주지 않아도 되긴 함
+      };
+
+      await fetch(`${axios.defaults.baseURL}/inquiry/register`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+
+      // axios
+      //   .post('/inquiry/register', formData, {
+      //     redirect: 'follow',
+      //     headers: {'Content-Type': 'multipart/form-data'},
+      //     transformRequest: (data, headers) => {
+      //       return data;
+      //     },
+      //   })
+      //   .then(response => {
+      //     console.log(response);
+      //   })
+      //   .catch(error => console.log(error.message));
+
+      // const uploadFiles = attachments.map(file => ({
+      //   name: file.path.split('/').pop().split('.')[0],
+      //   filename: file.path.split('/').pop(),
+      //   // filepath: TemporaryDirectoryPath + '/' + file.path.split('/').pop(),
+      //   filepath: file.path,
+      //   filetype: file.type,
+      // }));
+      // console.log(JSON.stringify(uploadFiles, null, '\t'));
+      // console.log(axios.defaults.baseURL);
+      // RNFS.uploadFiles({
+      //   toUrl: `${axios.defaults.baseURL}/inquiry/register`,
+      //   files: uploadFiles,
+      //   method: 'POST',
+      //   headers: {
+      //     Accept: 'application/json',
+      //     authorization: token,
+      //   },
+      //   fields: {
+      //     title: title,
+      //     content: content,
+      //     categoryIndex: classify.index,
+      //     facilityCode: branch.facilityCode,
+      //     staffId: staffId,
+      //     status: 'NEW',
+      //   },
+      //   begin: uploadBegin,
+      //   progress: uploadProgress,
+      // })
+      //   .promise.then(response => {
+      //     if (response.statusCode === 200) {
+      //       console.log('FILES UPLOADED!');
+      //     } else {
+      //       console.log('SERVER ERROR');
+      //     }
+      //   })
+      //   .catch(error => {
+      //     if (error.description === 'cancelled') {
+      //       console.log('Canceled');
+      //     }
+      //     console.error(error);
+      //   });
 
       // axios
       //   .post(

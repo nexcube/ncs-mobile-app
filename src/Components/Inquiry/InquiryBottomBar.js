@@ -5,7 +5,7 @@ import globalStyles from '../../styles/global';
 import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
 import {permissionCheck} from '../../services/PermissionCheck';
 import DocumentPicker from 'react-native-document-picker';
-import {launchCamera} from 'react-native-image-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const removeDuplicates = (first, second) => {
   const combined = [...first, ...second];
@@ -24,7 +24,13 @@ const InquiryBottomBar = ({attachments, setAttachments}) => {
         cancelTitle: '취소',
       });
 
-      const reformedResults = result.map(item => ({name: '', type: item.type, path: item.path}));
+      console.log(result);
+
+      const reformedResults = result.map(item => ({
+        name: item.fileName,
+        type: item.mime,
+        path: item.path,
+      }));
       // console.log(reformedResults);
 
       const finalResults = removeDuplicates(attachments, reformedResults);
