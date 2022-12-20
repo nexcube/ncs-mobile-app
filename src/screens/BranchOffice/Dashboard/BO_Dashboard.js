@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -100,18 +100,6 @@ function BO_Dashboard({navigation, route}) {
   const onItemSelected = item => {
     const params = {
       index: item.idx,
-      // title: item.title,
-      // content: item.content,
-      // mainCatName: item.mainCatName,
-      // subCatName: item.subCatName,
-      // branchOfficeName: item.branchOfficeName,
-      // inquirer: item.inquirer,
-      // levelName: item.levelName,
-      // updateDate: item.updateDate,
-      // status: item.status,
-      // catIdx: item.catIdx,
-      // facilityCode: item.facilityCode,
-      // commentCount: 17,
     };
     console.log(params);
     navigation.navigate('BO_Detail', params);

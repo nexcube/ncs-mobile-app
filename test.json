@@ -1,100 +1,97 @@
-[
-  {
-    "catIdx": 19,
-    "content": "asdfasdfasdf asdfasdfasdf add",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 54,
-    "makeDate": "2022-12-13T16:48:55.670Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "NEW",
-    "title": "가가가가각가가가가각가가",
-    "updateDate": "2022-12-13T16:48:55.670Z"
+{
+  "config": {
+    "adapter": ["xhr", "http"],
+    "baseURL": "http://192.168.0.37",
+    "data": {"_parts": ["Array"]},
+    "env": {"Blob": ["Function Blob"], "FormData": ["Function FormData"]},
+    "headers": ["Object"],
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "post",
+    "redirect": "follow",
+    "timeout": 0,
+    "transformRequest": ["Function transformRequest"],
+    "transformResponse": [["Function transformResponse"]],
+    "transitional": {
+      "clarifyTimeoutError": false,
+      "forcedJSONParsing": true,
+      "silentJSONParsing": true
+    },
+    "url": "/inquiry/register",
+    "validateStatus": ["Function validateStatus"],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN"
   },
-  {
-    "catIdx": 18,
-    "content": "asdfasdfasdf asdfasdfasdf add",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 53,
-    "makeDate": "2022-12-13T16:48:48.197Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "HOLD",
-    "title": "가나다라마바사",
-    "updateDate": "2022-12-13T16:48:48.197Z"
+  "data": [
+    "https://ncs-storage-dev.s3.ap-northeast-2.amazonaws.com/uploads%2F02081%2F1671513074707_31aecb2e93c8f5.jpg",
+    "https://ncs-storage-dev.s3.ap-northeast-2.amazonaws.com/uploads/02081/1671513074735_IMG_0111.HEIC"
+  ],
+  "headers": {
+    "connection": "keep-alive",
+    "content-length": "210",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Tue, 20 Dec 2022 05:11:15 GMT",
+    "etag": "W/\"d2-VGpIl1aktgMBqP5fsu1IlkZI0nk\"",
+    "keep-alive": "timeout=5",
+    "x-powered-by": "Express"
   },
-  {
-    "catIdx": 17,
-    "content": "asdfasdfasdf asdfasdfasdf add",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 52,
-    "makeDate": "2022-12-13T16:48:43.080Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "DONE",
-    "title": "아바타2가 나온단다. 재미있을까?",
-    "updateDate": "2022-12-13T16:48:43.080Z"
+  "request": {
+    "DONE": 4,
+    "HEADERS_RECEIVED": 2,
+    "LOADING": 3,
+    "OPENED": 1,
+    "UNSENT": 0,
+    "_aborted": false,
+    "_cachedResponse": "undefined",
+    "_hasError": false,
+    "_headers": {
+      "accept": "application/json, text/plain, */*",
+      "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiSldUIiwiZGF0YSI6eyJzdGFmZklkIjoiMDIwODEiLCJsb2dpbklkIjoic2NoYWUiLCJzdGFmZk5hbWUiOiLssYTshJ0iLCJtb2JpbGVObyI6IjAxMC0yMDI1LTU1MzciLCJkZXBhcnRDb2RlIjoiRVBYMDE3NiIsImRlcGFydE5hbWUiOiLrs7Trnbzrp6QiLCJmYWNpbGl0eUNvZGUiOiJFUFgwMTc2IiwiZmFjaWxpdHlUeXBlIjoiQlJBTkNIIiwicmFua0NvZGUiOiJMMTAiLCJkdXR5Q29kZSI6bnVsbCwicG9zaXRpb25Db2RlIjpudWxsLCJyYW5rTmFtZSI6IuybkOyepSIsImpvaW5EYXRlIjoiMjAxNS0wMi0wMlQwMDowMDowMC4wMDBaIiwib3V0RGF0ZSI6IjIyMDAtMTItMzFUMDA6MDA6MDAuMDAwWiIsInByb2ZpbGVfaWR4Ijo2M30sImlhdCI6MTY3MTUwNTYxNywiZXhwIjoxNjcxNTE2NDE3LCJpc3MiOiLthqDtgbDrsJzquInsnpAifQ.NajnvoJxbJd3DNjhimzLcilzSOpxdQhJLo94_Z5PL6k",
+      "content-type": "multipart/form-data"
+    },
+    "_incrementalEvents": false,
+    "_lowerCaseResponseHeaders": {
+      "connection": "keep-alive",
+      "content-length": "210",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Tue, 20 Dec 2022 05:11:15 GMT",
+      "etag": "W/\"d2-VGpIl1aktgMBqP5fsu1IlkZI0nk\"",
+      "keep-alive": "timeout=5",
+      "x-powered-by": "Express"
+    },
+    "_method": "POST",
+    "_perfKey": "network_XMLHttpRequest_http://192.168.0.37/inquiry/register",
+    "_performanceLogger": {
+      "_closed": false,
+      "_extras": ["Object"],
+      "_pointExtras": ["Object"],
+      "_points": ["Object"],
+      "_timespans": ["Object"]
+    },
+    "_requestId": null,
+    "_response": "[\"https://ncs-storage-dev.s3.ap-northeast-2.amazonaws.com/uploads%2F02081%2F1671513074707_31aecb2e93c8f5.jpg\",\"https://ncs-storage-dev.s3.ap-northeast-2.amazonaws.com/uploads/02081/1671513074735_IMG_0111.HEIC\"]",
+    "_responseType": "",
+    "_sent": true,
+    "_subscriptions": [],
+    "_timedOut": false,
+    "_trackingName": "unknown",
+    "_url": "http://192.168.0.37/inquiry/register",
+    "readyState": 4,
+    "responseHeaders": {
+      "Connection": "keep-alive",
+      "Content-Length": "210",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Tue, 20 Dec 2022 05:11:15 GMT",
+      "Etag": "W/\"d2-VGpIl1aktgMBqP5fsu1IlkZI0nk\"",
+      "Keep-Alive": "timeout=5",
+      "X-Powered-By": "Express"
+    },
+    "responseURL": "http://192.168.0.37/inquiry/register",
+    "status": 200,
+    "timeout": 0,
+    "upload": {},
+    "withCredentials": true
   },
-  {
-    "catIdx": 14,
-    "content": "거넝럼나ㅣㅇ럼ㄴ;이.  가나 다닫 마",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 50,
-    "makeDate": "2022-12-13T16:48:29.940Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "INPROGRESS",
-    "title": "Support Ukraine",
-    "updateDate": "2022-12-13T16:48:29.940Z"
-  },
-  {
-    "catIdx": 12,
-    "content": "asdfasdfasdf asdfasdfasdf add 가 ㅇㄹㅁㅇ나럼;ㄴㅇ리ㅓㅁ",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 48,
-    "makeDate": "2022-12-13T16:48:17.727Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "NEW",
-    "title": "addfasdfasdf",
-    "updateDate": "2022-12-13T16:48:17.727Z"
-  },
-  {
-    "catIdx": 10,
-    "content": "asdfasdfasdf asdfasdfasdf add",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 47,
-    "makeDate": "2022-12-13T16:48:11.477Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "HOLD",
-    "title": "노래방 가자",
-    "updateDate": "2022-12-13T16:48:11.477Z"
-  },
-  {
-    "catIdx": 5,
-    "content": "가자 월드컵, 가자 아아아앙",
-    "deleteDate": null,
-    "facilityCode": "EPX0176",
-    "idx": 44,
-    "makeDate": "2022-12-13T16:47:53.713Z",
-    "replyDate": null,
-    "share": 0,
-    "staffId": "02081",
-    "status": "NEW",
-    "title": "답변을 기달려요?",
-    "updateDate": "2022-12-13T16:47:53.713Z"
-  }
-]
+  "status": 200,
+  "statusText": "undefined"
+}

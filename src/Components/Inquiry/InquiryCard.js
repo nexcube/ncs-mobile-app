@@ -30,7 +30,7 @@ const InquiryCard = ({
         style={[{opacity: status === 'HOLD' ? 0.6 : 1}]}>
         <Card.Title titleStyle={[styles.title]} title={title} titleNumberOfLines={2} />
         <View style={[styles.separator]} />
-        <Card.Content>
+        <Card.Content style={[forDetail && {paddingTop: 12}]}>
           <Paragraph style={[styles.content]}>
             {mainCatName} > {subCatName}
           </Paragraph>

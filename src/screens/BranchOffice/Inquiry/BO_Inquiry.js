@@ -157,14 +157,15 @@ function BO_Inquiry({navigation, route}) {
 const styles = StyleSheet.create({
   fullscreen: {
     flex: 1,
+    backgroundColor: globalStyles.color.white,
   },
   container: {
     flex: 1,
     padding: 12,
     paddingBottom: 12,
+    backgroundColor: globalStyles.color.background,
   },
   photo: {
-    // backgroundColor: 'white',
     borderRadius: 64,
     width: 128,
     height: 128,

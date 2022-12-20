@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
 import TopMenu from '../../../../components/Detail/TopMenu';
 import userData from '../../../../services/DeviceStorage';
+import Attachments from '../../../../components/Inquiry/Attachments';
 import axios from 'axios';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -15,10 +17,11 @@ function BO_Detail({navigation, route}) {
   const [isRefresh, setIsRefresh] = useState(false);
 
   // 마운트 될때
-  useEffect(() => {
-    getInquiryListItem();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   console.log('useEffect mounted');
+  //   getInquiryListItem();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   // 데이타가 바뀔때 마다.
   useEffect(() => {
@@ -31,6 +34,7 @@ function BO_Detail({navigation, route}) {
   //
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('useEffect focus');
       getInquiryListItem();
     });
 
@@ -40,6 +44,7 @@ function BO_Detail({navigation, route}) {
 
   useEffect(() => {
     if (isRefresh) {
+      console.log('useEffect isRefresh');
       getInquiryListItem();
     }
     return setIsRefresh(false);
@@ -92,7 +97,7 @@ function BO_Detail({navigation, route}) {
   };
 
   return (
-    <View style={[styles.fullscreen]}>
+    <SafeAreaView style={[styles.fullscreen]}>
       <View style={[styles.header]}>
         <InquiryCard
           mode="contained"
@@ -111,10 +116,16 @@ function BO_Detail({navigation, route}) {
         />
       </View>
       <View style={[styles.separator]} />
-      <View style={[styles.contentContainer]}>
-        <Text style={[styles.content]}> {inquiryItem.content}</Text>
-      </View>
-    </View>
+      <ScrollView>
+        <View style={[styles.contentContainer]}>
+          <Text style={[styles.content]}> {inquiryItem.content}</Text>
+        </View>
+
+        <View style={[styles.attachmentsContainer]}>
+          <Attachments attachments={inquiryItem.attachments} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -139,6 +150,9 @@ const styles = StyleSheet.create({
 
     height: 1,
     width: '100%',
+  },
+  attachmentsContainer: {
+    padding: 20,
   },
 });
 

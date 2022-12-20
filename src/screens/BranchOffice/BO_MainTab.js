@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import globalStyles from '../../styles/global';
 import userData from '../../services/DeviceStorage';
 import axios from 'axios';
+import {View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
