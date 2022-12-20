@@ -8,6 +8,7 @@ import userData from '../../../../services/DeviceStorage';
 import Attachments from '../../../../components/Inquiry/Attachments';
 import axios from 'axios';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -96,8 +97,11 @@ function BO_Detail({navigation, route}) {
     console.log(inquiryItem);
   };
 
+  const [spinner, setSpinner] = useState(false);
+
   return (
     <SafeAreaView style={[styles.fullscreen]}>
+      <Spinner visible={spinner} textContent={'Loading...'} textStyle={styles.spinnerTextStyle} />
       <View style={[styles.header]}>
         <InquiryCard
           mode="contained"
@@ -122,7 +126,7 @@ function BO_Detail({navigation, route}) {
         </View>
 
         <View style={[styles.attachmentsContainer]}>
-          <Attachments attachments={inquiryItem.attachments} />
+          <Attachments attachments={inquiryItem.attachments} setSpinner={setSpinner} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -153,6 +157,9 @@ const styles = StyleSheet.create({
   },
   attachmentsContainer: {
     padding: 20,
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });
 

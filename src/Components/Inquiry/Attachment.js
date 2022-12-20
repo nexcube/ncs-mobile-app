@@ -1,11 +1,41 @@
-import React from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Platform, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, Image, TouchableOpacity, StyleSheet, Platform, Text, Pressable} from 'react-native';
 import globalStyles from '../../styles/global';
 import Icon from 'react-native-vector-icons/Feather';
+import RNFS from 'react-native-fs';
+import FileViewer from 'react-native-file-viewer';
 
-function Attachment({index, item, onDelete, imageWidth}) {
+function getUrlExtension(url) {
+  return url.split(/[#?]/)[0].split('.').pop().trim();
+}
+
+function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
+  // console.log(item);
+  const onPressImage = async () => {
+    const extension = getUrlExtension(item.path);
+    const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+
+    const options = {
+      fromUrl: item.path,
+      toFile: localFile,
+    };
+
+    setSpinner(true);
+    RNFS.downloadFile(options).promise.then(res => downloadComplete(localFile));
+  };
+
+  const downloadComplete = async localFile => {
+    console.log('download Complete!!!!');
+
+    FileViewer.open(localFile, {onDismiss: onClosePreview, showAppsSuggestions: true});
+  };
+
+  const onClosePreview = () => {
+    setSpinner(false);
+  };
+
   return (
-    <View>
+    <Pressable onPress={onPressImage}>
       {item.type.includes('image') ? (
         <Image
           source={{uri: item.path}}
@@ -28,7 +58,7 @@ function Attachment({index, item, onDelete, imageWidth}) {
         style={styles.buttonDelete}>
         <Icon name="x" size={20} color={globalStyles.color.gray} />
       </TouchableOpacity>
-    </View>
+    </Pressable>
   );
 }
 

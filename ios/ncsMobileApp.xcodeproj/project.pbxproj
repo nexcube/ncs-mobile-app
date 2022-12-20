@@ -63,6 +63,7 @@
 		713154EE29385A28004D2F92 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		713154EF29387538004D2F92 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		713154F92938DB7E004D2F92 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		71903F352951A97D00447D03 /* RNFileViewer.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; name = RNFileViewer.xcworkspace; path = "../node_modules/react-native-file-viewer/ios/RNFileViewer.xcworkspace"; sourceTree = "<group>"; };
 		7C9D030FA07A4540B1728C58 /* Happiness-Sans-Title.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Happiness-Sans-Title.ttf"; path = "../assets/fonts/Happiness-Sans-Title.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ncsMobileApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-ncsMobileApp-ncsMobileAppTests/Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +155,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				71903F352951A97D00447D03 /* RNFileViewer.xcworkspace */,
 				713154EF29387538004D2F92 /* ReactNativeConfig.xcodeproj */,
 			);
 			name = Libraries;
