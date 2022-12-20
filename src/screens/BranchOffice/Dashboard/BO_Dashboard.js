@@ -20,14 +20,26 @@ function BO_Dashboard({navigation, route}) {
   const [noMore, setNoMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchString, setSearchString] = useState('');
+
   // 리스트 기본 갯수;
   const fetchCount = 7;
 
   // 기본 리스트 가져오기
+  // useEffect(() => {
+  //   getInquiryList();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   useEffect(() => {
-    getInquiryList();
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('useEffect focus');
+      console.log();
+      getInquiryList();
+    });
+
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [navigation]);
 
   // 리프레쉬 리스트 가져오기
   useEffect(() => {

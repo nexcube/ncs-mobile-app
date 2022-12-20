@@ -76,6 +76,7 @@ async function onBSConfirm({
         })
         .then(response => {
           console.log('register response: ', response.data);
+          navigation.goBack();
         })
         .catch(error => console.log(error.message));
 

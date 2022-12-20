@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
@@ -7,9 +8,23 @@ import globalStyles from '../../styles/global';
 
 export default function InquiryHeader() {
   const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});
+
+  const navigation = useNavigation();
+  // useEffect(() => {
+  //   getInquiryStatus();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   useEffect(() => {
-    getInquiryStatus();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('useEffect focus');
+      console.log();
+      getInquiryStatus();
+    });
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation]);
 
   const getInquiryStatus = async () => {
     const jwt = await userData.getJWT();
