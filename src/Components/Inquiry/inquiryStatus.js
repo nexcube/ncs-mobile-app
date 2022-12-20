@@ -21,7 +21,7 @@ function InquiryStatus({animHeaderValue}) {
       <View style={[styles.statusBar]} />
       <LogoBack style={[styles.logoBack]} />
       <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
-        <InquiryHeader newCount={1} proceedingCount={2} completedCount={12} />
+        <InquiryHeader />
       </Animated.View>
     </View>
   );

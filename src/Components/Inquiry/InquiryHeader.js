@@ -1,25 +1,52 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {useEffect} from 'react/cjs/react.development';
+import userData from '../../services/DeviceStorage';
 import globalStyles from '../../styles/global';
 
-export default function InquiryHeader({newCount = 0, proceedingCount = 0, completedCount = 0}) {
+export default function InquiryHeader() {
+  const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});
+  useEffect(() => {
+    getInquiryStatus();
+  }, []);
+
+  const getInquiryStatus = async () => {
+    const jwt = await userData.getJWT();
+    const token = `${jwt}`;
+
+    axios
+      .get('/inquiry/inquiryStatus', {
+        headers: {authorization: token},
+      })
+      .then(res => {
+        console.log(res.data);
+        setInquiryStatus({NEW: res.data.NEW, INPROGRESS: res.data.INPROGRESS, DONE: res.data.DONE});
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  console.log(inquiryStatus);
+
   return (
     <View style={[styles.container]}>
       <Text style={styles.headerText}>문의현황</Text>
       <View style={[styles.row]}>
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>신규</Text>
-          <Text style={[styles.rowChangeText]}> {newCount}</Text>
+          <Text style={[styles.rowChangeText]}> {inquiryStatus.NEW}</Text>
         </View>
         <View style={[styles.verticalLine]} />
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>진행중 </Text>
-          <Text style={[styles.rowChangeText]}> {proceedingCount}</Text>
+          <Text style={[styles.rowChangeText]}> {inquiryStatus.INPROGRESS}</Text>
         </View>
         <View style={[styles.verticalLine]} />
         <View style={[styles.row]}>
           <Text style={[styles.rowText]}>완료 </Text>
-          <Text style={[styles.rowChangeText]}> {completedCount}</Text>
+          <Text style={[styles.rowChangeText]}> {inquiryStatus.DONE}</Text>
         </View>
       </View>
     </View>
