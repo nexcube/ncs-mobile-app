@@ -51,6 +51,7 @@ function BO_Dashboard({navigation, route}) {
 
   // 검색어로 리스트 가져오기
   const getInquiryList = async () => {
+    console.info('getInquiryList Called !!!');
     if (loading) {
       return;
     }

@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
 import userData from '../services/DeviceStorage';
 import {useEffect} from 'react/cjs/react.development';
+import login from '../services/api/login';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -42,38 +43,35 @@ function LoginScreen({navigation, route}) {
 
   // 로그인 처리
   const onLogin = async () => {
-    console.log('onLogin : ' + axios.defaults.baseURL);
     Toast.hide();
-    axios
-      .post('/login', JSON.stringify({id: id, password: password}), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(async res => {
-        userData.setId(id);
-        userData.setPassword(password);
-        console.log(JSON.stringify(res.data, null, '  '));
-        userData.setJWT(res.data.token);
-        userData.setUserData(res.data.userData);
 
-        if (res.data.loginType === 'staff') {
-          navigation.navigate('HO_MainStack');
-        } else {
-          navigation.navigate('BO_MainStack');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        Toast.show({
-          type: 'errorMsg',
-          visibilityTime: 3000,
-          props: {
-            message:
-              '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
-          },
-        });
-      });
+    await login({id, password, onSuccess: onLoginSuccess, onError: onLoginError});
+  };
+
+  const onLoginSuccess = data => {
+    userData.setId(id);
+    userData.setPassword(password);
+    userData.setJWT(data.token);
+    userData.setUserData(data.userData);
+
+    if (data.loginType === 'staff') {
+      navigation.navigate('HO_MainStack');
+    } else {
+      navigation.navigate('BO_MainStack');
+    }
+
+    console.log(data);
+  };
+
+  const onLoginError = () => {
+    Toast.show({
+      type: 'errorMsg',
+      visibilityTime: 3000,
+      props: {
+        message:
+          '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
+      },
+    });
   };
 
   return (
