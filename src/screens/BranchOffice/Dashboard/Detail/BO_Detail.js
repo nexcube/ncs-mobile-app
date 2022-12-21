@@ -9,6 +9,8 @@ import Attachments from '../../../../components/Inquiry/Attachments';
 import axios from 'axios';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Spinner from 'react-native-loading-spinner-overlay';
+import apiBranchList from '../../../../services/api/branchList';
+import apiInquiryListItem from '../../../../services/api/inquiryListItem';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -54,43 +56,22 @@ function BO_Detail({navigation, route}) {
   }, [isRefresh]);
 
   const getInquiryListItem = async () => {
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    let url = `/inquiry/list/${index}`;
+    await apiInquiryListItem(index, onSuccessInquiryListItem);
+  };
 
-    axios
-      .get(url, {
-        headers: {authorization: token},
-      })
-      // 성공
-      .then(res => {
-        console.log(`/inquiry/list/${index}`);
-        console.log(JSON.stringify(res.data[0], null, '\t'));
-        setInquiryItem(res.data[0]);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const onSuccessInquiryListItem = data => {
+    setInquiryItem(data[0]);
   };
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
   const onModify = async () => {
-    const staffId = await userData.getStaffId();
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    axios
-      .get('/inquiry/branchOfficeList', {
-        headers: {authorization: token},
-        params: {id: staffId},
-      })
-      .then(res => {
-        const result = res.data.map(value => value);
-        // console.log(inquiryItem);
-        const params = {inquiryItem: inquiryItem, branchOfficeList: result};
+    await apiBranchList(onSuccessBranchList);
+  };
 
-        navigation.navigate('BO_Detail_Modify', params);
-      })
-      .catch(error => console.error(error));
+  const onSuccessBranchList = data => {
+    const result = data.map(value => value);
+    const params = {inquiryItem: inquiryItem, branchList: result};
+    navigation.navigate('BO_Detail_Modify', params);
   };
 
   const onDelete = () => {
@@ -164,23 +145,3 @@ const styles = StyleSheet.create({
 });
 
 export default BO_Detail;
-
-// const onDetailModify = function () {
-//   navigation.navigate('BO_Detail_Modify');
-// };
-
-// const onDetailImageViewer = function () {
-//   navigation.navigate('BO_Detail_Image_Viewer');
-// };
-
-// const onDetailAddComment = function () {
-//   navigation.navigate('BO_Detail_Add_Comment');
-// };
-// {
-/* <Text>Branch Office Detail</Text>
-<View>
-  <Button title="첨부 이미지 보기" onPress={onDetailImageViewer} />
-  <Button title="수정하기" onPress={onDetailModify} />
-  <Button title="댓글달기" onPress={onDetailAddComment} />
-</View> */
-// }

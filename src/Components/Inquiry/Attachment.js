@@ -10,7 +10,6 @@ function getUrlExtension(url) {
 }
 
 function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
-  // console.log(item);
   const onPressImage = async () => {
     const extension = getUrlExtension(item.path);
     const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
@@ -25,8 +24,6 @@ function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
   };
 
   const downloadComplete = async localFile => {
-    console.log('download Complete!!!!');
-
     FileViewer.open(localFile, {onDismiss: onClosePreview, showAppsSuggestions: true});
   };
 

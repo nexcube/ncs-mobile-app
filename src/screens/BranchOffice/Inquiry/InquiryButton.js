@@ -1,10 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import React, {useCallback, useMemo} from 'react';
+import React, {useMemo} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import userData from '../../../services/DeviceStorage';
+import apiBranchList from '../../../services/api/branchList';
 import globalStyles from '../../../styles/global';
 
 const TABBAR_HEIGHT = 49;
@@ -20,34 +19,25 @@ function InquiryButton({routeName}) {
     });
   }, [insets.bottom]);
 
-  const onInquiry = useCallback(async () => {
-    const staffId = await userData.getStaffId();
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    axios
-      .get('/inquiry/branchOfficeList', {
-        headers: {authorization: token},
-        params: {id: staffId},
-      })
-      .then(res => {
-        navigation.navigate(routeName, {branchOfficeList: res.data});
-      })
-      .catch(error => console.error(error));
-  }, [navigation, routeName]);
+  const onInquiry = async () => {
+    await apiBranchList(onSuccess);
+  };
+
+  const onSuccess = data => {
+    navigation.navigate(routeName, {branchList: data});
+  };
 
   return (
-    <>
-      <View style={[styles.wrapper, {bottom}]}>
-        <Pressable
-          android_ripple={{
-            color: globalStyles.color.white,
-          }}
-          style={styles.circle}
-          onPress={async () => await onInquiry()}>
-          <Icon name="plus" color={globalStyles.color.white} size={24} />
-        </Pressable>
-      </View>
-    </>
+    <View style={[styles.wrapper, {bottom}]}>
+      <Pressable
+        android_ripple={{
+          color: globalStyles.color.white,
+        }}
+        style={styles.circle}
+        onPress={onInquiry}>
+        <Icon name="plus" color={globalStyles.color.white} size={24} />
+      </Pressable>
+    </View>
   );
 }
 

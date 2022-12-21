@@ -1,12 +1,11 @@
-import axios from 'axios';
-import React, {Fragment, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
 import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
-import userData from '../../../services/DeviceStorage';
+import apiInquiryList from '../../../services/api/inquiryList';
 import globalStyles from '../../../styles/global';
 import InquiryButton from '../Inquiry/InquiryButton';
 
@@ -24,16 +23,8 @@ function BO_Dashboard({navigation, route}) {
   // 리스트 기본 갯수;
   const fetchCount = 7;
 
-  // 기본 리스트 가져오기
-  // useEffect(() => {
-  //   getInquiryList();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('useEffect focus');
-      console.log();
       getInquiryList();
     });
 
@@ -51,54 +42,36 @@ function BO_Dashboard({navigation, route}) {
 
   // 검색어로 리스트 가져오기
   const getInquiryList = async () => {
-    console.info('getInquiryList Called !!!');
     if (loading) {
       return;
     }
     setLoading(true);
+    apiInquiryList(searchString, offset, fetchCount, onSuccess, onFail).then(() =>
+      setIsRefreshing(false),
+    );
+  };
 
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    let url = '/inquiry/list';
-    const params = {
-      offset: offset,
-      fetchCount: fetchCount,
-    };
-
-    if (searchString?.length > 0) {
-      params.searchString = searchString;
-      params.offset = 0;
-      url = '/inquiry/search';
+  const onSuccess = (data, _offset) => {
+    // 더이상 데이터가 없는가?
+    if (data.length === 0) {
+      setNoMore(true);
     }
+    // 검색을 통한 경우 기존것을 비우고 새로 리스트를 만든다.
+    if (searchString?.length > 0 && _offset === 0) {
+      setInquiryList([...data]);
+    } else {
+      if (_offset > 0) {
+        setInquiryList([...inquiryList, ...data]);
+      } else {
+        setInquiryList([...data]);
+      }
+    }
+    setOffset(_offset + fetchCount);
+    setLoading(false);
+  };
 
-    axios
-      .get(url, {
-        headers: {authorization: token},
-        params: params,
-      })
-      // 성공
-      .then(res => {
-        console.log(JSON.stringify(res.data, null, '\t'));
-        // 더이상 데이터가 없는가?
-        if (res.data.length === 0) {
-          setNoMore(true);
-        }
-        // 검색을 통한 경우 기존것을 비우고 새로 리스트를 만든다.
-        if (searchString?.length > 0 && params.offset === 0) {
-          setInquiryList([...res.data]);
-        } else {
-          setInquiryList([...inquiryList, ...res.data]);
-        }
-
-        setOffset(offset + fetchCount);
-      })
-      .then(() => setLoading(false))
-      .catch(error => {
-        setLoading(false);
-        console.error(error);
-      });
-
-    setIsRefreshing(false);
+  const onFail = () => {
+    setLoading(false);
   };
 
   // 스크롤 처리
@@ -114,7 +87,7 @@ function BO_Dashboard({navigation, route}) {
     const params = {
       index: item.idx,
     };
-    console.log(params);
+    // console.log(params);
     navigation.navigate('BO_Detail', params);
   };
 

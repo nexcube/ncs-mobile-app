@@ -1,7 +1,5 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
-import axios from 'axios';
-
 import CustomButton from '../components/common/CustomButton';
 import CustomInput from '../components/common/CustomInput';
 import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
@@ -10,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
 import userData from '../services/DeviceStorage';
 import {useEffect} from 'react/cjs/react.development';
-import login from '../services/api/login';
+import apiLogin from '../services/api/login';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -45,7 +43,7 @@ function LoginScreen({navigation, route}) {
   const onLogin = async () => {
     Toast.hide();
 
-    await login({id, password, onSuccess: onLoginSuccess, onError: onLoginError});
+    await apiLogin(id, password, onLoginSuccess, onLoginError);
   };
 
   const onLoginSuccess = data => {
@@ -59,8 +57,6 @@ function LoginScreen({navigation, route}) {
     } else {
       navigation.navigate('BO_MainStack');
     }
-
-    console.log(data);
   };
 
   const onLoginError = () => {

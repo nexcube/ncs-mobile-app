@@ -15,11 +15,13 @@ import CustomToast from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
 import produce from 'immer';
 import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
+import apiInquiryQnaCategory from '../../../../services/api/inquiryQnaCategory';
+import apiInquiryUpdate from '../../../../services/api/inquiryUpdate';
 
 function BO_DetailModify({navigation, route}) {
   // 라우터 파라미터 처리
   const inquiryItem = route.params.inquiryItem;
-  const branchOfficeList = route.params.branchOfficeList;
+  const branchList = route.params.branchList;
 
   //분류선택 페이지에서 온 파라미터 처리
   useEffect(() => {
@@ -96,8 +98,6 @@ function BO_DetailModify({navigation, route}) {
   const onBSConfirm = async () => {
     switch (visibleBS.format) {
       case InquiryAction.Registration:
-        const jwt = await userData.getJWT();
-        const token = `${jwt}`;
         const staffId = await userData.getStaffId();
         const params = {
           index: inquiryItem.idx,
@@ -107,22 +107,7 @@ function BO_DetailModify({navigation, route}) {
           facilityCode: branch.facilityCode,
           staffId: staffId,
         };
-
-        axios
-          .put('/inquiry/update', JSON.stringify(params), {
-            headers: {
-              'Content-Type': 'application/json',
-              authorization: token,
-            },
-          })
-          .then(res => {
-            console.log('/inquiry/update response');
-            console.log(res.data);
-            // navigation.pop();
-            navigation.navigate('BO_Detail', {index: inquiryItem.idx, refresh: true});
-          })
-          .catch(error => console.error(error));
-
+        await apiInquiryUpdate(params, onSuccessUpdate(navigation));
         break;
       case InquiryAction.CancelInquiry:
         navigation.goBack();
@@ -137,6 +122,10 @@ function BO_DetailModify({navigation, route}) {
     setVisibleBS(newSheetStatus);
   };
 
+  const onSuccessUpdate = nav => data => {
+    nav.navigate('BO_Detail', {index: inquiryItem.idx, refresh: true});
+  };
+
   const onBSContinue = () => {
     const newSheetStatus = produce(visibleBS, draft => {
       draft.visible = false;
@@ -145,20 +134,15 @@ function BO_DetailModify({navigation, route}) {
   };
 
   const onClassify = async () => {
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-    axios
-      .get('/inquiry/qnaCategory', {
-        headers: {authorization: token},
-      })
-      .then(res => {
-        navigation.navigate('BO_Inquiry_Classify', {
-          returnRouteName: 'BO_Detail_Modify',
-          qnaCategory: res.data,
-        });
-      })
-      .catch(error => console.error(error));
+    console.log('onClassify');
+    await apiInquiryQnaCategory(onSuccessQnaCategory(navigation));
   };
+
+  const onSuccessQnaCategory = nav => data =>
+    navigation.navigate('BO_Inquiry_Classify', {
+      returnRouteName: 'BO_Detail_Modify',
+      qnaCategory: data,
+    });
 
   const onPressBranch = data => {
     setBranch(data);
@@ -189,7 +173,7 @@ function BO_DetailModify({navigation, route}) {
         />
         <SelectionList
           hasMarginBottom
-          data={branchOfficeList}
+          data={branchList}
           setSelected={onPressBranch}
           defaultSelection={branch.name}
         />

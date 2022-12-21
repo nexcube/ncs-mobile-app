@@ -1,7 +1,8 @@
-import axios from 'axios';
 import produce from 'immer';
 import {Platform} from 'react-native';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import apiInquiryQnaCategory from '../../../services/api/inquiryQnaCategory';
+import apiInquiryRegister from '../../../services/api/inquiryRegister';
 import userData from '../../../services/DeviceStorage';
 
 // 앱바 백 버튼 처리
@@ -36,16 +37,7 @@ async function onBSConfirm({
 
   switch (visibleBS.format) {
     case InquiryAction.Registration:
-      console.log(title);
-      console.log(classify);
-      console.log(branch);
-      console.log(content);
-
-      const jwt = await userData.getJWT();
-      const token = `${jwt}`;
       const staffId = await userData.getStaffId();
-
-      console.log(attachments);
 
       const uploadFiles = attachments.map(file => ({
         name: file.name,
@@ -53,8 +45,7 @@ async function onBSConfirm({
         type: file.type,
       }));
 
-      console.log(JSON.stringify(uploadFiles, null, '\t'));
-      console.log(axios.defaults.baseURL);
+      // console.log(JSON.stringify(uploadFiles, null, '\t'));
 
       const formData = new FormData();
       // formData.append('images', uploadFiles);
@@ -66,19 +57,7 @@ async function onBSConfirm({
       formData.append('staffId', staffId);
       formData.append('status', 'NEW');
 
-      axios
-        .post('/inquiry/register', formData, {
-          redirect: 'follow',
-          headers: {'Content-Type': 'multipart/form-data', authorization: token},
-          transformRequest: (data, headers) => {
-            return data;
-          },
-        })
-        .then(response => {
-          console.log('register response: ', response.data);
-          navigation.goBack();
-        })
-        .catch(error => console.log(error.message));
+      await apiInquiryRegister(formData, onSuccessRegister(navigation));
 
       break;
     case InquiryAction.CancelInquiry:
@@ -88,6 +67,8 @@ async function onBSConfirm({
       break;
   }
 }
+
+const onSuccessRegister = nav => nav.goBack();
 
 // 바텀시티 continue 클릭시
 function onBSContinue({visibleBS, setVisibleBS}) {
@@ -108,7 +89,6 @@ function onRegistration({
   setVisibleBS,
   InquiryAction,
 }) {
-  console.log(branch);
   if (title.length < 1) {
     displayToast('제목을 입력하세요');
     return;
@@ -135,19 +115,14 @@ function onRegistration({
 
 // 분류선택 버튼 클릭시
 const onInquiryClassify = async ({navigation}) => {
-  const jwt = await userData.getJWT();
-  const token = `${jwt}`;
-  axios
-    .get('/inquiry/qnaCategory', {
-      headers: {authorization: token},
-    })
-    .then(res => {
-      navigation.navigate('BO_Inquiry_Classify', {
-        returnRouteName: 'BO_Inquiry',
-        qnaCategory: res.data,
-      });
-    })
-    .catch(error => console.error(error));
+  await apiInquiryQnaCategory(onSuccessQnaCategory(navigation));
+};
+
+const onSuccessQnaCategory = nav => data => {
+  nav.navigate('BO_Inquiry_Classify', {
+    returnRouteName: 'BO_Inquiry',
+    qnaCategory: data,
+  });
 };
 
 // Helper

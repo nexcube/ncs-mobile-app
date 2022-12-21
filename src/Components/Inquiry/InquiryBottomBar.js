@@ -24,14 +24,13 @@ const InquiryBottomBar = ({attachments, setAttachments}) => {
         cancelTitle: '취소',
       });
 
-      console.log(result);
+      // console.log(result);
 
       const reformedResults = result.map(item => ({
         name: item.fileName,
         type: item.mime,
         path: item.path,
       }));
-      // console.log(reformedResults);
 
       const finalResults = removeDuplicates(attachments, reformedResults);
       setAttachments([...finalResults]);

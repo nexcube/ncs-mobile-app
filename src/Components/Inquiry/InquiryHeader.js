@@ -1,49 +1,29 @@
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useEffect} from 'react/cjs/react.development';
-import userData from '../../services/DeviceStorage';
+import apiInquiryStatus from '../../services/api/inquiryStatus';
 import globalStyles from '../../styles/global';
 
 export default function InquiryHeader() {
   const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});
-
   const navigation = useNavigation();
-  // useEffect(() => {
-  //   getInquiryStatus();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('useEffect focus');
-      console.log();
       getInquiryStatus();
     });
-
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
   const getInquiryStatus = async () => {
-    const jwt = await userData.getJWT();
-    const token = `${jwt}`;
-
-    axios
-      .get('/inquiry/inquiryStatus', {
-        headers: {authorization: token},
-      })
-      .then(res => {
-        console.log(res.data);
-        setInquiryStatus({NEW: res.data.NEW, INPROGRESS: res.data.INPROGRESS, DONE: res.data.DONE});
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    apiInquiryStatus(onSuccess);
   };
 
-  console.log(inquiryStatus);
+  const onSuccess = data => {
+    setInquiryStatus({NEW: data.NEW, INPROGRESS: data.INPROGRESS, DONE: data.DONE});
+  };
 
   return (
     <View style={[styles.container]}>

@@ -23,8 +23,7 @@ const initialBranch = {name: '', cMain: false, facilityCode: ''};
 const initialClassify = {name: ' 분류선택', index: -1, mainName: '', mainIndex: -1};
 
 function BO_Inquiry({navigation, route}) {
-  // 라우터 파라미터
-  const branchOfficeList = route.params?.branchOfficeList;
+  const branchList = route.params?.branchList;
 
   // 헤더 버튼 추가.
   useEffect(() => {
@@ -88,11 +87,11 @@ function BO_Inquiry({navigation, route}) {
     format: InquiryAction.Registration,
   });
 
-  useEffect(() => {
-    console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
-    attachments.map(item => console.log(item));
-    console.log('end   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
-  }, [attachments]);
+  // useEffect(() => {
+  //   console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
+  //   attachments.map(item => console.log(item));
+  //   console.log('end   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
+  // }, [attachments]);
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
@@ -116,7 +115,7 @@ function BO_Inquiry({navigation, route}) {
           onPress={() => onInquiryClassify({navigation})}
         />
 
-        <SelectionList hasMarginBottom data={branchOfficeList} setSelected={setBranch} />
+        <SelectionList hasMarginBottom data={branchList} setSelected={setBranch} />
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"

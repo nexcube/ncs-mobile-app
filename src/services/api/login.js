@@ -1,7 +1,8 @@
 import axios from 'axios';
 import axios_error_handling from './errorHandle';
 
-const login = async ({id, password, onSuccess, onError}) => {
+const apiLogin = async (id, password, onSuccess, onFail) => {
+  console.log(`${axios.defaults.baseURL}/login`);
   try {
     const data = {id: id, password: password};
     const config = {headers: {'Content-Type': 'application/json'}};
@@ -9,16 +10,17 @@ const login = async ({id, password, onSuccess, onError}) => {
 
     if (response.data.code === 200) {
       onSuccess(response.data);
+      // console.log(response.data);
     } else {
       console.log(response.data.message);
-      onError();
+      onFail();
       return null;
     }
   } catch (error) {
     axios_error_handling(error);
-    onError();
+    onFail();
     return null;
   }
 };
 
-export default login;
+export default apiLogin;
