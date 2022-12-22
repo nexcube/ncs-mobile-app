@@ -19,9 +19,10 @@ const apiInquiryList = async (searchString, offset, fetchCount, onSuccess, onFai
       params: params,
     };
 
-    if (searchString?.length > 0) {
+    const fromSearch = searchString?.length > 0;
+
+    if (fromSearch) {
       params.searchString = searchString;
-      params.offset = 0;
       url = '/inquiry/search';
     }
 
@@ -29,7 +30,7 @@ const apiInquiryList = async (searchString, offset, fetchCount, onSuccess, onFai
 
     if (response.data.code === 200) {
       // console.log(response.data);
-      onSuccess(response.data.data, params.offset);
+      onSuccess(response.data.data, fromSearch);
     } else {
       console.error(response.data.message);
       onFail();

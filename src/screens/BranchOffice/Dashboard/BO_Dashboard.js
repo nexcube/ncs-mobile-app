@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {get} from 'react-native/Libraries/Utilities/PixelRatio';
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
 import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
@@ -9,76 +10,92 @@ import apiInquiryList from '../../../services/api/inquiryList';
 import globalStyles from '../../../styles/global';
 import InquiryButton from '../Inquiry/InquiryButton';
 
+// 리스트 기본 갯수;
+const fetchCount = 7;
+
 function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   // Status ////////////////////////////////////////////////////////////////////////////////////////
   const [inquiryList, setInquiryList] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [noMore, setNoMore] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [searchString, setSearchString] = useState('');
+  const [listStatus, setListStatus] = useState({
+    offset: 0,
+    loading: false,
+    isRefreshing: false,
+    noMore: false,
+  });
 
-  // 리스트 기본 갯수;
-  const fetchCount = 7;
+  useEffect(() => {
+    console.log(`### Rendering #### -- list length: ${inquiryList.length}`);
+  });
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('useEffect focused ~~~~~');
       getInquiryList();
     });
-
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
 
-  // 리프레쉬 리스트 가져오기
   useEffect(() => {
-    if (isRefreshing) {
+    if (listStatus.isRefreshing) {
       getInquiryList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRefreshing]);
+  }, [listStatus.isRefreshing]);
 
-  // 검색어로 리스트 가져오기
-  const getInquiryList = async () => {
-    if (loading) {
+  const getInquiryList = async search => {
+    if (listStatus.loading || listStatus.noMore) {
       return;
     }
-    setLoading(true);
-    apiInquiryList(searchString, offset, fetchCount, onSuccess, onFail).then(() =>
-      setIsRefreshing(false),
-    );
+
+    setListStatus({...listStatus, loading: true});
+    if (search?.length > 0) {
+      apiInquiryList(search, 0, fetchCount, onSuccess, onFail);
+    }
+    apiInquiryList(search, listStatus.offset, fetchCount, onSuccess, onFail);
   };
 
-  const onSuccess = (data, _offset) => {
+  const onSuccess = (data, fromSearch = false) => {
+    console.log('onSuccess ~~~');
     // 더이상 데이터가 없는가?
     if (data.length === 0) {
-      setNoMore(true);
+      // setNoMore(true);
+      setListStatus({...listStatus, loading: false, isRefreshing: false, noMore: true});
+      return;
     }
-    // 검색을 통한 경우 기존것을 비우고 새로 리스트를 만든다.
-    if (searchString?.length > 0 && _offset === 0) {
+
+    if (listStatus.offset === 0 || fromSearch) {
       setInquiryList([...data]);
     } else {
-      if (_offset > 0) {
-        setInquiryList([...inquiryList, ...data]);
-      } else {
-        setInquiryList([...data]);
-      }
+      setInquiryList([...inquiryList, ...data]);
     }
-    setOffset(_offset + fetchCount);
-    setLoading(false);
+
+    setListStatus({
+      ...listStatus,
+      loading: false,
+      isRefreshing: false,
+      offset: fromSearch ? 0 : listStatus.offset + data.length,
+    });
   };
 
   const onFail = () => {
-    setLoading(false);
+    setListStatus({...listStatus, loading: false});
   };
 
   // 스크롤 처리
-  const onEndReached = () => !noMore && getInquiryList();
+  const onEndReached = () => {
+    if (!listStatus.loading && !listStatus.noMore) {
+      console.log('onEndReaced ~~~~~~');
+      getInquiryList();
+    }
+  };
 
   // 검색 이벤트 처리
-  const onSearchSubmit = () => {
+  const onSearchSubmit = async () => {
+    setListStatus({...listStatus, offset: 0, noMore: false});
     getInquiryList(searchString);
   };
 
@@ -94,10 +111,7 @@ function BO_Dashboard({navigation, route}) {
   // 리플레쉬 이벤트
   const onRefresh = () => {
     setSearchString('');
-    setOffset(0);
-    setNoMore(false);
-    setInquiryList([]);
-    setIsRefreshing(true);
+    setListStatus({...listStatus, offset: 0, noMore: false, isRefreshing: true});
   };
 
   return (
@@ -123,7 +137,7 @@ function BO_Dashboard({navigation, route}) {
           <Pressable onPress={() => onItemSelected(item)}>
             <InquiryCard
               key={item.idx}
-              title={item.title}
+              title={item.idx.toString() + ' : ' + item.title}
               mainCatName={item.mainCatName}
               subCatName={item.subCatName}
               branchOfficeName={item.branchOfficeName}
@@ -147,13 +161,15 @@ function BO_Dashboard({navigation, route}) {
           ],
           {useNativeDriver: false},
         )}
-        scrollEventThrottle={1}
+        scrollEventThrottle={200}
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
         onEndReached={onEndReached}
-        onEndReachedThreshold={0.01}
-        ListFooterComponent={loading && <ActivityIndicator size={'large'} color="0067CC" />}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={
+          listStatus.loading && <ActivityIndicator size={'large'} color="0067CC" />
+        }
         onRefresh={onRefresh}
-        refreshing={isRefreshing}
+        refreshing={listStatus.isRefreshing}
       />
       <InquiryButton routeName="BO_Inquiry" />
     </SafeAreaView>

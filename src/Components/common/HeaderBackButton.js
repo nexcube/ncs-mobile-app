@@ -1,7 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, Pressable, Platform, Image} from 'react-native';
+import {StyleSheet, Pressable, Platform, Image} from 'react-native';
 import globalStyles from '../../styles/global';
-import Icon from 'react-native-vector-icons/Feather';
 
 function HeaderBackButton({onPress}) {
   return (
