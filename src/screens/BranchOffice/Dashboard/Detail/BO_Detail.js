@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Button, ScrollView, StyleSheet, Text, View} from 'react-native';
-
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
 import TopMenu from '../../../../components/Detail/TopMenu';
-import userData from '../../../../services/DeviceStorage';
 import Attachments from '../../../../components/Inquiry/Attachments';
-import axios from 'axios';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Spinner from 'react-native-loading-spinner-overlay';
 import apiBranchList from '../../../../services/api/branchList';
 import apiInquiryListItem from '../../../../services/api/inquiryListItem';
+import CustomButton from '../../../../components/common/CustomButton';
+
+import CommentList from '../../../../components/Detail/CommentList';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -78,10 +78,15 @@ function BO_Detail({navigation, route}) {
     console.log(inquiryItem);
   };
 
+  const onPressAddComment = () => {
+    const params = {index: index};
+    navigation.navigate('BO_Detail_Add_Comment', params);
+  };
+
   const [spinner, setSpinner] = useState(false);
 
   return (
-    <SafeAreaView style={[styles.fullscreen]}>
+    <SafeAreaView style={[styles.fullscreen]} edges={['bottom']}>
       <Spinner visible={spinner} textContent={'Loading...'} textStyle={styles.spinnerTextStyle} />
       <View style={[styles.header]}>
         <InquiryCard
@@ -109,7 +114,19 @@ function BO_Detail({navigation, route}) {
         <View style={[styles.attachmentsContainer]}>
           <Attachments attachments={inquiryItem.attachments} setSpinner={setSpinner} />
         </View>
+        <View style={[styles.commentLayout]}>
+          <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
+        </View>
+        <CommentList index={index} />
       </ScrollView>
+
+      <CustomButton
+        title="댓글 작성"
+        fontColor={globalStyles.color.text}
+        backgroundColor={globalStyles.color.white}
+        customStyle={[styles.commentButton]}
+        onPress={onPressAddComment}
+      />
     </SafeAreaView>
   );
 }
@@ -141,6 +158,18 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: '#FFF',
+  },
+  commentLayout: {
+    alignItems: 'flex-end',
+    marginHorizontal: 12,
+    paddingVertical: 8,
+    borderColor: globalStyles.color.gray,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+  },
+  commentText: {},
+  commentButton: {
+    marginHorizontal: 10,
   },
 });
 

@@ -15,7 +15,7 @@ const InquiryCard = ({
   updateDate,
   status,
   forDetail,
-  commentCount = 17,
+  commentCount = 0,
   mode = 'elevated',
 }) => {
   // 타임존 제거
@@ -24,7 +24,6 @@ const InquiryCard = ({
   return (
     <Card style={[styles.container]} mode={mode}>
       <InquiryCardHeader forDetail={forDetail} status={status} commentCount={commentCount} />
-
       <View
         // eslint-disable-next-line react-native/no-inline-styles
         style={[{opacity: status === 'HOLD' ? 0.6 : 1}]}>

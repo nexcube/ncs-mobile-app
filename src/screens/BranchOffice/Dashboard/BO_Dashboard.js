@@ -60,9 +60,9 @@ function BO_Dashboard({navigation, route}) {
 
   const onSuccess = (data, fromSearch = false) => {
     console.log('onSuccess ~~~');
+    // console.log(JSON.stringify(data, null, '\t'));
     // 더이상 데이터가 없는가?
     if (data.length === 0) {
-      // setNoMore(true);
       setListStatus({...listStatus, loading: false, isRefreshing: false, noMore: true});
       return;
     }
@@ -88,7 +88,7 @@ function BO_Dashboard({navigation, route}) {
   // 스크롤 처리
   const onEndReached = () => {
     if (!listStatus.loading && !listStatus.noMore) {
-      console.log('onEndReaced ~~~~~~');
+      console.log('onEndReached ~~~~~~');
       getInquiryList();
     }
   };
@@ -145,6 +145,7 @@ function BO_Dashboard({navigation, route}) {
               levelName={item.levelName}
               updateDate={item.updateDate}
               status={item.status}
+              commentCount={item?.commentCount ?? 0}
             />
           </Pressable>
         )}

@@ -17,7 +17,7 @@ function HeaderBackButton({onPress}) {
 
 const styles = StyleSheet.create({
   image: {
-    width: 32,
+    width: 10,
     height: 32,
   },
 });

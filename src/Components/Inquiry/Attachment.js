@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Platform, Text, Pressable} from 'react-native';
+import React from 'react';
+import {View, Image, TouchableOpacity, StyleSheet, Text, Pressable} from 'react-native';
 import globalStyles from '../../styles/global';
 import Icon from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
