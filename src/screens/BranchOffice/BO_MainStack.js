@@ -13,6 +13,7 @@ import BO_SettingUser from './Setting/BO_SettingUser';
 import BO_SettingAddUser from './Setting/BO_SettingAddUser';
 import globalStyles from '../../styles/global';
 import {Platform} from 'react-native';
+import BO_DetailModifyComment from './Dashboard/Detail/BO_DetailModifyComment';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ function BO_MainStack() {
         name="BO_Inquiry_Classify"
         component={BO_InquiryClassify}
         options={{title: '분류 선택'}}
+      />
+      <Stack.Screen
+        name="BO_Detail_Modify_Comment"
+        component={BO_DetailModifyComment}
+        options={{title: '댓글 수정'}}
       />
       <Stack.Screen name="BO_Setting" component={BO_Setting} />
       <Stack.Screen name="BO_Setting_Push" component={BO_SettingPush} />

@@ -8,9 +8,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Spinner from 'react-native-loading-spinner-overlay';
 import apiBranchList from '../../../../services/api/branchList';
 import apiInquiryListItem from '../../../../services/api/inquiryListItem';
-import CustomButton from '../../../../components/common/CustomButton';
 
 import CommentList from '../../../../components/Detail/CommentList';
+import CustomInput from '../../../../components/common/CustomInput';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -37,7 +37,6 @@ function BO_Detail({navigation, route}) {
   //
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('useEffect focus');
       getInquiryListItem();
     });
 
@@ -106,6 +105,7 @@ function BO_Detail({navigation, route}) {
         />
       </View>
       <View style={[styles.separator]} />
+
       <ScrollView>
         <View style={[styles.contentContainer]}>
           <Text style={[styles.content]}> {inquiryItem.content}</Text>
@@ -114,19 +114,20 @@ function BO_Detail({navigation, route}) {
         <View style={[styles.attachmentsContainer]}>
           <Attachments attachments={inquiryItem.attachments} setSpinner={setSpinner} />
         </View>
-        <View style={[styles.commentLayout]}>
+        {/* <View style={[styles.commentLayout]}>
           <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
-        </View>
+        </View> */}
         <CommentList index={index} />
       </ScrollView>
 
-      <CustomButton
-        title="댓글 작성"
-        fontColor={globalStyles.color.text}
-        backgroundColor={globalStyles.color.white}
-        customStyle={[styles.commentButton]}
-        onPress={onPressAddComment}
-      />
+      <View style={[styles.addComment]}>
+        <CustomInput
+          placeholder="댓글 입력..."
+          editable={false}
+          onPressIn={onPressAddComment}
+          height={32}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -140,10 +141,10 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   contentContainer: {
-    paddingHorizontal: 24,
     paddingVertical: 12,
   },
   content: {
+    paddingHorizontal: 24,
     fontFamily: globalStyles.font.regular,
     fontSize: 15,
   },
@@ -170,6 +171,9 @@ const styles = StyleSheet.create({
   commentText: {},
   commentButton: {
     marginHorizontal: 10,
+  },
+  addComment: {
+    paddingHorizontal: 12,
   },
 });
 

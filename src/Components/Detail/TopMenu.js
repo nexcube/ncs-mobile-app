@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet} from 'react-native';
-import {Divider, Menu} from 'react-native-paper';
+import {Divider, Menu, Provider} from 'react-native-paper';
 
 import globalStyles from '../../styles/global';
 
-function TopMenu({onModify, onDelete}) {
+function TopMenu({onModify, onDelete, menuColor = globalStyles.color.white}) {
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => {
@@ -29,7 +29,7 @@ function TopMenu({onModify, onDelete}) {
     <Menu
       visible={visible}
       onDismiss={onClose}
-      anchor={<Button onPress={openMenu} title="..." color="#fff" />}
+      anchor={<Button onPress={openMenu} title="..." color={menuColor} />}
       anchorPosition="bottom"
       contentStyle={[styles.menu]}>
       <Menu.Item titleStyle={[styles.text]} onPress={onPressModify} title="수정하기" />

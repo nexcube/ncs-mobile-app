@@ -1,5 +1,5 @@
 import axios from 'axios';
-import axios_error_handling from './errorHandle';
+import axios_error_handling from './errorHandler';
 
 const apiLogin = async (id, password, onSuccess, onFail) => {
   console.log(`${axios.defaults.baseURL}/login`);

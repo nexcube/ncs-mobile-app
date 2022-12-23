@@ -1,4 +1,4 @@
-const axios_error_handling = error => {
+const axios_error_handler = error => {
   if (error.response) {
     // 요청이 전송되었고, 서버는 2xx 외의 상태 코드로 응답했습니다.
 
@@ -18,4 +18,4 @@ const axios_error_handling = error => {
   console.log(error.config);
 };
 
-export default axios_error_handling;
+export default axios_error_handler;

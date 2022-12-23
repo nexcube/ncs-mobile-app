@@ -1,6 +1,6 @@
 import axios from 'axios';
 import userData from '../DeviceStorage';
-import axios_error_handling from './errorHandle';
+import axios_error_handler from './errorHandler';
 
 const apiInquiryQnaCategory = async onSuccess => {
   console.log(`${axios.defaults.baseURL}/inquiry/qnaCategory`);
@@ -25,7 +25,7 @@ const apiInquiryQnaCategory = async onSuccess => {
       return null;
     }
   } catch (error) {
-    axios_error_handling(error);
+    axios_error_handler(error);
 
     return null;
   }

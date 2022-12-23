@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+
 import apiListComment from '../../services/api/listComment';
 import CommentItem from './CommentItem';
 
@@ -10,7 +10,6 @@ const CommentList = ({index}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('useEffect focus');
       getCommentList();
     });
     return unsubscribe;
@@ -23,11 +22,10 @@ const CommentList = ({index}) => {
 
   const onSuccessListComment = data => {
     setCommentList(data);
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
   };
 
-  return commentList.map(item => <CommentItem data={item} />);
-  // return <FlatList data={commentList} renderItem={({item}) => <CommentItem data={item} />} />;
+  return commentList.map(item => <CommentItem key={item.idx} data={item} />);
 };
 
 export default CommentList;

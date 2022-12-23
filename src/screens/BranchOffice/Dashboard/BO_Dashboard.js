@@ -32,7 +32,6 @@ function BO_Dashboard({navigation, route}) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('useEffect focused ~~~~~');
       getInquiryList();
     });
     return unsubscribe;
