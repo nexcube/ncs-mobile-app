@@ -2,7 +2,7 @@ import axios from 'axios';
 import userData from '../DeviceStorage';
 import axios_error_handler from './errorHandler';
 
-const apiInquiryUpdate = async (params, onSuccess) => {
+const apiInquiryUpdate = async (formData, onSuccess) => {
   console.log(`${axios.defaults.baseURL}/inquiry/update`);
 
   try {
@@ -10,9 +10,15 @@ const apiInquiryUpdate = async (params, onSuccess) => {
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
-    const config = {headers: {'Content-Type': 'application/json', authorization: token}};
+    const config = {
+      redirect: 'follow',
+      headers: {'Content-Type': 'multipart/form-data', authorization: token},
+      transformRequest: (data, headers) => {
+        return data;
+      },
+    };
 
-    const response = await axios.put(url, params, config);
+    const response = await axios.put(url, formData, config);
 
     if (response.data.code === 200) {
       // console.log(response.data);

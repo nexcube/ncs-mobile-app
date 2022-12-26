@@ -6,7 +6,7 @@ const {width} = Dimensions.get('window');
 export const IMAGE_WIDTH = (width - 24 - 18 - 6) / 4;
 
 function Attachments({attachments = [], setAttachments, setSpinner}) {
-  // console.log(attachments);
+  // console.log('Attachments :', attachments);
   const onDelete = value => {
     const result = attachments.filter(item => item?.path && item.path !== value.path);
     setAttachments(result);

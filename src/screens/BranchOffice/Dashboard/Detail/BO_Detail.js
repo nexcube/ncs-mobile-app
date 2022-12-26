@@ -18,6 +18,7 @@ function BO_Detail({navigation, route}) {
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
   const [isRefresh, setIsRefresh] = useState(false);
+  console.log(inquiryItem);
 
   // 마운트 될때
   // useEffect(() => {

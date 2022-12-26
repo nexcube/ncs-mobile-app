@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect} from 'react/cjs/react.development';
 import CustomInput from '../../../../components/common/CustomInput';
@@ -17,6 +17,8 @@ import produce from 'immer';
 import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
 import apiInquiryQnaCategory from '../../../../services/api/inquiryQnaCategory';
 import apiInquiryUpdate from '../../../../services/api/inquiryUpdate';
+import Attachments from '../../../../components/Inquiry/Attachments';
+import apiDeleteFiles from '../../../../services/api/deleteFiles';
 
 function BO_DetailModify({navigation, route}) {
   // 라우터 파라미터 처리
@@ -58,7 +60,7 @@ function BO_DetailModify({navigation, route}) {
     facilityCode: inquiryItem.facilityCode,
   });
   // 첨부파일
-  const [attachments, setAttachments] = useState([]);
+  const [attachments, setAttachments] = useState([...inquiryItem.attachments]);
   // BottomSheet visible 설정.
   const [visibleBS, setVisibleBS] = useState({
     visible: false,
@@ -99,15 +101,35 @@ function BO_DetailModify({navigation, route}) {
     switch (visibleBS.format) {
       case InquiryAction.Registration:
         const staffId = await userData.getStaffId();
-        const params = {
-          index: inquiryItem.idx,
-          title: title,
-          content: content,
-          category: classify.index,
-          facilityCode: branch.facilityCode,
-          staffId: staffId,
-        };
-        await apiInquiryUpdate(params, onSuccessUpdate(navigation));
+
+        const uploadFiles = attachments.map(file => ({
+          name: file.name,
+          uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+          type: file.type,
+        }));
+
+        const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
+        const deleteFiles = inquiryItem.attachments.filter(
+          file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
+        );
+        console.log('original:', uploadFiles);
+        console.log('uploadFiles:', uploadFilesWOS3);
+        console.log('deleteFiles: ', deleteFiles);
+
+        const formData = new FormData();
+        uploadFilesWOS3.map(item => formData.append('image', item));
+        formData.append('index', inquiryItem.idx);
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('category', classify.index);
+        formData.append('facilityCode', branch.facilityCode);
+        formData.append('staffId', staffId);
+
+        await apiInquiryUpdate(
+          formData,
+          onSuccessUpdate(navigation, 'tb_Qna', inquiryItem.idx, deleteFiles),
+        );
+
         break;
       case InquiryAction.CancelInquiry:
         navigation.goBack();
@@ -122,7 +144,10 @@ function BO_DetailModify({navigation, route}) {
     setVisibleBS(newSheetStatus);
   };
 
-  const onSuccessUpdate = nav => data => {
+  const onSuccessUpdate = (nav, tableName, index, deleteFiles) => async data => {
+    if (deleteFiles.length > 0) {
+      await apiDeleteFiles(tableName, index, deleteFiles);
+    }
     nav.navigate('BO_Detail', {index: inquiryItem.idx, refresh: true});
   };
 
@@ -189,6 +214,7 @@ function BO_DetailModify({navigation, route}) {
           onChangeText={setContent}
           value={content}
         />
+        <Attachments attachments={attachments} setAttachments={setAttachments} />
       </ScrollView>
       <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet

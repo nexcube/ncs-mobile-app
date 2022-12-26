@@ -68,7 +68,9 @@ async function onBSConfirm({
   }
 }
 
-const onSuccessRegister = nav => nav.goBack();
+const onSuccessRegister = nav => {
+  nav.goBack();
+};
 
 // 바텀시티 continue 클릭시
 function onBSContinue({visibleBS, setVisibleBS}) {
