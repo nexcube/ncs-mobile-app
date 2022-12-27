@@ -11,13 +11,13 @@ import Attachments from '../../../../components/Inquiry/Attachments';
 import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
 import globalStyles from '../../../../styles/global';
 import produce from 'immer';
-import userData from '../../../../services/DeviceStorage';
 import apiInquiryModifyComment from '../../../../services/api/inquiryModifyComment';
 
 function BO_DetailModifyComment({navigation, route}) {
+  // console.log('BO_DetailModifyComment : ', route.params.data);
   const index = route.params.data.idx;
   const [content, setContent] = useState(route.params.data.content);
-  const [attachments, setAttachments] = useState([]);
+  const [attachments, setAttachments] = useState(route.params.data.attachments);
   const [visibleBS, setVisibleBS] = useState({
     visible: false,
     format: InquiryAction.Registration,
@@ -88,7 +88,9 @@ function BO_DetailModifyComment({navigation, route}) {
     }
   };
 
-  const onSuccessRegister = nav => nav.goBack();
+  const onSuccessRegister = nav => data => {
+    nav.goBack();
+  };
   const onBSContinue = () => {
     const newSheetStatus = produce(visibleBS, draft => {
       draft.visible = false;

@@ -34,7 +34,8 @@ function BO_MainTab() {
         component={BO_Setting}
         options={{
           title: '환경설정',
-          headerShown: false,
+          headerTintColor: globalStyles.color.white,
+          headerShown: true,
           tabBarIcon: ({color, size}) => <Icon name="settings" size={24} color={color} />,
         }}
       />

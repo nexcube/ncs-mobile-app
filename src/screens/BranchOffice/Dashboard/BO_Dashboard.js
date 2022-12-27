@@ -16,7 +16,7 @@ const fetchCount = 7;
 function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
-  // Status ////////////////////////////////////////////////////////////////////////////////////////
+  // 상태 //////////////////////////////////////////////////////////////////////////////////////////
   const [inquiryList, setInquiryList] = useState([]);
   const [searchString, setSearchString] = useState('');
   const [listStatus, setListStatus] = useState({
@@ -26,6 +26,7 @@ function BO_Dashboard({navigation, route}) {
     noMore: false,
   });
 
+  //  API 처리 /////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     console.log(`### Rendering #### -- list length: ${inquiryList.length}`);
   });
@@ -36,7 +37,7 @@ function BO_Dashboard({navigation, route}) {
     });
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation]);
+  }, []);
 
   useEffect(() => {
     if (listStatus.isRefreshing) {
@@ -84,7 +85,8 @@ function BO_Dashboard({navigation, route}) {
     setListStatus({...listStatus, loading: false});
   };
 
-  // 스크롤 처리
+  // 이벤트 처리 ///////////////////////////////////////////////////////////////////////////////////
+  // 스크롤 처리 ///////////////////////////////////////////////////////////////////////////////////
   const onEndReached = () => {
     if (!listStatus.loading && !listStatus.noMore) {
       console.log('onEndReached ~~~~~~');
@@ -112,7 +114,7 @@ function BO_Dashboard({navigation, route}) {
     setSearchString('');
     setListStatus({...listStatus, offset: 0, noMore: false, isRefreshing: true});
   };
-
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <SafeAreaView style={[styles.container]} edges={['bottom']}>
       <InquiryStatus animHeaderValue={scrollOffsetY} />

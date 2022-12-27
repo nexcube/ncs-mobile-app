@@ -1,20 +1,46 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import {useCallback} from 'react/cjs/react.development';
+import getInquiryCommentListItem from '../../services/api/CommentListItem';
 import globalStyles from '../../styles/global';
+import Attachments from '../Inquiry/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
-const CommentItem = ({data}) => {
+const CommentItem = ({data: commentData}) => {
   // 타임존 제거
-  const date = new Date(data.updateDate.slice(0, -1));
-
+  const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
+  const [attachments, setAttachments] = useState([]);
 
-  const onModify = () => {
-    navigation.navigate('BO_Detail_Modify_Comment', {data});
+  // 첨부파일 정보 가져오기.
+  useEffect(() => {
+    getInquiryCommentListItem(commentData.idx, onSuccessListItem);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getInquiryCommentListItem(commentData.idx, onSuccessListItem);
+    });
+
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSuccessListItem = async data => {
+    // console.log(data);
+    setAttachments(data);
   };
+
+  const onModify = useCallback(() => {
+    navigation.navigate('BO_Detail_Modify_Comment', {
+      data: {...commentData, attachments: attachments},
+    });
+  }, [attachments, commentData, navigation]);
+
   const onDelete = () => {};
   return (
     <View>
@@ -23,7 +49,10 @@ const CommentItem = ({data}) => {
           <Icon name="user" size={20} color={globalStyles.color.white} />
         </View>
         <View style={[styles.header]}>
-          <Text style={[styles.writer]}>{`${data.departName} ${data.name} ${data.rankName}`}</Text>
+          <Text
+            style={[
+              styles.writer,
+            ]}>{`${commentData.departName} ${commentData.name} ${commentData.rankName}`}</Text>
           <View style={[styles.dateContainer]}>
             <Text style={[styles.date]}>{date.toLocaleString()}</Text>
           </View>
@@ -31,7 +60,10 @@ const CommentItem = ({data}) => {
         <TopMenu onModify={onModify} onDelete={onDelete} menuColor={globalStyles.color.text} />
       </View>
       <View style={[styles.contentContainer]}>
-        <Text>{data.content}</Text>
+        <Text>{commentData.content}</Text>
+      </View>
+      <View style={[styles.attachmentsContainer]}>
+        <Attachments attachments={attachments} />
       </View>
     </View>
   );
@@ -70,6 +102,9 @@ const styles = StyleSheet.create({
     fontFamily: globalStyles.font.regular,
     fontSize: 13,
     color: globalStyles.color.gray,
+  },
+  attachmentsContainer: {
+    padding: 20,
   },
 });
 export default CommentItem;

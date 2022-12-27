@@ -1,6 +1,5 @@
-import axios from 'axios';
 import React, {useState} from 'react';
-import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect} from 'react/cjs/react.development';
 import CustomInput from '../../../../components/common/CustomInput';

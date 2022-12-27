@@ -11,6 +11,7 @@ function getUrlExtension(url) {
 
 function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
   const onPressImage = async () => {
+    console.log(item);
     const extension = getUrlExtension(item.path);
     const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
 

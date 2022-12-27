@@ -18,7 +18,7 @@ function BO_Detail({navigation, route}) {
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
   const [isRefresh, setIsRefresh] = useState(false);
-  console.log(inquiryItem);
+  // console.log(inquiryItem);
 
   // 마운트 될때
   // useEffect(() => {
@@ -43,7 +43,7 @@ function BO_Detail({navigation, route}) {
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation]);
+  }, []);
 
   useEffect(() => {
     if (isRefresh) {
