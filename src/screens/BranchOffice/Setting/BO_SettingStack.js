@@ -14,6 +14,7 @@ function BO_SettingStack() {
     <Stack.Navigator
       screenOptions={{
         headerTintColor: globalStyles.color.white,
+        headerStyle: {backgroundColor: globalStyles.color.purple},
         headerBackTitle: '',
         headerTitleAlign: 'center',
         headerBackImageSource:

@@ -17,8 +17,8 @@ function BO_MainTab() {
       screenOptions={{
         tabBarActiveBackgroundColor: globalStyles.color.white,
         tabBarInactiveBackgroundColor: globalStyles.color.white,
-        tabBarActiveTintColor: '#0054A7',
-        tabBarInactiveTintColor: 'color: #999999;',
+        tabBarActiveTintColor: globalStyles.color.blue,
+        tabBarInactiveTintColor: globalStyles.color.gray,
       }}>
       <Tab.Screen
         name="BO_Dashboard"

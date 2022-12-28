@@ -42,7 +42,7 @@ const navigationTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    card: globalStyles.color.purple,
+    card: globalStyles.color.white,
     text: globalStyles.color.text,
     background: '#f5f5f5',
   },

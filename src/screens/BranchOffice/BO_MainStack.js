@@ -14,23 +14,44 @@ import BO_SettingAddUser from './Setting/BO_SettingAddUser';
 import globalStyles from '../../styles/global';
 import {Platform} from 'react-native';
 import BO_DetailModifyComment from './Dashboard/Detail/BO_DetailModifyComment';
+import {read} from 'react-native-fs';
 
 const Stack = createNativeStackNavigator();
 
 function BO_MainStack() {
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerTintColor: globalStyles.color.white,
+        headerStyle: {backgroundColor: globalStyles.color.purple},
         headerBackTitle: '',
         headerTitleAlign: 'center',
         headerBackImageSource:
           Platform.OS === 'android'
             ? require('../../../assets/images/chevron-left.png')
             : {uri: 'back', width: 24, height: 24},
+        // presentation: 'modal',
+        animationTypeForReplace: 'push',
+        animation: 'slide_from_right',
       }}>
       <Stack.Screen name="BO_MainTab" component={BO_MainTab} options={{headerShown: false}} />
-      <Stack.Screen name="BO_Detail" component={BO_Detail} options={{title: '상세 보기'}} />
+      <Stack.Screen
+        name="BO_Detail"
+        component={BO_Detail}
+        options={{title: '상세 보기', animation: 'slide_from_bottom'}}
+      />
       <Stack.Screen
         name="BO_Detail_Modify"
         component={BO_DetailModify}

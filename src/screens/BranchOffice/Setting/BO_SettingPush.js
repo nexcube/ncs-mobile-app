@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
 import globalStyles from '../../../styles/global';
 
@@ -8,49 +8,45 @@ function BO_SettingPush({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
       <Card style={[styles.card]}>
-        <View style={[styles.radioButtonFirst]}>
+        <TouchableOpacity style={[styles.radioButtonFirst]} onPress={() => setChecked('first')}>
           <Text style={[styles.text]}>소리와 진동</Text>
           <RadioButton
             value="first"
             status={checked === 'first' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
-            onPress={() => setChecked('first')}
           />
-        </View>
+        </TouchableOpacity>
         <Divider />
-        <View style={[styles.radioButton]}>
+        <TouchableOpacity style={[styles.radioButton]} onPress={() => setChecked('second')}>
           <Text style={[styles.text]}>소리</Text>
           <RadioButton
             value="second"
             status={checked === 'second' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
-            onPress={() => setChecked('second')}
           />
-        </View>
+        </TouchableOpacity>
         <Divider />
-        <View style={[styles.radioButton]}>
+        <TouchableOpacity style={[styles.radioButton]} onPress={() => setChecked('third')}>
           <Text style={[styles.text]}>진동</Text>
           <RadioButton
             value="third"
             status={checked === 'third' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
-            onPress={() => setChecked('third')}
           />
-        </View>
+        </TouchableOpacity>
         <Divider />
-        <View style={[styles.radioButtonLast]}>
+        <TouchableOpacity style={[styles.radioButtonLast]} onPress={() => setChecked('fourth')}>
           <Text style={[styles.text]}>무음</Text>
           <RadioButton
             value="fourth"
             status={checked === 'fourth' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
-            onPress={() => setChecked('third')}
           />
-        </View>
+        </TouchableOpacity>
       </Card>
     </View>
   );

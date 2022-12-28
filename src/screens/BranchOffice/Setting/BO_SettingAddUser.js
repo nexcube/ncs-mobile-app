@@ -1,10 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import SettingBOList from '../../../components/setting/SettingBOList';
 
 function BO_SettingAddUser({navigation, route}) {
   return (
     <View style={[styles.fullscreen]}>
-      <Text>Branch Office Setting Add User</Text>
+      <SettingBOList
+        BOList={[route.params.backOffice]}
+        userList={[route.params.userList]}
+        enableAddButton={false}
+      />
     </View>
   );
 }
@@ -12,8 +17,7 @@ function BO_SettingAddUser({navigation, route}) {
 const styles = StyleSheet.create({
   fullscreen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 18,
   },
 });
 
