@@ -19,6 +19,10 @@ const globalStyles = StyleSheet.create({
     regular: 'Happiness-Sans-Regular',
     bold: 'Happiness-Sans-Bold',
   },
+
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
 });
 
 export default globalStyles;

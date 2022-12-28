@@ -33,6 +33,7 @@ function BO_Dashboard({navigation, route}) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      setListStatus({...listStatus, offset: 0, noMore: false});
       getInquiryList();
     });
     return unsubscribe;

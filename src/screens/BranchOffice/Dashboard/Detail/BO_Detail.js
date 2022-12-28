@@ -18,6 +18,7 @@ function BO_Detail({navigation, route}) {
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
   const [isRefresh, setIsRefresh] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   // console.log(inquiryItem);
 
   // 마운트 될때
@@ -90,11 +91,13 @@ function BO_Detail({navigation, route}) {
     navigation.navigate('BO_Detail_Add_Comment', params);
   };
 
-  const [spinner, setSpinner] = useState(false);
-
   return (
     <SafeAreaView style={[styles.fullscreen]} edges={['bottom']}>
-      <Spinner visible={spinner} textContent={'Loading...'} textStyle={styles.spinnerTextStyle} />
+      <Spinner
+        visible={spinner}
+        textContent={'Loading...'}
+        textStyle={globalStyles.spinnerTextStyle}
+      />
       <View style={[styles.header]}>
         <InquiryCard
           mode="contained"
@@ -169,9 +172,7 @@ const styles = StyleSheet.create({
   attachmentsContainer: {
     padding: 20,
   },
-  spinnerTextStyle: {
-    color: '#FFF',
-  },
+
   commentLayout: {
     alignItems: 'flex-end',
     marginHorizontal: 12,

@@ -18,6 +18,7 @@ import {
   onRegistration,
   onInquiryClassify,
 } from './BO_Inquiry.handler';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
 
 const initialBranch = {name: '', cMain: false, facilityCode: ''};
 const initialClassify = {name: ' 분류선택', index: -1, mainName: '', mainIndex: -1};
@@ -87,6 +88,9 @@ function BO_Inquiry({navigation, route}) {
     format: InquiryAction.Registration,
   });
 
+  // 로딩..
+  const [spinner, setSpinner] = useState(false);
+
   // useEffect(() => {
   //   console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
   //   attachments.map(item => console.log(item));
@@ -95,6 +99,11 @@ function BO_Inquiry({navigation, route}) {
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
+      <Spinner
+        visible={spinner}
+        textContent={'Uploading...'}
+        textStyle={globalStyles.spinnerTextStyle}
+      />
       <ScrollView style={[styles.container]}>
         <CustomInput
           maxLength={100}
@@ -144,6 +153,7 @@ function BO_Inquiry({navigation, route}) {
             content,
             navigation,
             attachments,
+            setSpinner,
           })
         }
         onCancel={() => onBSContinue({visibleBS, setVisibleBS})}
@@ -172,6 +182,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
   },
 });
 

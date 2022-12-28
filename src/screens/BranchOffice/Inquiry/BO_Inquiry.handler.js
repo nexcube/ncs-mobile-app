@@ -29,6 +29,7 @@ async function onBSConfirm({
   content,
   navigation,
   attachments,
+  setSpinner,
 }) {
   const newSheetStatus = produce(visibleBS, draft => {
     draft.visible = false;
@@ -57,7 +58,8 @@ async function onBSConfirm({
       formData.append('staffId', staffId);
       formData.append('status', 'NEW');
 
-      apiInquiryRegister(formData, onSuccessRegister(navigation));
+      setSpinner(true);
+      apiInquiryRegister(formData, onSuccessRegister(navigation, setSpinner));
 
       break;
     case InquiryAction.CancelInquiry:
@@ -68,7 +70,8 @@ async function onBSConfirm({
   }
 }
 
-const onSuccessRegister = nav => () => {
+const onSuccessRegister = (nav, setLoading) => () => {
+  setLoading(false);
   nav.goBack();
 };
 
