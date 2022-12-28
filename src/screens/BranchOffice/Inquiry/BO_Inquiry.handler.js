@@ -57,7 +57,7 @@ async function onBSConfirm({
       formData.append('staffId', staffId);
       formData.append('status', 'NEW');
 
-      await apiInquiryRegister(formData, onSuccessRegister(navigation));
+      apiInquiryRegister(formData, onSuccessRegister(navigation));
 
       break;
     case InquiryAction.CancelInquiry:
@@ -68,7 +68,7 @@ async function onBSConfirm({
   }
 }
 
-const onSuccessRegister = nav => {
+const onSuccessRegister = nav => () => {
   nav.goBack();
 };
 

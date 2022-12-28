@@ -5,7 +5,7 @@ import {Text} from 'react-native';
 import apiListComment from '../../services/api/listComment';
 import CommentItem from './CommentItem';
 
-const CommentList = ({index}) => {
+const CommentList = ({index, setSpinner}) => {
   const navigation = useNavigation();
   const [commentList, setCommentList] = useState([]);
 
@@ -55,7 +55,9 @@ const CommentList = ({index}) => {
     // console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
   };
 
-  return commentList.map(item => <CommentItem key={item.idx} data={item} />);
+  return commentList.map(item => (
+    <CommentItem key={item.idx} data={item} setSpinner={setSpinner} />
+  ));
   // return <Text>parkcom</Text>;
 };
 

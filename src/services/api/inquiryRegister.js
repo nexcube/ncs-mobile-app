@@ -21,7 +21,6 @@ const apiInquiryRegister = async (formData, onSuccess) => {
     const response = await axios.post(url, formData, config);
 
     if (response.data.code === 200) {
-      // console.log(response.data);
       onSuccess();
     } else {
       console.log(response.data.message);

@@ -49,13 +49,14 @@ function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
           </Text>
         </View>
       )}
-
-      <TouchableOpacity
-        onPress={() => onDelete(item)}
-        activeOpacity={0.9}
-        style={styles.buttonDelete}>
-        <Icon name="x" size={20} color={globalStyles.color.gray} />
-      </TouchableOpacity>
+      {onDelete !== null && (
+        <TouchableOpacity
+          onPress={() => onDelete(item)}
+          activeOpacity={0.9}
+          style={styles.buttonDelete}>
+          <Icon name="x" size={20} color={globalStyles.color.gray} />
+        </TouchableOpacity>
+      )}
     </Pressable>
   );
 }

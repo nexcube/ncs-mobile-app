@@ -120,12 +120,16 @@ function BO_Detail({navigation, route}) {
         </View>
 
         <View style={[styles.attachmentsContainer]}>
-          <Attachments attachments={inquiryItem.attachments} setSpinner={setSpinner} />
+          <Attachments
+            attachments={inquiryItem.attachments}
+            setSpinner={setSpinner}
+            isShowDelete={false}
+          />
         </View>
         {/* <View style={[styles.commentLayout]}>
           <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
         </View> */}
-        <CommentList index={index} />
+        <CommentList index={index} setSpinner={setSpinner} />
       </ScrollView>
 
       <View style={[styles.addComment]}>

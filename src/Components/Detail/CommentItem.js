@@ -9,7 +9,7 @@ import Attachments from '../Inquiry/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
-const CommentItem = ({data: commentData}) => {
+const CommentItem = ({data: commentData, setSpinner}) => {
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
@@ -43,7 +43,7 @@ const CommentItem = ({data: commentData}) => {
         <Text>{commentData.content}</Text>
       </View>
       <View style={[styles.attachmentsContainer]}>
-        <Attachments attachments={attachments} />
+        <Attachments attachments={attachments} isShowDelete={false} setSpinner={setSpinner} />
       </View>
     </View>
   );
