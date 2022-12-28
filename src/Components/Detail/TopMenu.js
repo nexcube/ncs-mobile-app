@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet} from 'react-native';
+import {Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Divider, Menu, Provider} from 'react-native-paper';
+import {back} from 'react-native/Libraries/Animated/Easing';
 
 import globalStyles from '../../styles/global';
 
-function TopMenu({onModify, onDelete, menuColor = globalStyles.color.white}) {
+function TopMenu({
+  onModify,
+  onDelete,
+  color = globalStyles.color.text,
+  backgroundColor = globalStyles.color.white,
+}) {
   const [visible, setVisible] = useState(false);
 
   const openMenu = () => {
@@ -29,7 +35,14 @@ function TopMenu({onModify, onDelete, menuColor = globalStyles.color.white}) {
     <Menu
       visible={visible}
       onDismiss={onClose}
-      anchor={<Button onPress={openMenu} title="..." color={menuColor} />}
+      anchor={
+        <TouchableOpacity
+          onPress={openMenu}
+          title="..."
+          style={[styles.button, backgroundColor && {backgroundColor: backgroundColor}]}>
+          <Text style={[color && {color: color}]}>...</Text>
+        </TouchableOpacity>
+      }
       anchorPosition="bottom"
       contentStyle={[styles.menu]}>
       <Menu.Item titleStyle={[styles.text]} onPress={onPressModify} title="수정하기" />
@@ -50,6 +63,9 @@ const styles = StyleSheet.create({
   },
   separator: {
     backgroundColor: globalStyles.color.grayLight,
+  },
+  button: {
+    // backgroundColor: globalStyles.color.white,
   },
 });
 

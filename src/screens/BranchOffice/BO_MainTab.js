@@ -7,6 +7,7 @@ import globalStyles from '../../styles/global';
 import userData from '../../services/DeviceStorage';
 import axios from 'axios';
 import {View} from 'react-native';
+import BO_SettingStack from './Setting/BO_SettingStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,12 +31,12 @@ function BO_MainTab() {
       />
 
       <Tab.Screen
-        name="BO_Setting"
-        component={BO_Setting}
+        name="BO_SettingStack"
+        component={BO_SettingStack}
         options={{
           title: '환경설정',
           headerTintColor: globalStyles.color.white,
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({color, size}) => <Icon name="settings" size={24} color={color} />,
         }}
       />

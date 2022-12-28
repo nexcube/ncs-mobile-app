@@ -57,22 +57,6 @@ function BO_MainStack() {
         component={BO_DetailModifyComment}
         options={{title: '댓글 수정'}}
       />
-      <Stack.Screen name="BO_Setting" component={BO_Setting} options={{title: '환경설정'}} />
-      <Stack.Screen
-        name="BO_Setting_Push"
-        component={BO_SettingPush}
-        options={{title: '푸시알림 설정'}}
-      />
-      <Stack.Screen
-        name="BO_Setting_User_Setting"
-        component={BO_SettingUser}
-        options={{title: '사용자 설정'}}
-      />
-      <Stack.Screen
-        name="BO_Setting_Add_User"
-        component={BO_SettingAddUser}
-        options={{title: '사용자 추가'}}
-      />
     </Stack.Navigator>
   );
 }

@@ -30,7 +30,14 @@ function BO_Detail({navigation, route}) {
   // 데이타가 바뀔때 마다.
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <TopMenu onModify={onModify} onDelete={onDelete} />,
+      headerRight: () => (
+        <TopMenu
+          onModify={onModify}
+          onDelete={onDelete}
+          backgroundColor={globalStyles.color.purple}
+          color={globalStyles.color.white}
+        />
+      ),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryItem]);
