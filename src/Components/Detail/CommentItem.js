@@ -13,27 +13,7 @@ const CommentItem = ({data: commentData}) => {
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
-  const [attachments, setAttachments] = useState([]);
-
-  // 첨부파일 정보 가져오기.
-  useEffect(() => {
-    getInquiryCommentListItem(commentData.idx, onSuccessListItem);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getInquiryCommentListItem(commentData.idx, onSuccessListItem);
-    });
-
-    return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onSuccessListItem = async data => {
-    // console.log(data);
-    setAttachments(data);
-  };
+  const [attachments] = useState(commentData.attachments);
 
   const onModify = useCallback(() => {
     navigation.navigate('BO_Detail_Modify_Comment', {
