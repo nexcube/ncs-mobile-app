@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useEffect} from 'react/cjs/react.development';
 import apiInquiryStatus from '../../services/api/inquiryStatus';
@@ -9,17 +9,12 @@ export default function InquiryHeader() {
   const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getInquiryStatus();
-    });
-    return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation]);
-
-  const getInquiryStatus = async () => {
-    apiInquiryStatus(onSuccess);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      apiInquiryStatus(onSuccess);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   const onSuccess = data => {
     setInquiryStatus({NEW: data.NEW, INPROGRESS: data.INPROGRESS, DONE: data.DONE});

@@ -11,6 +11,8 @@ import apiInquiryListItem from '../../../../services/api/inquiryListItem';
 
 import CommentList from '../../../../components/Detail/CommentList';
 import CustomInput from '../../../../components/common/CustomInput';
+import {useCallback} from 'react/cjs/react.development';
+import {useFocusEffect} from '@react-navigation/native';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -21,14 +23,6 @@ function BO_Detail({navigation, route}) {
   const [spinner, setSpinner] = useState(false);
   // console.log(inquiryItem);
 
-  // 마운트 될때
-  // useEffect(() => {
-  //   console.log('useEffect mounted');
-  //   getInquiryListItem();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // 데이타가 바뀔때 마다.
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -43,15 +37,12 @@ function BO_Detail({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryItem]);
 
-  //
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+  useFocusEffect(
+    useCallback(() => {
       getInquiryListItem();
-    });
-
-    return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   useEffect(() => {
     if (isRefresh) {

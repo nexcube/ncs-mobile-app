@@ -91,7 +91,7 @@ function BO_DetailAddComment({navigation, route}) {
     }
   };
 
-  const onSuccessRegister = nav => nav.goBack();
+  const onSuccessRegister = nav => () => nav.goBack();
   const onBSContinue = () => {
     const newSheetStatus = produce(visibleBS, draft => {
       draft.visible = false;

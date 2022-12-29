@@ -91,12 +91,6 @@ function BO_Inquiry({navigation, route}) {
   // 로딩..
   const [spinner, setSpinner] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
-  //   attachments.map(item => console.log(item));
-  //   console.log('end   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`');
-  // }, [attachments]);
-
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
       <Spinner

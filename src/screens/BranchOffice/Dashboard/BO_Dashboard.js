@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
@@ -27,18 +28,17 @@ function BO_Dashboard({navigation, route}) {
   });
 
   //  API 처리 /////////////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    console.log(`### Rendering #### -- list length: ${inquiryList.length}`);
-  });
+  // useEffect(() => {
+  //   console.log(`### Rendering #### -- list length: ${inquiryList.length}`);
+  // });
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+  useFocusEffect(
+    useCallback(() => {
       setListStatus({...listStatus, offset: 0, noMore: false});
       getInquiryList();
-    });
-    return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
 
   useEffect(() => {
     if (listStatus.isRefreshing) {
@@ -47,44 +47,50 @@ function BO_Dashboard({navigation, route}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listStatus.isRefreshing]);
 
-  const getInquiryList = async search => {
-    if (listStatus.loading || listStatus.noMore) {
-      return;
-    }
+  const getInquiryList = useCallback(
+    async search => {
+      if (listStatus.loading || listStatus.noMore) {
+        return;
+      }
 
-    setListStatus({...listStatus, loading: true});
-    if (search?.length > 0) {
-      apiInquiryList(search, 0, fetchCount, onSuccess, onFail);
-    }
-    apiInquiryList(search, listStatus.offset, fetchCount, onSuccess, onFail);
-  };
+      setListStatus({...listStatus, loading: true});
+      if (search?.length > 0) {
+        apiInquiryList(search, 0, fetchCount, onSuccess, onFail);
+      }
+      apiInquiryList(search, listStatus.offset, fetchCount, onSuccess, onFail);
+    },
+    [listStatus, onFail, onSuccess],
+  );
 
-  const onSuccess = (data, fromSearch = false) => {
-    console.log('onSuccess ~~~');
-    // console.log(JSON.stringify(data, null, '\t'));
-    // 더이상 데이터가 없는가?
-    if (data.length === 0) {
-      setListStatus({...listStatus, loading: false, isRefreshing: false, noMore: true});
-      return;
-    }
+  const onSuccess = useCallback(
+    (data, fromSearch = false) => {
+      console.log('onSuccess ~~~');
+      // console.log(JSON.stringify(data, null, '\t'));
+      // 더이상 데이터가 없는가?
+      if (data.length === 0) {
+        setListStatus({...listStatus, loading: false, isRefreshing: false, noMore: true});
+        return;
+      }
 
-    if (listStatus.offset === 0 || fromSearch) {
-      setInquiryList([...data]);
-    } else {
-      setInquiryList([...inquiryList, ...data]);
-    }
+      if (listStatus.offset === 0 || fromSearch) {
+        setInquiryList([...data]);
+      } else {
+        setInquiryList([...inquiryList, ...data]);
+      }
 
-    setListStatus({
-      ...listStatus,
-      loading: false,
-      isRefreshing: false,
-      offset: fromSearch ? 0 : listStatus.offset + data.length,
-    });
-  };
+      setListStatus({
+        ...listStatus,
+        loading: false,
+        isRefreshing: false,
+        offset: fromSearch ? 0 : listStatus.offset + data.length,
+      });
+    },
+    [inquiryList, listStatus],
+  );
 
-  const onFail = () => {
+  const onFail = useCallback(() => {
     setListStatus({...listStatus, loading: false});
-  };
+  }, [listStatus]);
 
   // 이벤트 처리 ///////////////////////////////////////////////////////////////////////////////////
   // 스크롤 처리 ///////////////////////////////////////////////////////////////////////////////////

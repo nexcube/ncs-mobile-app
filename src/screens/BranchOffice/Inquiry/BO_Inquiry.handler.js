@@ -1,5 +1,5 @@
 import produce from 'immer';
-import {Platform} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import apiInquiryQnaCategory from '../../../services/api/inquiryQnaCategory';
 import apiInquiryRegister from '../../../services/api/inquiryRegister';
@@ -59,7 +59,7 @@ async function onBSConfirm({
       formData.append('status', 'NEW');
 
       setSpinner(true);
-      apiInquiryRegister(formData, onSuccessRegister(navigation, setSpinner));
+      await apiInquiryRegister(formData, onSuccessRegister(navigation, setSpinner));
 
       break;
     case InquiryAction.CancelInquiry:
@@ -72,6 +72,9 @@ async function onBSConfirm({
 
 const onSuccessRegister = (nav, setLoading) => () => {
   setLoading(false);
+  setTimeout(() => {
+    setLoading(false);
+  }, 1000);
   nav.goBack();
 };
 
