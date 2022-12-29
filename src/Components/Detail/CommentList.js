@@ -1,11 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Text} from 'react-native';
 
-import apiListComment from '../../services/api/listComment';
+import apiCommentList from '../../services/api/comment/list';
 import CommentItem from './CommentItem';
 
-const CommentList = ({index, setSpinner}) => {
+const CommentList = ({index}) => {
   const navigation = useNavigation();
   const [commentList, setCommentList] = useState([]);
 
@@ -18,17 +17,17 @@ const CommentList = ({index, setSpinner}) => {
   }, []);
 
   const getCommentList = async () => {
-    await apiListComment(index, onSuccessListComment);
+    await apiCommentList(index, onSuccessListComment);
   };
 
   const onSuccessListComment = data => {
     const indexList = Array.from(new Set(data.map(item => item.idx)));
-    const reducedData = indexList.map(index =>
+    const reducedData = indexList.map(id =>
       data
-        .filter(item => item.idx === index)
+        .filter(item => item.idx === id)
         .reduce(
           (sum, cur, idx) => {
-            return (sum = {
+            sum = {
               idx: cur.idx,
               inquiryIndex: cur.inquiryIndex,
               staffId: cur.staffId,
@@ -37,27 +36,27 @@ const CommentList = ({index, setSpinner}) => {
               name: cur.name,
               rankName: cur.rankName,
               departName: cur.departName,
-              attachments: [
-                ...sum.attachments,
-                {
-                  path: cur.imagePath,
-                  name: cur.imageName,
-                  type: cur.imageType,
-                },
-              ],
-            });
+              attachments: [...sum.attachments],
+            };
+            if (cur.imagePath) {
+              sum.attachments.push({
+                path: cur.imagePath,
+                name: cur.imageName,
+                type: cur.imageType,
+              });
+            }
+
+            return sum;
           },
           {attachments: []},
         ),
     );
 
     setCommentList(reducedData);
-    // console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
+    console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
   };
 
-  return commentList.map(item => (
-    <CommentItem key={item.idx} data={item} setSpinner={setSpinner} />
-  ));
+  return commentList.map(item => <CommentItem key={item.idx} data={item} />);
   // return <Text>parkcom</Text>;
 };
 

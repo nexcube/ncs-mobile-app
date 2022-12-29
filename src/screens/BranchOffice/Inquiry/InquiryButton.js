@@ -3,7 +3,7 @@ import React, {useMemo} from 'react';
 import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
-import apiBranchList from '../../../services/api/branchList';
+import apiInquiryBranch from '../../../services/api/inquiry/branch';
 import globalStyles from '../../../styles/global';
 
 const TABBAR_HEIGHT = 49;
@@ -20,7 +20,7 @@ function InquiryButton({routeName}) {
   }, [insets.bottom]);
 
   const onInquiry = async () => {
-    await apiBranchList(onSuccess);
+    await apiInquiryBranch(onSuccess);
   };
 
   const onSuccess = data => {
@@ -43,7 +43,7 @@ function InquiryButton({routeName}) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    zIndex: 5,
+    zIndex: 115,
     borderRadius: 28,
     height: 56,
     width: 56,
@@ -51,10 +51,10 @@ const styles = StyleSheet.create({
     left: '90%',
     transform: [
       {
-        translateX: Platform.select({ios: -29, android: -20}),
+        translateX: Platform.select({ios: -28, android: -28}),
       },
       {
-        translateY: Platform.select({ios: 45, android: 17}),
+        translateY: Platform.select({ios: -200, android: -200}),
       },
     ],
     ...Platform.select({

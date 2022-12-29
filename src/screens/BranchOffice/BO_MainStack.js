@@ -8,7 +8,7 @@ import BO_DetailAddComment from './Dashboard/Detail/BO_DetailAddComment';
 import BO_Inquiry from './Inquiry/BO_Inquiry';
 import BO_InquiryClassify from './Inquiry/BO_InquiryClassify';
 import globalStyles from '../../styles/global';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import BO_DetailModifyComment from './Dashboard/Detail/BO_DetailModifyComment';
 
 const Stack = createNativeStackNavigator();

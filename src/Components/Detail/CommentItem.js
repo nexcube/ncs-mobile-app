@@ -1,15 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import {useCallback} from 'react/cjs/react.development';
-import getInquiryCommentListItem from '../../services/api/CommentListItem';
 import globalStyles from '../../styles/global';
 import Attachments from '../Inquiry/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
-const CommentItem = ({data: commentData, setSpinner}) => {
+const CommentItem = ({data: commentData}) => {
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
@@ -43,7 +41,7 @@ const CommentItem = ({data: commentData, setSpinner}) => {
         <Text>{commentData.content}</Text>
       </View>
       <View style={[styles.attachmentsContainer]}>
-        <Attachments attachments={attachments} isShowDelete={false} setSpinner={setSpinner} />
+        <Attachments attachments={attachments} isShowDelete={false} />
       </View>
     </View>
   );

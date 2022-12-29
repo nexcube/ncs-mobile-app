@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const getInquiryCommentListItem = async (index, onSuccess) => {
-  console.log(`${axios.defaults.baseURL}/inquiry/listComment/${index}`);
+const getCommentListItem = async (index, onSuccess) => {
+  const url = `/comment/list/${index}`;
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
-    let url = `/inquiry/listComment/${index}`;
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -15,7 +15,7 @@ const getInquiryCommentListItem = async (index, onSuccess) => {
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      // console.log(response.data);
+      // console.log(JSON.stringify(response.data, null, '\t'));
       onSuccess(response.data.data);
     } else {
       console.log(response.data.message);
@@ -29,4 +29,4 @@ const getInquiryCommentListItem = async (index, onSuccess) => {
   }
 };
 
-export default getInquiryCommentListItem;
+export default getCommentListItem;

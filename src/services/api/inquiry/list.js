@@ -1,6 +1,6 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
 const apiInquiryList = async (searchString, offset, fetchCount, onSuccess, onFail) => {
   console.log(`${axios.defaults.baseURL}/inquiry/list?offset=${offset}&fetchCount=${fetchCount}`);

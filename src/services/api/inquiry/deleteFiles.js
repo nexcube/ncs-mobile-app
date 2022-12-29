@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const apiDeleteFiles = async (tableName, index, files, onSuccess) => {
-  console.log(`${axios.defaults.baseURL}/inquiry/deleteFiles`);
+const apiInquiryDeleteFiles = async (tableName, index, files, onSuccess) => {
+  const url = '/inquiry/deleteFiles';
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
-    let url = '/inquiry/deleteFiles';
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -35,4 +35,4 @@ const apiDeleteFiles = async (tableName, index, files, onSuccess) => {
   }
 };
 
-export default apiDeleteFiles;
+export default apiInquiryDeleteFiles;

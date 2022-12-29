@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const apiInquiryQnaCategory = async onSuccess => {
-  console.log(`${axios.defaults.baseURL}/inquiry/qnaCategory`);
+const apiInquiryCategory = async onSuccess => {
+  const url = '/inquiry/category';
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
-    let url = '/inquiry/qnaCategory';
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -31,4 +31,4 @@ const apiInquiryQnaCategory = async onSuccess => {
   }
 };
 
-export default apiInquiryQnaCategory;
+export default apiInquiryCategory;

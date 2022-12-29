@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import InquiryCard from '../../../../components/Inquiry/InquiryCard';
 import globalStyles from '../../../../styles/global';
 import TopMenu from '../../../../components/Detail/TopMenu';
 import Attachments from '../../../../components/Inquiry/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Spinner from 'react-native-loading-spinner-overlay';
-import apiBranchList from '../../../../services/api/branchList';
-import apiInquiryListItem from '../../../../services/api/inquiryListItem';
+import apiInquiryBranch from '../../../../services/api/inquiry/branch';
+import apiInquiryListItem from '../../../../services/api/inquiry/listItem';
 
 import CommentList from '../../../../components/Detail/CommentList';
 import CustomInput from '../../../../components/common/CustomInput';
-import {useCallback} from 'react/cjs/react.development';
 import {useFocusEffect} from '@react-navigation/native';
+import apiInquiryDeleteItem from '../../../../services/api/inquiry/deleteItem';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -20,8 +19,6 @@ function BO_Detail({navigation, route}) {
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
   const [isRefresh, setIsRefresh] = useState(false);
-  const [spinner, setSpinner] = useState(false);
-  // console.log(inquiryItem);
 
   useEffect(() => {
     navigation.setOptions({
@@ -64,17 +61,28 @@ function BO_Detail({navigation, route}) {
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
   const onModify = async () => {
-    await apiBranchList(onSuccessBranchList);
+    await apiInquiryBranch(onSuccessBranch);
   };
 
-  const onSuccessBranchList = data => {
+  const onSuccessBranch = data => {
     const result = data.map(value => value);
     const params = {inquiryItem: inquiryItem, branchList: result};
     navigation.navigate('BO_Detail_Modify', params);
   };
 
-  const onDelete = () => {
-    console.log(inquiryItem);
+  const onDelete = async () => {
+    Alert.alert('주의', '정말로 삭제하시겠습니까?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => apiInquiryDeleteItem(index, onSuccessInquiryDelete(navigation))},
+    ]);
+  };
+
+  const onSuccessInquiryDelete = nav => () => {
+    nav.goBack();
   };
 
   const onPressAddComment = () => {
@@ -84,11 +92,6 @@ function BO_Detail({navigation, route}) {
 
   return (
     <SafeAreaView style={[styles.fullscreen]} edges={['bottom']}>
-      <Spinner
-        visible={spinner}
-        textContent={'Loading...'}
-        textStyle={globalStyles.spinnerTextStyle}
-      />
       <View style={[styles.header]}>
         <InquiryCard
           mode="contained"
@@ -114,16 +117,12 @@ function BO_Detail({navigation, route}) {
         </View>
 
         <View style={[styles.attachmentsContainer]}>
-          <Attachments
-            attachments={inquiryItem.attachments}
-            setSpinner={setSpinner}
-            isShowDelete={false}
-          />
+          <Attachments attachments={inquiryItem.attachments} isShowDelete={false} />
         </View>
         {/* <View style={[styles.commentLayout]}>
           <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
         </View> */}
-        <CommentList index={index} setSpinner={setSpinner} />
+        <CommentList index={index} />
       </ScrollView>
 
       <View style={[styles.addComment]}>

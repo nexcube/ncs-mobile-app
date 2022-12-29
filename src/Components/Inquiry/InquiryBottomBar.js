@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import globalStyles from '../../styles/global';
 import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
-import {permissionCheck} from '../../services/PermissionCheck';
+import {permissionCheck} from '../../services/permission/PermissionCheck';
 import DocumentPicker from 'react-native-document-picker';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 

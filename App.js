@@ -3,10 +3,11 @@ import React from 'react';
 import {LogBox, Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
-import Config from 'react-native-config';
+
 import globalStyles from './src/styles/global';
 import {DefaultTheme} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SpinnerContextProvider} from './src/services/context/SpinnerContext';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -27,10 +28,13 @@ function App() {
     // ios: 'http://3.39.59.30',
     // android: 'http://3.39.59.30',
   });
+
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={navigationTheme}>
-        <RootStack />
+        <SpinnerContextProvider>
+          <RootStack />
+        </SpinnerContextProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );

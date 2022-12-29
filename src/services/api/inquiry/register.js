@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const apiInquiryAddComment = async (formData, onSuccess) => {
-  console.log(`${axios.defaults.baseURL}/inquiry/addComment`);
+const apiInquiryRegister = async (formData, onSuccess) => {
+  const url = '/inquiry/register';
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
-    let url = '/inquiry/addComment';
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -21,7 +21,6 @@ const apiInquiryAddComment = async (formData, onSuccess) => {
     const response = await axios.post(url, formData, config);
 
     if (response.data.code === 200) {
-      // console.log(response.data);
       onSuccess();
     } else {
       console.log(response.data.message);
@@ -33,4 +32,4 @@ const apiInquiryAddComment = async (formData, onSuccess) => {
   }
 };
 
-export default apiInquiryAddComment;
+export default apiInquiryRegister;

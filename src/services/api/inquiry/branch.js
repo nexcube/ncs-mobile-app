@@ -1,24 +1,23 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const apiBranchList = async onSuccess => {
+const apiInquiryBranch = async onSuccess => {
+  const url = '/inquiry/branch';
   const staffId = await userData.getStaffId();
-  console.log(`${axios.defaults.baseURL}/inquiry/branchList?id=${staffId}`);
+  console.log(`${axios.defaults.baseURL}${url}?id=${staffId}`);
 
   try {
-    const staffId = await userData.getStaffId();
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
     const data = {headers: {authorization: token}, params: {id: staffId}};
-    const response = await axios.get('/inquiry/branchList', data);
+    const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
       // console.log(response.data);
       onSuccess(response.data.data);
     } else {
-      console.log('dddd', response.data.message);
       return null;
     }
   } catch (error) {
@@ -28,4 +27,4 @@ const apiBranchList = async onSuccess => {
   }
 };
 
-export default apiBranchList;
+export default apiInquiryBranch;

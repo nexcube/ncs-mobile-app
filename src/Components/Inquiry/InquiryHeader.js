@@ -1,18 +1,15 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {useEffect} from 'react/cjs/react.development';
-import apiInquiryStatus from '../../services/api/inquiryStatus';
+import apiInquiryStatus from '../../services/api/inquiry/status';
 import globalStyles from '../../styles/global';
 
 export default function InquiryHeader() {
   const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});
-  const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
       apiInquiryStatus(onSuccess);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 

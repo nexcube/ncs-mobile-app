@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
 const apiInquiryListItem = async (index, onSuccess) => {
-  console.log(`${axios.defaults.baseURL}/inquiry/list/${index}`);
+  const url = `/inquiry/list/${index}`;
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
-    let url = `/inquiry/list/${index}`;
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -15,7 +15,7 @@ const apiInquiryListItem = async (index, onSuccess) => {
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      // console.log(response.data);
+      // console.log(JSON.stringify(response.data, null, '\t'));
       onSuccess(response.data.data);
     } else {
       console.log(response.data.message);

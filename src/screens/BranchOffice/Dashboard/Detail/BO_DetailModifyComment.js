@@ -11,7 +11,7 @@ import Attachments from '../../../../components/Inquiry/Attachments';
 import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
 import globalStyles from '../../../../styles/global';
 import produce from 'immer';
-import apiInquiryModifyComment from '../../../../services/api/inquiryModifyComment';
+import apiCommentUpdate from '../../../../services/api/comment/update';
 
 function BO_DetailModifyComment({navigation, route}) {
   // console.log('BO_DetailModifyComment : ', route.params.data);
@@ -25,13 +25,13 @@ function BO_DetailModifyComment({navigation, route}) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <HeaderButton title="등록" onPress={() => onRegistration()} />,
+      headerRight: () => <HeaderButton title="등록" onPress={() => onUpdate()} />,
       headerBackVisible: false,
       headerLeft: () => <HeaderBackButton onPress={() => onBack()} />,
     });
   });
 
-  const onRegistration = () => {
+  const onUpdate = () => {
     if (content.length < 1) {
       displayToast('내용을 입력해 주세요');
       return;
@@ -77,7 +77,7 @@ function BO_DetailModifyComment({navigation, route}) {
         formData.append('index', index);
         formData.append('content', content);
 
-        await apiInquiryModifyComment(formData, onSuccessRegister(navigation));
+        await apiCommentUpdate(formData, onSuccessRegister(navigation));
 
         break;
       case InquiryAction.CancelInquiry:

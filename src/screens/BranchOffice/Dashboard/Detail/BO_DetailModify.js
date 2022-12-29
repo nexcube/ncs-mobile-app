@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useEffect} from 'react/cjs/react.development';
 import CustomInput from '../../../../components/common/CustomInput';
 import HeaderButton from '../../../../components/common/HeaderButton';
 import SelectionButton from '../../../../components/common/SelectionButton';
 import SelectionList from '../../../../components/common/SelectionList';
-import userData from '../../../../services/DeviceStorage';
+import userData from '../../../../services/storage/DeviceStorage';
 import globalStyles from '../../../../styles/global';
 import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
@@ -14,10 +13,10 @@ import CustomToast from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
 import produce from 'immer';
 import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
-import apiInquiryQnaCategory from '../../../../services/api/inquiryQnaCategory';
-import apiInquiryUpdate from '../../../../services/api/inquiryUpdate';
+import apiInquiryCategory from '../../../../services/api/inquiry/category';
+import apiInquiryUpdate from '../../../../services/api/inquiry/update';
 import Attachments from '../../../../components/Inquiry/Attachments';
-import apiDeleteFiles from '../../../../services/api/deleteFiles';
+import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
 
 function BO_DetailModify({navigation, route}) {
   // 라우터 파라미터 처리
@@ -145,7 +144,7 @@ function BO_DetailModify({navigation, route}) {
 
   const onSuccessUpdate = (nav, tableName, index, deleteFiles) => async data => {
     if (deleteFiles.length > 0) {
-      await apiDeleteFiles(tableName, index, deleteFiles);
+      await apiInquiryDeleteFiles(tableName, index, deleteFiles);
     }
     nav.navigate('BO_Detail', {index: inquiryItem.idx, refresh: true});
   };
@@ -159,7 +158,7 @@ function BO_DetailModify({navigation, route}) {
 
   const onClassify = async () => {
     console.log('onClassify');
-    await apiInquiryQnaCategory(onSuccessQnaCategory(navigation));
+    await apiInquiryCategory(onSuccessQnaCategory(navigation));
   };
 
   const onSuccessQnaCategory = nav => data =>

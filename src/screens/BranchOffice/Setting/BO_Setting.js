@@ -1,23 +1,11 @@
 import React from 'react';
-import {Button, StyleSheet, Text} from 'react-native';
-import {Card} from 'react-native-paper';
+import {StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SettingButton from '../../../components/setting/SettingButton';
 import SettingButtonWithInfo from '../../../components/setting/SettingButtonWithInfo';
 import globalStyles from '../../../styles/global';
 
 function BO_Setting({navigation, route}) {
-  // const onSettingPush = function () {
-  //   navigation.navigate('BO_Setting_Push');
-  // };
-  // const onSettingUserSetting = function () {
-  //   navigation.navigate('BO_Setting_User_Setting');
-  // };
-
-  // const onSettingAddUser = function () {
-  //   navigation.navigate('BO_Setting_Add_User');
-  // };
-
   const onPressPush = () => navigation.navigate('BO_Setting_Push');
   const onPressUserSetting = () => navigation.navigate('BO_Setting_User_Setting');
   const onPressLogout = () => console.log('구현 해야 됩니다.');

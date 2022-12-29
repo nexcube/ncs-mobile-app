@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 import CustomButton from '../components/common/CustomButton';
 import CustomInput from '../components/common/CustomInput';
@@ -6,8 +6,7 @@ import EDUPLEXLogo from '../../assets/images/EDUPLEX-Logo.svg';
 import LogoBack from '../../assets/images/EDUPLEX-Logo-back.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
-import userData from '../services/DeviceStorage';
-import {useEffect} from 'react/cjs/react.development';
+import userData from '../services/storage/DeviceStorage';
 import apiLogin from '../services/api/login';
 
 function LoginScreen({navigation, route}) {

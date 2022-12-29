@@ -22,6 +22,8 @@ const globalStyles = StyleSheet.create({
 
   spinnerTextStyle: {
     color: '#FFF',
+    fontFamily: 'Happiness-Sans-Bold',
+    fontSize: 15,
   },
 });
 

@@ -2,12 +2,12 @@ import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {get} from 'react-native/Libraries/Utilities/PixelRatio';
+
 import InquiryCard from '../../../components/Inquiry/InquiryCard';
 import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
 import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
-import apiInquiryList from '../../../services/api/inquiryList';
+import apiInquiryList from '../../../services/api/inquiry/list';
+
 import globalStyles from '../../../styles/global';
 import InquiryButton from '../Inquiry/InquiryButton';
 
@@ -123,7 +123,8 @@ function BO_Dashboard({navigation, route}) {
   };
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
-    <SafeAreaView style={[styles.container]} edges={['bottom']}>
+    // <SafeAreaView style={[styles.container]} edges={['bottom']}>
+    <View>
       <InquiryStatus animHeaderValue={scrollOffsetY} />
       <View style={[styles.searchArea]}>
         <SearchTextInput
@@ -181,7 +182,8 @@ function BO_Dashboard({navigation, route}) {
         refreshing={listStatus.isRefreshing}
       />
       <InquiryButton routeName="BO_Inquiry" />
-    </SafeAreaView>
+    </View>
+    //  </SafeAreaView>
   );
 }
 

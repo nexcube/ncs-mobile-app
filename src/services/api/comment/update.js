@@ -1,12 +1,12 @@
 import axios from 'axios';
-import userData from '../DeviceStorage';
-import axios_error_handler from './errorHandler';
+import userData from '../../storage/DeviceStorage';
+import axios_error_handler from '../errorHandler';
 
-const apiInquiryModifyComment = async (params, onSuccess) => {
+const apiCommentUpdate = async (params, onSuccess) => {
+  const url = '/comment/update';
   console.log(`${axios.defaults.baseURL}/inquiry/modifyComment`);
 
   try {
-    let url = '/inquiry/modifyComment';
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
@@ -35,4 +35,4 @@ const apiInquiryModifyComment = async (params, onSuccess) => {
   }
 };
 
-export default apiInquiryModifyComment;
+export default apiCommentUpdate;

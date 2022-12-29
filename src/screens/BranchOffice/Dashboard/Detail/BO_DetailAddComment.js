@@ -11,8 +11,8 @@ import Attachments from '../../../../components/Inquiry/Attachments';
 import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
 import globalStyles from '../../../../styles/global';
 import produce from 'immer';
-import userData from '../../../../services/DeviceStorage';
-import apiInquiryAddComment from '../../../../services/api/inquiryAddComment';
+import userData from '../../../../services/storage/DeviceStorage';
+import apiCommentRegister from '../../../../services/api/comment/register';
 
 function BO_DetailAddComment({navigation, route}) {
   const index = route.params.index;
@@ -80,7 +80,8 @@ function BO_DetailAddComment({navigation, route}) {
         formData.append('content', content);
         formData.append('staffId', staffId);
 
-        await apiInquiryAddComment(formData, onSuccessRegister(navigation));
+        // console.log(JSON.stringify(formData, null, '\t'));
+        await apiCommentRegister(formData, onSuccessRegister(navigation));
 
         break;
       case InquiryAction.CancelInquiry:

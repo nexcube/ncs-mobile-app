@@ -1,27 +1,32 @@
-import React from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Text, Pressable} from 'react-native';
+import React, {useCallback, useContext} from 'react';
+import {View, Image, TouchableOpacity, StyleSheet, Text, Pressable, Alert} from 'react-native';
 import globalStyles from '../../styles/global';
 import Icon from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
+import SpinnerContext from '../../services/context/SpinnerContext';
+import {useFocusEffect} from '@react-navigation/native';
 
 function getUrlExtension(url) {
   return url.split(/[#?]/)[0].split('.').pop().trim();
 }
 
-function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
+function Attachment({index, item, onDelete, imageWidth}) {
+  const [spinConfig, setSpinConfig] = useContext(SpinnerContext);
+
   const onPressImage = async () => {
     console.log(item);
     const extension = getUrlExtension(item.path);
     const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
-
     const options = {
       fromUrl: item.path,
       toFile: localFile,
     };
 
-    setSpinner(true);
-    RNFS.downloadFile(options).promise.then(res => downloadComplete(localFile));
+    setSpinConfig({visible: true, text: 'Loading...'});
+    RNFS.downloadFile(options).promise.then(res => {
+      downloadComplete(localFile);
+    });
   };
 
   const downloadComplete = async localFile => {
@@ -29,7 +34,7 @@ function Attachment({index, item, onDelete, imageWidth, setSpinner}) {
   };
 
   const onClosePreview = () => {
-    setSpinner(false);
+    setSpinConfig({...spinConfig, visible: false});
   };
 
   return (
