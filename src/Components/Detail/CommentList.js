@@ -53,7 +53,7 @@ const CommentList = ({index}) => {
     );
 
     setCommentList(reducedData);
-    console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
+    // console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
   };
 
   return commentList.map(item => <CommentItem key={item.idx} data={item} />);

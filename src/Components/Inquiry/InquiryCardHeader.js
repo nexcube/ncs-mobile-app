@@ -12,11 +12,11 @@ function InquiryCardHeader({status, commentCount, forDetail}) {
   };
   const statusStyle = {
     backgroundColor:
-      status === 'NEW' ? globalStyles.color.white : status === 'INPROGRESS' ? '#FF5B05' : '#00B578',
+      status === 'NEW' ? globalStyles.color.red : status === 'INPROGRESS' ? '#FF5B05' : '#00B578',
   };
 
   const statusTextStyle = {
-    color: status === 'NEW' ? globalStyles.color.text : globalStyles.color.white,
+    color: status === 'NEW' ? globalStyles.color.white : globalStyles.color.white,
   };
 
   const statusText =

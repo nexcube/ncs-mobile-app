@@ -22,7 +22,7 @@ const CommentItem = ({data: commentData}) => {
   const onDelete = () => {};
   return (
     <View>
-      <View style={[styles.container]}>
+      <View style={[styles.container, globalStyles.elevated]}>
         <View style={[styles.iconContainer]}>
           <Icon name="user" size={20} color={globalStyles.color.white} />
         </View>
@@ -50,8 +50,6 @@ const CommentItem = ({data: commentData}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: globalStyles.color.white,
-    borderWidth: 1,
-    borderColor: globalStyles.color.grayLight,
     padding: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -25,6 +25,14 @@ const globalStyles = StyleSheet.create({
     fontFamily: 'Happiness-Sans-Bold',
     fontSize: 15,
   },
+
+  elevated: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 2,
+  },
 });
 
 export default globalStyles;

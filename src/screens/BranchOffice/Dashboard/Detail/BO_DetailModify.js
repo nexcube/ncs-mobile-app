@@ -110,9 +110,9 @@ function BO_DetailModify({navigation, route}) {
         const deleteFiles = inquiryItem.attachments.filter(
           file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
         );
-        console.log('original:', uploadFiles);
-        console.log('uploadFiles:', uploadFilesWOS3);
-        console.log('deleteFiles: ', deleteFiles);
+        // console.log('original:', uploadFiles);
+        // console.log('uploadFiles:', uploadFilesWOS3);
+        // console.log('deleteFiles: ', deleteFiles);
 
         const formData = new FormData();
         uploadFilesWOS3.map(item => formData.append('image', item));

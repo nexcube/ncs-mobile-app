@@ -92,7 +92,7 @@ function BO_Detail({navigation, route}) {
 
   return (
     <SafeAreaView style={[styles.fullscreen]} edges={['bottom']}>
-      <View style={[styles.header]}>
+      <View style={[styles.header, globalStyles.elevated]}>
         <InquiryCard
           mode="contained"
           key={inquiryItem.idx}
@@ -109,7 +109,6 @@ function BO_Detail({navigation, route}) {
           forDetail={true}
         />
       </View>
-      <View style={[styles.separator]} />
 
       <ScrollView>
         <View style={[styles.contentContainer]}>

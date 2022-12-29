@@ -64,7 +64,6 @@ function BO_Dashboard({navigation, route}) {
 
   const onSuccess = useCallback(
     (data, fromSearch = false) => {
-      console.log('onSuccess ~~~');
       // console.log(JSON.stringify(data, null, '\t'));
       // 더이상 데이터가 없는가?
       if (data.length === 0) {
