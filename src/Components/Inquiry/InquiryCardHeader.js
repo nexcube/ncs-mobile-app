@@ -8,6 +8,8 @@ function InquiryCardHeader({status, commentCount, forDetail}) {
       ? globalStyles.color.white
       : status === 'HOLD'
       ? globalStyles.color.gray
+      : status === 'DONE'
+      ? globalStyles.color.gray
       : globalStyles.color.purple,
   };
   const statusStyle = {

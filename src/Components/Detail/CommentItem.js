@@ -1,17 +1,19 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import apiCommentDeleteItem from '../../services/api/comment/deleteItem';
 import globalStyles from '../../styles/global';
 import Attachments from '../Inquiry/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
-const CommentItem = ({data: commentData}) => {
+const CommentItem = ({commentData, commentList, setCommentList}) => {
+  console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
-  const [attachments] = useState(commentData.attachments);
+  const [attachments, setAttachments] = useState(commentData.attachments);
 
   const onModify = useCallback(() => {
     navigation.navigate('BO_Detail_Modify_Comment', {
@@ -19,7 +21,34 @@ const CommentItem = ({data: commentData}) => {
     });
   }, [attachments, commentData, navigation]);
 
-  const onDelete = () => {};
+  useFocusEffect(
+    useCallback(() => {
+      setAttachments(commentData.attachments);
+    }, [commentData.attachments]),
+  );
+
+  const onDelete = () => {
+    Alert.alert('주의', '정말로 삭제하시겠습니까?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => apiCommentDeleteItem(commentData.idx, onSuccessCommentDelete),
+      },
+    ]);
+  };
+
+  const onSuccessCommentDelete = () => {
+    console.log(JSON.stringify(commentList, null, '\t'));
+    console.log(JSON.stringify(commentData, null, '\t'));
+    const result = commentList.filter(item => item.idx !== commentData.idx);
+    console.log(JSON.stringify(result, null, '\t'));
+    setCommentList(result);
+  };
+
   return (
     <View>
       <View style={[styles.container, globalStyles.elevated]}>

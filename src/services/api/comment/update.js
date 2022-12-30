@@ -17,6 +17,7 @@ const apiCommentUpdate = async (params, onSuccess) => {
         return data;
       },
     };
+    console.log('apiCommentUpdate:', JSON.stringify(params, null, '\t'));
 
     const response = await axios.put(url, params, config);
 

@@ -36,6 +36,7 @@ function BO_Detail({navigation, route}) {
 
   useFocusEffect(
     useCallback(() => {
+      console.log('BO_Detail: focus...');
       getInquiryListItem();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
@@ -77,12 +78,12 @@ function BO_Detail({navigation, route}) {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => apiInquiryDeleteItem(index, onSuccessInquiryDelete(navigation))},
+      {text: 'OK', onPress: () => apiInquiryDeleteItem(index, onSuccessInquiryDelete)},
     ]);
   };
 
-  const onSuccessInquiryDelete = nav => () => {
-    nav.goBack();
+  const onSuccessInquiryDelete = () => {
+    navigation.goBack();
   };
 
   const onPressAddComment = () => {

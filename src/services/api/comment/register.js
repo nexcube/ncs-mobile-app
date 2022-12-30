@@ -18,6 +18,7 @@ const apiCommentRegister = async (formData, onSuccess) => {
       },
     };
 
+    console.log('formData:', formData);
     const response = await axios.post(url, formData, config);
 
     if (response.data.code === 200) {

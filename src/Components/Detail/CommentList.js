@@ -1,20 +1,23 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import apiCommentList from '../../services/api/comment/list';
 import CommentItem from './CommentItem';
 
 const CommentList = ({index}) => {
-  const navigation = useNavigation();
   const [commentList, setCommentList] = useState([]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+  useFocusEffect(
+    useCallback(() => {
+      console.log('CommentList focus.......');
       getCommentList();
-    });
-    return unsubscribe;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  // useEffect(() => {
+  //   getCommentList();
+  // }, [commentList]);
 
   const getCommentList = async () => {
     await apiCommentList(index, onSuccessListComment);
@@ -22,6 +25,7 @@ const CommentList = ({index}) => {
 
   const onSuccessListComment = data => {
     const indexList = Array.from(new Set(data.map(item => item.idx)));
+    // console.log('indexList:', indexList);
     const reducedData = indexList.map(id =>
       data
         .filter(item => item.idx === id)
@@ -56,7 +60,14 @@ const CommentList = ({index}) => {
     // console.log('reducedData:', JSON.stringify(reducedData, null, '\t'));
   };
 
-  return commentList.map(item => <CommentItem key={item.idx} data={item} />);
+  return commentList.map(item => (
+    <CommentItem
+      key={item.idx}
+      commentData={item}
+      commentList={commentList}
+      setCommentList={setCommentList}
+    />
+  ));
   // return <Text>parkcom</Text>;
 };
 

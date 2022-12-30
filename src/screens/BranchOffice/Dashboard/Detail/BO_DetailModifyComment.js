@@ -12,12 +12,14 @@ import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
 import globalStyles from '../../../../styles/global';
 import produce from 'immer';
 import apiCommentUpdate from '../../../../services/api/comment/update';
+import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
 
 function BO_DetailModifyComment({navigation, route}) {
   // console.log('BO_DetailModifyComment : ', route.params.data);
-  const index = route.params.data.idx;
-  const [content, setContent] = useState(route.params.data.content);
-  const [attachments, setAttachments] = useState(route.params.data.attachments);
+  const originalComment = route.params.data;
+  const index = originalComment.idx;
+  const [content, setContent] = useState(originalComment.content);
+  const [attachments, setAttachments] = useState(originalComment.attachments);
   const [visibleBS, setVisibleBS] = useState({
     visible: false,
     format: InquiryAction.Registration,
@@ -69,15 +71,21 @@ function BO_DetailModifyComment({navigation, route}) {
           type: file.type,
         }));
 
-        console.log(JSON.stringify(uploadFiles, null, '\t'));
+        const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
+        const deleteFiles = originalComment.attachments.filter(
+          file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
+        );
 
         const formData = new FormData();
-        formData.append('images', uploadFiles);
-        uploadFiles.map(item => formData.append('image', item));
+        // formData.append('images', uploadFiles);
+        uploadFilesWOS3.map(item => formData.append('image', item));
         formData.append('index', index);
         formData.append('content', content);
 
-        await apiCommentUpdate(formData, onSuccessRegister(navigation));
+        await apiCommentUpdate(
+          formData,
+          onSuccessRegister(navigation, 'tb_QnaReply', originalComment.idx, deleteFiles),
+        );
 
         break;
       case InquiryAction.CancelInquiry:
@@ -88,7 +96,10 @@ function BO_DetailModifyComment({navigation, route}) {
     }
   };
 
-  const onSuccessRegister = nav => data => {
+  const onSuccessRegister = (nav, tableName, idx, deleteFiles) => async data => {
+    if (deleteFiles.length > 0) {
+      await apiInquiryDeleteFiles(tableName, idx, deleteFiles);
+    }
     nav.goBack();
   };
   const onBSContinue = () => {
