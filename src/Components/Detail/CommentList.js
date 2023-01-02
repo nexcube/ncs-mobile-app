@@ -9,15 +9,10 @@ const CommentList = ({index}) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('CommentList focus.......');
       getCommentList();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
-
-  // useEffect(() => {
-  //   getCommentList();
-  // }, [commentList]);
 
   const getCommentList = async () => {
     await apiCommentList(index, onSuccessListComment);

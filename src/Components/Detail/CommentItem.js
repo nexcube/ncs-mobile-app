@@ -9,7 +9,7 @@ import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
 const CommentItem = ({commentData, commentList, setCommentList}) => {
-  console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
+  // console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
@@ -42,10 +42,7 @@ const CommentItem = ({commentData, commentList, setCommentList}) => {
   };
 
   const onSuccessCommentDelete = () => {
-    console.log(JSON.stringify(commentList, null, '\t'));
-    console.log(JSON.stringify(commentData, null, '\t'));
     const result = commentList.filter(item => item.idx !== commentData.idx);
-    console.log(JSON.stringify(result, null, '\t'));
     setCommentList(result);
   };
 

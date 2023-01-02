@@ -50,11 +50,17 @@ function LoginScreen({navigation, route}) {
     userData.setPassword(password);
     userData.setJWT(data.token);
     userData.setUserData(data.userData);
+    console.log(JSON.stringify(data, null, '\t'));
 
-    if (data.loginType === 'staff') {
+    if (data.userData.rankCode === 'L10') {
+      navigation.navigate('BO_MainStack');
+    } else if (
+      data.userData.facilityCode === 'EPXHEAD' ||
+      data.userData.facilityCode === 'CHBHEAD'
+    ) {
       navigation.navigate('HO_MainStack');
     } else {
-      navigation.navigate('BO_MainStack');
+      console.log('tb_QnaAccessUser 조회 필요.');
     }
   };
 

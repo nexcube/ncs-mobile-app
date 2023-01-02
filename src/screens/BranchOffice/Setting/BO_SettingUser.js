@@ -1,9 +1,88 @@
-import React from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {useEffect} from 'react/cjs/react.development';
 import SettingBOList from '../../../components/setting/SettingBOList';
+import apiInquiryBranch from '../../../services/api/inquiry/branch';
+import apiBranchStaffList from '../../../services/api/setting/branchStaffList';
+import apiSettingQnaAccessUserList from '../../../services/api/setting/qnaAccessUser/list';
+
 import globalStyles from '../../../styles/global';
 
 function BO_SettingUser({navigation, route}) {
+  const [branchList, setBranchList] = useState([]);
+  const [branchStaffs, setBranchStaffs] = useState([[]]);
+  const [branchStaffsRefined, setBranchStaffsRefined] = useState([[]]);
+  const [qnaAccessUser, setQnaAccessUser] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      apiInquiryBranch(onSuccessBranch);
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  const onSuccessBranch = async data => {
+    setBranchList(data);
+  };
+
+  useEffect(() => {
+    if (branchList.length > 0) {
+      apiBranchStaffList(
+        branchList.map(branch => branch.facilityCode),
+        onSuccessBranchStaffList,
+      );
+      apiSettingQnaAccessUserList(
+        branchList.map(branch => branch.facilityCode),
+        onSuccessList,
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [branchList]);
+
+  const onSuccessBranchStaffList = data => {
+    const result = branchList.map(branch =>
+      data.filter(staff => staff.facilityCode === branch.facilityCode),
+    );
+    setBranchStaffs(result);
+  };
+
+  const onSuccessList = async data => {
+    setQnaAccessUser(data);
+  };
+
+  useEffect(() => {
+    if ((branchStaffs.length > 0, qnaAccessUser.length > 0)) {
+      const staffIds = branchList
+        .map(branch => qnaAccessUser.filter(val => val.facilityCode === branch.facilityCode))
+        .flat(1);
+
+      const final = branchStaffs.map(branch =>
+        branch.filter(staff =>
+          staffIds.some(s => s.staffId === staff.staffId || staff.rankCode === 'L10'),
+        ),
+      );
+      console.log(JSON.stringify(final, null, '\t'));
+
+      setBranchStaffsRefined(
+        final.map(f =>
+          f.sort((a, b) => {
+            if (a.rankCode === 'L10') {
+              return -1;
+            }
+          }),
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [branchStaffs, qnaAccessUser]);
+
+  useEffect(() => {
+    apiInquiryBranch(onSuccessBranch);
+  }, [refresh]);
+
   return (
     <View style={[styles.fullscreen]}>
       <View style={[styles.info]}>
@@ -15,11 +94,16 @@ function BO_SettingUser({navigation, route}) {
       </View>
       <ScrollView>
         <SettingBOList
-          BOList={['보라매점', '신도림점']}
-          userList={[
-            ['홍길동 원장', '홍길동 부원장'],
-            ['홍길동 원장', '홍길동 부원장'],
-          ]}
+          key={branchList.facilityCode}
+          branchList={branchList.map(branch => branch.name)}
+          branchStaffs={branchStaffs}
+          branchStaffsRefined={branchStaffsRefined}
+          setRefresh={setRefresh}
+
+          // branchStaffs={[
+          //   ['홍길동 원장', '홍길동 부원장'],
+          //   ['홍길동 원장', '홍길동 부원장'],
+          // ]}
         />
       </ScrollView>
     </View>

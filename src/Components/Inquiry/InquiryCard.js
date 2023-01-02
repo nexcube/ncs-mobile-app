@@ -29,7 +29,7 @@ const InquiryCard = ({
         style={[{opacity: status === 'HOLD' ? 0.6 : 1}]}>
         <Card.Title titleStyle={[styles.title]} title={title} titleNumberOfLines={2} />
         <View style={[styles.separator]} />
-        <Card.Content style={[forDetail && {paddingTop: 12}]}>
+        <Card.Content style={[forDetail && styles.contentContainer]}>
           <Paragraph style={[styles.content]}>
             {mainCatName} > {subCatName}
           </Paragraph>
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
     fontFamily: globalStyles.font.bold,
     fontSize: 15,
     color: globalStyles.color.text,
+  },
+  contentContainer: {
+    paddingTop: 12,
   },
   content: {
     fontSize: 13,

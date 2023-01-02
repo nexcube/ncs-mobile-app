@@ -36,7 +36,6 @@ function BO_Detail({navigation, route}) {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('BO_Detail: focus...');
       getInquiryListItem();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),

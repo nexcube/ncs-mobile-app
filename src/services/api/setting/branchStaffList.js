@@ -2,30 +2,28 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiCommentUpdate = async (params, onSuccess) => {
-  const url = '/comment/update';
-  console.log(`${axios.defaults.baseURL}/inquiry/modifyComment`);
+const apiBranchStaffList = async (branchCodes, onSuccess) => {
+  const url = '/setting/branchStaffList';
+  console.log(`${axios.defaults.baseURL}${url}`);
+
+  console.log(branchCodes);
 
   try {
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
-    const config = {
-      redirect: 'follow',
+    const data = {
       headers: {'Content-Type': 'application/json', authorization: token},
-      transformRequest: (data, headers) => {
-        return data;
-      },
+      params: {branchCodes: [...branchCodes]},
     };
 
-    const response = await axios.put(url, params, config);
+    const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      // console.log(response.data);
+      // console.log(JSON.stringify(response.data, null, '\t'));
       onSuccess(response.data.data);
     } else {
-      console.log(response.data.message);
-
+      console.error(response.data.message);
       return null;
     }
   } catch (error) {
@@ -35,4 +33,4 @@ const apiCommentUpdate = async (params, onSuccess) => {
   }
 };
 
-export default apiCommentUpdate;
+export default apiBranchStaffList;

@@ -3,7 +3,6 @@ import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
 const apiInquiryDeleteFiles = async (tableName, index, files, onSuccess) => {
-  console.log('apiInquiryDeleteFiles', tableName, index, files);
   const url = '/common/deleteFiles';
   console.log(`${axios.defaults.baseURL}${url}`);
 
