@@ -6,8 +6,6 @@ const apiBranchStaffList = async branchCodes => {
   const url = '/setting/branchStaffList';
   console.log(`${axios.defaults.baseURL}${url}`);
 
-  console.log(branchCodes);
-
   try {
     const jwt = await userData.getJWT();
     const token = `${jwt}`;

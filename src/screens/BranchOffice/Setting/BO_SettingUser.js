@@ -31,7 +31,18 @@ function BO_SettingUser({navigation, route}) {
           const _branchStaffsRefined = _branchStaffs.map(staffs =>
             staffs.filter(staff => staff.rankCode === 'L10'),
           );
-          setBranchStaffsRefined(_branchStaffsRefined);
+          setBranchStaffsRefined(
+            _branchStaffsRefined.map(f =>
+              f.sort((a, b) => {
+                if (a.profile_idx > b.profile_idx) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              }),
+            ),
+          );
+          // console.log(JSON.stringify(_branchStaffsRefined, null, '\t'));
 
           apiSettingQnaAccessUserList(_branchList.map(branch => branch.facilityCode)).then(
             _qnaAccessUser => {
@@ -50,6 +61,13 @@ function BO_SettingUser({navigation, route}) {
                 setBranchStaffsRefined(
                   final.map(f =>
                     f.sort((a, b) => {
+                      if (a.rankCode === 'L10' && a.rankCode === b.rankCode) {
+                        if (a.profile_idx > b.profile_idx) {
+                          return 1;
+                        } else {
+                          return -1;
+                        }
+                      }
                       if (a.rankCode === 'L10') {
                         return -1;
                       }

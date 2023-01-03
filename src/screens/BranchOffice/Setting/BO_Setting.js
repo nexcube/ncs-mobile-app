@@ -1,14 +1,33 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {Alert, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import SettingButton from '../../../components/setting/SettingButton';
 import SettingButtonWithInfo from '../../../components/setting/SettingButtonWithInfo';
+import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/global';
 
 function BO_Setting({navigation, route}) {
   const onPressPush = () => navigation.navigate('BO_Setting_Push');
   const onPressUserSetting = () => navigation.navigate('BO_Setting_User_Setting');
-  const onPressLogout = () => console.log('구현 해야 됩니다.');
+  const onPressLogout = () => {
+    Alert.alert('주의', '정말로 로그아웃 하시겠습니까?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          userData.setId('');
+          userData.setPassword('');
+          userData.setJWT('');
+          userData.setUserData('');
+          navigation.popToTop();
+        },
+      },
+    ]);
+  };
 
   return (
     <SafeAreaView style={[styles.fullscreen]}>

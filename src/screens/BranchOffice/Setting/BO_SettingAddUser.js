@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider} from 'react-native-paper';
@@ -9,10 +8,8 @@ import globalStyles from '../../../styles/global';
 function BO_SettingAddUser({navigation, route}) {
   const backOfficeName = route.params.backOffice;
   const branchStaffs = route.params.branchStaffs;
-  console.log(branchStaffs);
 
   const onPressAdd = index => {
-    console.log(branchStaffs[index].staffName);
     apiSettingQnaAccessUserRegister(
       branchStaffs[index].staffId,
       branchStaffs[index].facilityCode,
@@ -21,7 +18,6 @@ function BO_SettingAddUser({navigation, route}) {
   };
 
   const onSuccess = () => {
-    console.log('추가됨');
     navigation.goBack();
   };
 

@@ -7,9 +7,8 @@ import {getVersion} from 'react-native-device-info';
 
 function SettingButtonWithInfo({onPress, title, info, icon}) {
   return (
-    <Card style={[styles.container]}>
+    <Card style={[styles.container]} onPress={onPress}>
       <Card.Title
-        onPress={onPress}
         style={[styles.card]}
         title={title}
         titleStyle={styles.title}

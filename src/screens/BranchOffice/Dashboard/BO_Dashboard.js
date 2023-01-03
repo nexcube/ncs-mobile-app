@@ -95,7 +95,6 @@ function BO_Dashboard({navigation, route}) {
   // 스크롤 처리 ///////////////////////////////////////////////////////////////////////////////////
   const onEndReached = () => {
     if (!listStatus.loading && !listStatus.noMore) {
-      console.log('onEndReached ~~~~~~');
       getInquiryList();
     }
   };
