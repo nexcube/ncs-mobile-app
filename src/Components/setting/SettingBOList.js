@@ -22,7 +22,7 @@ function SettingBOList({
 
   const onSuccessRemove = () => {
     console.log('삭제됨');
-    setRefresh(prev => !prev);
+    setRefresh(true);
   };
 
   const userListComp = idx => {

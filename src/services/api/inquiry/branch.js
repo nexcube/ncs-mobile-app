@@ -2,7 +2,7 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiInquiryBranch = async onSuccess => {
+const apiInquiryBranch = async () => {
   const url = '/inquiry/branch';
   const staffId = await userData.getStaffId();
   console.log(`${axios.defaults.baseURL}${url}?id=${staffId}`);
@@ -16,7 +16,8 @@ const apiInquiryBranch = async onSuccess => {
 
     if (response.data.code === 200) {
       // console.log(response.data);
-      onSuccess(response.data.data);
+
+      return response.data.data;
     } else {
       return null;
     }

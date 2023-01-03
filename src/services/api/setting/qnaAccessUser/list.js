@@ -2,7 +2,7 @@ import axios from 'axios';
 import userData from '../../../storage/DeviceStorage';
 import axios_error_handler from '../../errorHandler';
 
-const apiSettingQnaAccessUserList = async (facilityCodes, onSuccess) => {
+const apiSettingQnaAccessUserList = async facilityCodes => {
   const url = '/setting/qnaAccessUser/list';
   console.log(`${axios.defaults.baseURL}${url}`);
 
@@ -19,7 +19,8 @@ const apiSettingQnaAccessUserList = async (facilityCodes, onSuccess) => {
 
     if (response.data.code === 200) {
       // console.log(JSON.stringify(response.data, null, '\t'));
-      onSuccess(response.data.data);
+
+      return response.data.data;
     } else {
       console.error(response.data.message);
       return null;
