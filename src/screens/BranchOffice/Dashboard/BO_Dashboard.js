@@ -3,9 +3,9 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 
-import InquiryCard from '../../../components/BranchOffice/Inquiry/InquiryCard';
-import InquiryStatus from '../../../components/BranchOffice/Inquiry/inquiryStatus';
-import SearchTextInput from '../../../components/BranchOffice/Inquiry/SearchTextInput';
+import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
+import InquiryStatus from '../../../components/BranchOffice/Dashboard//inquiryStatus';
+import SearchTextInput from '../../../components/BranchOffice/Dashboard//SearchTextInput';
 import apiInquiryList from '../../../services/api/inquiry/list';
 
 import globalStyles from '../../../styles/globalStyles';

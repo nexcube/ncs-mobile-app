@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
-import InquiryCard from '../../../../components/BranchOffice/Inquiry/InquiryCard';
+import InquiryCard from '../../../../components/BranchOffice/Dashboard/InquiryCard';
 import globalStyles from '../../../../styles/globalStyles';
 import TopMenu from '../../../../components/BranchOffice/Detail/TopMenu';
-import Attachments from '../../../../components/BranchOffice/Inquiry/Attachments';
+import Attachments from '../../../../components/BranchOffice/Dashboard/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import apiInquiryBranch from '../../../../services/api/inquiry/branch';
 import apiInquiryListItem from '../../../../services/api/inquiry/listItem';

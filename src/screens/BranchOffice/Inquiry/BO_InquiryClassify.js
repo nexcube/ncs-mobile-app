@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import ChoiceButton from '../../../components/common/ChoiceButton';
-import SearchTextInput from '../../../components/BranchOffice/Inquiry/SearchTextInput';
+import SearchTextInput from '../../../components/BranchOffice/Dashboard/SearchTextInput';
 import ClassifyList from '../../../components/BranchOffice/InquiryClassify/ClassifyList';
 import globalStyles from '../../../styles/globalStyles';
 

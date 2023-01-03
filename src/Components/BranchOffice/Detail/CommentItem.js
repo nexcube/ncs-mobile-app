@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import apiCommentDeleteItem from '../../../services/api/comment/deleteItem';
 import globalStyles from '../../../styles/globalStyles';
 
-import Attachments from '../Inquiry/Attachments';
+import Attachments from '../Dashboard/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
