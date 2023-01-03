@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomToast, {Toast} from '../components/common/CustomToast';
 import userData from '../services/storage/DeviceStorage';
 import apiLogin from '../services/api/login';
+import apiSettingQnaAccessUserListItem from '../services/api/setting/qnaAccessUser/listItem';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: hk89131 / YAjPr5YLys
@@ -60,7 +61,22 @@ function LoginScreen({navigation, route}) {
     ) {
       navigation.navigate('HO_MainStack');
     } else {
-      console.log('tb_QnaAccessUser 조회 필요.');
+      apiSettingQnaAccessUserListItem(data.userData.staffId, data.userData.facilityCode).then(
+        response => {
+          if (response.length > 0) {
+            navigation.navigate('BO_MainStack');
+          } else {
+            Toast.show({
+              type: 'errorMsg',
+              visibilityTime: 3000,
+              props: {
+                message:
+                  '아이디 혹은 비밀번호가 유효하지 않거나 앱 사용 권한이 없습니다. 관리자에게 문의하세요',
+              },
+            });
+          }
+        },
+      );
     }
   };
 
@@ -94,7 +110,7 @@ function LoginScreen({navigation, route}) {
             autoCapitalize="none"
             placeholder="NEMS 아이디"
             value={id}
-            onChangeText={setId}
+            onChangeText={value => setId(value.trim())}
           />
           <CustomInput
             hasMarginBottom
@@ -102,7 +118,7 @@ function LoginScreen({navigation, route}) {
             secureTextEntry={true}
             autoCapitalize="none"
             placeholder="NEMS 암호"
-            onChangeText={setPassword}
+            onChangeText={value => setPassword(value.trim())}
             value={password}
           />
           <CustomButton onPress={onLogin} title="로그인" hasMarginBottom={false} />
