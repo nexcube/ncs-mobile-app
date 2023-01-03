@@ -1,9 +1,9 @@
 import React, {useMemo, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import ChoiceButton from '../../../components/common/ChoiceButton';
-import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
-import ClassifyList from '../../../components/InquiryClassify/ClassifyList';
-import globalStyles from '../../../styles/global';
+import SearchTextInput from '../../../components/BranchOffice/Inquiry/SearchTextInput';
+import ClassifyList from '../../../components/BranchOffice/InquiryClassify/ClassifyList';
+import globalStyles from '../../../styles/globalStyles';
 
 function BO_InquiryClassify({navigation, route}) {
   const qnaCategoryData = route?.params?.qnaCategory;

@@ -12,16 +12,43 @@ import HO_SettingClassify from './Setting/HO_SettingClassify';
 import HO_SettingClassifierChange from './Setting/HO_SettingClassifierChange';
 import HO_SettingPush from './Setting/HO_SettingPush';
 import HO_SettingPushTime from './Setting/HO_SettingPushTime';
+import globalStyles from '../../styles/globalStyles';
+import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 function HO_MainStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="HO_MainTab" component={HO_MainTab} />
-      <Stack.Screen name="HO_Detail" component={HO_Detail} />
-      <Stack.Screen name="HO_Detail_Image_Viewer" component={HO_DetailImageViewer} />
-      <Stack.Screen name="HO_Detail_Add_Comment" component={HO_DetailAddComment} />
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: globalStyles.color.white,
+        headerStyle: {backgroundColor: globalStyles.color.purple},
+        headerBackTitle: '',
+        headerTitleAlign: 'center',
+        headerBackImageSource:
+          Platform.OS === 'android'
+            ? require('../../../assets/images/chevron-left.png')
+            : {uri: 'back', width: 24, height: 24},
+        // presentation: 'modal',
+        animationTypeForReplace: 'push',
+        animation: 'slide_from_right',
+      }}>
+      <Stack.Screen name="HO_MainTab" component={HO_MainTab} options={{headerShown: false}} />
+      <Stack.Screen
+        name="HO_Detail"
+        component={HO_Detail}
+        options={{title: '상세 보기', animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="HO_Detail_Image_Viewer"
+        component={HO_DetailImageViewer}
+        options={{title: '첨부된 이미지'}}
+      />
+      <Stack.Screen
+        name="HO_Detail_Add_Comment"
+        component={HO_DetailAddComment}
+        options={{title: '댓글 작성'}}
+      />
       <Stack.Screen name="HO_Detail_Classifier_Info" component={HO_DetailClassifierInfo} />
       <Stack.Screen name="HO_Detail_Classifier_Search" component={HO_DetailClassifierSearch} />
       <Stack.Screen name="HO_Classify_Detail" component={HO_ClassifyDetail} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import CustomButton from '../CustomButton';
 
 const BackSheet = ({onOk, onCancel}) => {

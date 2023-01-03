@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Pressable, Platform, Text, Image} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 
 function SelectionButton({hasMarginBottom, onPress, title, ...rest}) {
   return (

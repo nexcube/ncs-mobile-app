@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Card, Paragraph} from 'react-native-paper';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 import InquiryCardHeader from './InquiryCardHeader';
 

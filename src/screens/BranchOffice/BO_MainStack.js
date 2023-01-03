@@ -7,25 +7,13 @@ import BO_DetailImageViewer from './Dashboard/Detail/BO_DetailImageViewer';
 import BO_DetailAddComment from './Dashboard/Detail/BO_DetailAddComment';
 import BO_Inquiry from './Inquiry/BO_Inquiry';
 import BO_InquiryClassify from './Inquiry/BO_InquiryClassify';
-import globalStyles from '../../styles/global';
-import {Platform, View} from 'react-native';
+import globalStyles from '../../styles/globalStyles';
+import {Platform} from 'react-native';
 import BO_DetailModifyComment from './Dashboard/Detail/BO_DetailModifyComment';
 
 const Stack = createNativeStackNavigator();
 
 function BO_MainStack() {
-  const config = {
-    animation: 'spring',
-    config: {
-      stiffness: 1000,
-      damping: 500,
-      mass: 3,
-      overshootClamping: true,
-      restDisplacementThreshold: 0.01,
-      restSpeedThreshold: 0.01,
-    },
-  };
-
   return (
     <Stack.Navigator
       screenOptions={{

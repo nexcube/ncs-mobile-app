@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Card} from 'react-native-paper';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 
 function SettingButton({onPress, title, subTitle, icon}) {

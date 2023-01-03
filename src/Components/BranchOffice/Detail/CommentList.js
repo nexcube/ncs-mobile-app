@@ -1,7 +1,7 @@
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 
-import apiCommentList from '../../services/api/comment/list';
+import apiCommentList from '../../../services/api/comment/list';
 import CommentItem from './CommentItem';
 
 const CommentList = ({index}) => {

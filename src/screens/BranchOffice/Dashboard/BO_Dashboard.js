@@ -3,12 +3,12 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 
-import InquiryCard from '../../../components/Inquiry/InquiryCard';
-import InquiryStatus from '../../../components/Inquiry/inquiryStatus';
-import SearchTextInput from '../../../components/Inquiry/SearchTextInput';
+import InquiryCard from '../../../components/BranchOffice/Inquiry/InquiryCard';
+import InquiryStatus from '../../../components/BranchOffice/Inquiry/inquiryStatus';
+import SearchTextInput from '../../../components/BranchOffice/Inquiry/SearchTextInput';
 import apiInquiryList from '../../../services/api/inquiry/list';
 
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 // 리스트 기본 갯수;

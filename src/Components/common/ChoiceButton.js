@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Pressable, StyleSheet, Text, Platform} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 
 export default function ChoiceButton({title, onPress, selection, index}) {
   return (

@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider} from 'react-native-paper';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-import apiSettingQnaAccessUserRemove from '../../services/api/setting/qnaAccessUser/remove';
+import apiSettingQnaAccessUserRemove from '../../../services/api/setting/qnaAccessUser/remove';
 
 function SettingBOList({
   branchList,

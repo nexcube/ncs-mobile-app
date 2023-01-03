@@ -4,7 +4,7 @@ import {LogBox, Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 
-import globalStyles from './src/styles/global';
+import globalStyles from './src/styles/globalStyles';
 import {DefaultTheme} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SpinnerContextProvider} from './src/services/context/SpinnerContext';

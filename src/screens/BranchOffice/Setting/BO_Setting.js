@@ -1,10 +1,11 @@
 import React from 'react';
 import {Alert, StyleSheet, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import SettingButton from '../../../components/setting/SettingButton';
-import SettingButtonWithInfo from '../../../components/setting/SettingButtonWithInfo';
+import SettingButton from '../../../components/BranchOffice/Setting/SettingButton';
+
+import SettingButtonWithInfo from '../../../components/BranchOffice/Setting/SettingButtonWithInfo';
 import userData from '../../../services/storage/DeviceStorage';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function BO_Setting({navigation, route}) {
   const onPressPush = () => navigation.navigate('BO_Setting_Push');

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 
 function CustomButton({
   onPress,

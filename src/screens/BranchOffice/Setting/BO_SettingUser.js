@@ -2,12 +2,13 @@ import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useEffect} from 'react/cjs/react.development';
-import SettingBOList from '../../../components/setting/SettingBOList';
+import SettingBOList from '../../../components/BranchOffice/Setting/SettingBOList';
+
 import apiInquiryBranch from '../../../services/api/inquiry/branch';
 import apiBranchStaffList from '../../../services/api/setting/branchStaffList';
 import apiSettingQnaAccessUserList from '../../../services/api/setting/qnaAccessUser/list';
 
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function BO_SettingUser({navigation, route}) {
   const [branchList, setBranchList] = useState([]);

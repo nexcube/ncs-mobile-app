@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
-import InquiryCard from '../../../../components/Inquiry/InquiryCard';
-import globalStyles from '../../../../styles/global';
-import TopMenu from '../../../../components/Detail/TopMenu';
-import Attachments from '../../../../components/Inquiry/Attachments';
+import InquiryCard from '../../../../components/BranchOffice/Inquiry/InquiryCard';
+import globalStyles from '../../../../styles/globalStyles';
+import TopMenu from '../../../../components/BranchOffice/Detail/TopMenu';
+import Attachments from '../../../../components/BranchOffice/Inquiry/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import apiInquiryBranch from '../../../../services/api/inquiry/branch';
 import apiInquiryListItem from '../../../../services/api/inquiry/listItem';
 
-import CommentList from '../../../../components/Detail/CommentList';
+import CommentList from '../../../../components/BranchOffice/Detail/CommentList';
 import CustomInput from '../../../../components/common/CustomInput';
 import {useFocusEffect} from '@react-navigation/native';
 import apiInquiryDeleteItem from '../../../../services/api/inquiry/deleteItem';

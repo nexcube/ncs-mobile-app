@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 
 function CustomInput({hasMarginBottom, height, ...rest}) {
   return (

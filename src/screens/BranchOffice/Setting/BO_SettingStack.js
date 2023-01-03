@@ -4,7 +4,7 @@ import BO_Setting from './BO_Setting';
 import BO_SettingAddUser from './BO_SettingAddUser';
 import BO_SettingPush from './BO_SettingPush';
 import BO_SettingUser from './BO_SettingUser';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import {Platform} from 'react-native';
 
 const Stack = createNativeStackNavigator();

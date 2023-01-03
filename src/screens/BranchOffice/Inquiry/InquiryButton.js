@@ -4,7 +4,7 @@ import {Platform, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import apiInquiryBranch from '../../../services/api/inquiry/branch';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 const TABBAR_HEIGHT = 49;
 
@@ -20,11 +20,9 @@ function InquiryButton({routeName}) {
   }, [insets.bottom]);
 
   const onInquiry = async () => {
-    await apiInquiryBranch(onSuccess);
-  };
-
-  const onSuccess = data => {
-    navigation.navigate(routeName, {branchList: data});
+    apiInquiryBranch().then(data => {
+      navigation.navigate(routeName, {branchList: data});
+    });
   };
 
   return (

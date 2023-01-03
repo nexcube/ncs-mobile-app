@@ -2,9 +2,9 @@ import React from 'react';
 import {Animated, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import InquiryHeader from './InquiryHeader';
-import LogoBack from '../../../assets/images/EDUPLEX-Logo-back.svg';
+import LogoBack from '../../../../assets/images/EDUPLEX-Logo-back.svg';
 
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;

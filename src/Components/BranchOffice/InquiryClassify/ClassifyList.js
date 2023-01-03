@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 const ClassifyList = ({list, onPress}) => {
   return (

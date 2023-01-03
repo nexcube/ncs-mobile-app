@@ -6,8 +6,8 @@ import HeaderButton from '../../../../components/common/HeaderButton';
 import SelectionButton from '../../../../components/common/SelectionButton';
 import SelectionList from '../../../../components/common/SelectionList';
 import userData from '../../../../services/storage/DeviceStorage';
-import globalStyles from '../../../../styles/global';
-import InquiryBottomBar from '../../../../components/Inquiry/InquiryBottomBar';
+import globalStyles from '../../../../styles/globalStyles';
+import InquiryBottomBar from '../../../../components/BranchOffice/Inquiry/InquiryBottomBar';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import CustomToast from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
@@ -15,7 +15,7 @@ import produce from 'immer';
 import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
 import apiInquiryCategory from '../../../../services/api/inquiry/category';
 import apiInquiryUpdate from '../../../../services/api/inquiry/update';
-import Attachments from '../../../../components/Inquiry/Attachments';
+import Attachments from '../../../../components/BranchOffice/Inquiry/Attachments';
 import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
 
 function BO_DetailModify({navigation, route}) {

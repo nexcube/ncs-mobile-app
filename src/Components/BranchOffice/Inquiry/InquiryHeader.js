@@ -1,8 +1,8 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import apiInquiryStatus from '../../services/api/inquiry/status';
-import globalStyles from '../../styles/global';
+import apiInquiryStatus from '../../../services/api/inquiry/status';
+import globalStyles from '../../../styles/globalStyles';
 
 export default function InquiryHeader() {
   const [inquiryStatus, setInquiryStatus] = useState({NEW: 0, INPROGRESS: 0, DONE: 0});

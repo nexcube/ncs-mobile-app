@@ -2,7 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import BO_Dashboard from './Dashboard/BO_Dashboard';
 import Icon from 'react-native-vector-icons/Feather';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 import BO_SettingStack from './Setting/BO_SettingStack';
 
 const Tab = createBottomTabNavigator();

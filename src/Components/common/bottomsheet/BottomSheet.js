@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Animated, Dimensions, Modal, StyleSheet, Text, View} from 'react-native';
 import CustomButton from '../CustomButton';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import RegistrationSheet from './RegistrationSheet';
 import BackSheet from './BackSheet';
 

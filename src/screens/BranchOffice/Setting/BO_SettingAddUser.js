@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 import apiSettingQnaAccessUserRegister from '../../../services/api/setting/qnaAccessUser/register';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function BO_SettingAddUser({navigation, route}) {
   const backOfficeName = route.params.backOffice;

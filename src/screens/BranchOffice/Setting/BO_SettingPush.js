@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function BO_SettingPush({navigation, route}) {
   const [checked, setChecked] = useState('first');

@@ -2,8 +2,9 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import apiCommentDeleteItem from '../../services/api/comment/deleteItem';
-import globalStyles from '../../styles/global';
+import apiCommentDeleteItem from '../../../services/api/comment/deleteItem';
+import globalStyles from '../../../styles/globalStyles';
+
 import Attachments from '../Inquiry/Attachments';
 import TopMenu from './TopMenu';
 

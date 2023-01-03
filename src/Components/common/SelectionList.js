@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 
 function SelectionList({hasMarginBottom, data, setSelected, defaultSelection = ''}) {
   const [isSelect, setIsSelect] = useState(false);

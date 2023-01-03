@@ -1,11 +1,12 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import globalStyles from '../../styles/global';
+
 import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
-import {permissionCheck} from '../../services/permission/PermissionCheck';
+import {permissionCheck} from '../../../services/permission/PermissionCheck';
 import DocumentPicker from 'react-native-document-picker';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchCamera} from 'react-native-image-picker';
+import globalStyles from '../../../styles/globalStyles';
 
 const removeDuplicates = (first, second) => {
   const combined = [...first, ...second];

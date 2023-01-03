@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {Divider, Menu, Provider} from 'react-native-paper';
-import {back} from 'react-native/Libraries/Animated/Easing';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Divider, Menu} from 'react-native-paper';
 
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function TopMenu({
   onModify,

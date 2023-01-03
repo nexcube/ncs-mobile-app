@@ -33,6 +33,11 @@ const globalStyles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
+
+  backButtonPadding: {
+    paddingRight: 24,
+    paddingVertical: 10,
+  },
 });
 
 export default globalStyles;

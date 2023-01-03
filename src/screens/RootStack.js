@@ -6,7 +6,7 @@ import HO_MainStack from './HeadOffice/HO_MainStack';
 import BO_MainStack from './BranchOffice/BO_MainStack';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SpinnerContext from '../services/context/SpinnerContext';
-import globalStyles from '../styles/global';
+import globalStyles from '../styles/globalStyles';
 
 const Stack = createNativeStackNavigator();
 

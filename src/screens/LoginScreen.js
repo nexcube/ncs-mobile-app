@@ -47,24 +47,15 @@ function LoginScreen({navigation, route}) {
   };
 
   const onLoginSuccess = data => {
-    userData.setId(id);
-    userData.setPassword(password);
-    userData.setJWT(data.token);
-    userData.setUserData(data.userData);
-    console.log(JSON.stringify(data, null, '\t'));
-
     if (data.userData.rankCode === 'L10') {
-      navigation.navigate('BO_MainStack');
-    } else if (
-      data.userData.facilityCode === 'EPXHEAD' ||
-      data.userData.facilityCode === 'CHBHEAD'
-    ) {
-      navigation.navigate('HO_MainStack');
+      loginProcess(data, 'BO_MainStack');
+    } else if (data.userData.departCode === 'EPXHEAD' || data.userData.departCode === 'CHBHEAD') {
+      loginProcess(data, 'HO_MainStack');
     } else {
       apiSettingQnaAccessUserListItem(data.userData.staffId, data.userData.facilityCode).then(
         response => {
           if (response.length > 0) {
-            navigation.navigate('BO_MainStack');
+            loginProcess(data, 'BO_MainStack');
           } else {
             Toast.show({
               type: 'errorMsg',
@@ -78,6 +69,16 @@ function LoginScreen({navigation, route}) {
         },
       );
     }
+  };
+
+  const loginProcess = (data, routesName) => {
+    userData.setId(id);
+    userData.setPassword(password);
+    userData.setJWT(data.token);
+    userData.setUserData(data.userData);
+    console.log(JSON.stringify(data, null, '\t'));
+
+    navigation.navigate(routesName);
   };
 
   const onLoginError = () => {

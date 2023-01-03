@@ -1,11 +1,10 @@
-import React, {useCallback, useContext} from 'react';
-import {View, Image, TouchableOpacity, StyleSheet, Text, Pressable, Alert} from 'react-native';
-import globalStyles from '../../styles/global';
+import React, {useContext} from 'react';
+import {View, Image, TouchableOpacity, StyleSheet, Text, Pressable} from 'react-native';
+import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
-import SpinnerContext from '../../services/context/SpinnerContext';
-import {useFocusEffect} from '@react-navigation/native';
+import SpinnerContext from '../../../services/context/SpinnerContext';
 
 function getUrlExtension(url) {
   return url.split(/[#?]/)[0].split('.').pop().trim();

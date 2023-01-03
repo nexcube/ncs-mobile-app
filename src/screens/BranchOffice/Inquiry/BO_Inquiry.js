@@ -3,13 +3,13 @@ import {StyleSheet, ScrollView, Platform} from 'react-native';
 import CustomInput from '../../../components/common/CustomInput';
 import HeaderButton from '../../../components/common/HeaderButton';
 import SelectionList from '../../../components/common/SelectionList';
-import Attachments from '../../../components/Inquiry/Attachments';
+import Attachments from '../../../components/BranchOffice/Inquiry/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import InquiryBottomBar from '../../../components/Inquiry/InquiryBottomBar';
+import InquiryBottomBar from '../../../components/BranchOffice/Inquiry/InquiryBottomBar';
 import BottomSheet, {InquiryAction} from '../../../components/common/bottomsheet/BottomSheet';
 import HeaderBackButton from '../../../components/common/HeaderBackButton';
 import CustomToast, {Toast} from '../../../components/common/CustomToast';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import SelectionButton from '../../../components/common/SelectionButton';
 
 import produce from 'immer';

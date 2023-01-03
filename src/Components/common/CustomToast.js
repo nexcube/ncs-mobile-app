@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../styles/globalStyles';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/Feather';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 
 function SearchTextInput({...rest}) {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Card, Divider, Paragraph, Title} from 'react-native-paper';
-import globalStyles from '../../styles/global';
+import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import {getVersion} from 'react-native-device-info';
 
