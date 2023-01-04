@@ -1,32 +1,42 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-const USER_DATA = 'userData';
-const JWT = 'jwt';
-const ID = 'id';
-const PASSWORD = 'password';
+export const USER_DATA = 'userData';
+export const JWT = 'jwt';
+export const ID = 'id';
+export const PASSWORD = 'password';
 
 const deviceStorage = {
   async setItem(key, value) {
     try {
       const jsonString = JSON.stringify(value);
-      await AsyncStorage.setItem(key, jsonString);
+      await EncryptedStorage.setItem(key, jsonString);
     } catch (error) {
-      console.log('AsyncStorage Errors: ' + error.message);
+      console.log('EncryptedStorage Errors: ' + error.message);
     }
   },
   async getItem(key) {
     try {
-      const value = await AsyncStorage.getItem(key);
+      const value = await EncryptedStorage.getItem(key);
+      if (value === undefined) {
+        return value;
+      }
       const jsonObject = JSON.parse(value);
       return jsonObject;
     } catch (error) {
-      console.log('AsyncStorage Errors: ' + error.message);
+      console.log('EncryptedStorage Errors: ' + error.message);
     }
   },
 };
 
 const userData = {
+  async setItem(key, value) {
+    await deviceStorage.setItem(key, value);
+  },
+  async getItem(key) {
+    const result = await deviceStorage.getItem(key);
+    return result;
+  },
+
   // 유저 로그인 정보
   async setUserData(value) {
     await deviceStorage.setItem(USER_DATA, value);
@@ -64,20 +74,12 @@ const userData = {
 
   // PASSWORD
   async setPassword(value) {
-    try {
-      await EncryptedStorage.setItem(PASSWORD, value);
-    } catch (error) {
-      console.error(error);
-    }
+    await deviceStorage.setItem(PASSWORD, value);
   },
 
   async getPassword() {
-    try {
-      const result = await EncryptedStorage.getItem(PASSWORD);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await deviceStorage.getItem(PASSWORD);
+    return result;
   },
 };
 

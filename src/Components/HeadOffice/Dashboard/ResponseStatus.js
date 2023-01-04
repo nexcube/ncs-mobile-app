@@ -36,7 +36,7 @@ function ResponseStatus({animHeaderValue, onPressInfo}) {
               <Element count={1} text="시간 " />
               <Element count={12} text="분 " />
               <Element count={33} text="초 " />
-              <Icon name="info" size={15} onPress={() => console.log('adsfasdf')} />
+              <Icon name="info" size={15} color={globalStyles.color.gray} onPress={onPressInfo} />
             </View>
           </View>
         </Animated.View>

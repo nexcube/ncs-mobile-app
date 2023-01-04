@@ -1,32 +1,21 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  Animated,
-  FlatList,
-  ImageBackground,
-  Image,
-} from 'react-native';
-
+import {StyleSheet, View, Animated, FlatList} from 'react-native';
 import ResponseStatus from '../../../components/HeadOffice/Dashboard/ResponseStatus';
-import ResponseTab from '../../../components/HeadOffice/Dashboard/ResponseTab';
-import globalStyles from '../../../styles/globalStyles';
 import apiInquiryList from '../../../services/api/inquiry/list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
-import BottomSheet from '../../../components/common/bottomsheet/BottomSheet';
+import BottomSheet, {BottomSheetType} from '../../../components/common/bottomsheet/BottomSheet';
+import CustomSwitch from '../../../components/common/CustomSwitch';
+import useCustomSwitch from '../../../hooks/useCustomSwitch';
+import useBottomSheet from '../../../hooks/useBottomSheet';
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
   const [inquiryList, setInquiryList] = useState([]);
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: 'CancelInquiry',
-  });
+  const {isOn, onToggle} = useCustomSwitch('isIncludeDone');
+  const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
 
   useFocusEffect(
     useCallback(() => {
@@ -51,18 +40,18 @@ function HO_Dashboard({navigation, route}) {
   };
 
   const onPressInfo = () => {
-    setVisibleBS(true);
-    console.log('Info....');
-  };
-
-  const onPressBSOk = () => {
-    setVisibleBS(false);
+    showInfo();
   };
 
   return (
     <View>
       <ResponseStatus animHeaderValue={scrollOffsetY} onPressInfo={onPressInfo} />
       <FlatList
+        ListHeaderComponent={
+          <View style={[styles.listHeader]}>
+            <CustomSwitch text="완료 포함" value={isOn} onValueChange={onToggle} />
+          </View>
+        }
         contentContainerStyle={[styles.list]}
         data={inquiryList}
         renderItem={({item}) => (
@@ -99,7 +88,7 @@ function HO_Dashboard({navigation, route}) {
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
       />
 
-      <BottomSheet sheetStatus={visibleBS} onOk={onPressBSOk} />
+      <BottomSheet sheetStatus={config} onOk={hideInfo} />
     </View>
   );
 }
@@ -115,6 +104,10 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: 'center',
+  },
+  listHeader: {
+    alignItems: 'flex-end',
+    marginBottom: 12,
   },
 });
 

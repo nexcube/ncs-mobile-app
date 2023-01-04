@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
+import BottomSheet, {BottomSheetType} from '../../../../components/common/bottomsheet/BottomSheet';
 import CustomInput from '../../../../components/common/CustomInput';
 import CustomToast, {Toast} from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
@@ -13,6 +13,7 @@ import globalStyles from '../../../../styles/globalStyles';
 import produce from 'immer';
 import apiCommentUpdate from '../../../../services/api/comment/update';
 import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
+import useBottomSheet from '../../../../hooks/useBottomSheet';
 
 function BO_DetailModifyComment({navigation, route}) {
   // console.log('BO_DetailModifyComment : ', route.params.data);
@@ -20,10 +21,15 @@ function BO_DetailModifyComment({navigation, route}) {
   const index = originalComment.idx;
   const [content, setContent] = useState(originalComment.content);
   const [attachments, setAttachments] = useState(originalComment.attachments);
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: InquiryAction.Registration,
-  });
+  // const [visibleBS, setVisibleBS] = useState({
+  //   visible: false,
+  //   format: BottomSheetType.Registration,
+  // });
+
+  const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
+    BottomSheetType.Registration,
+  );
+  const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
 
   useEffect(() => {
     navigation.setOptions({
@@ -39,61 +45,44 @@ function BO_DetailModifyComment({navigation, route}) {
       return;
     }
 
-    const newBSConfig = produce(visibleBS, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.Registration;
-    });
-    setVisibleBS(newBSConfig);
+    showRegisterBS();
   };
   const onBack = () => {
     if (content.length > 0) {
-      const newSheetStatus = produce(visibleBS, draft => {
-        draft.visible = true;
-        draft.format = InquiryAction.CancelInquiry;
-      });
-      setVisibleBS(newSheetStatus);
+      showCancelBS();
     } else {
       navigation.pop();
     }
   };
 
-  const onBSConfirm = async () => {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
+  const onBSConfirmRegister = async () => {
+    hideRegisterBS();
 
-    switch (visibleBS.format) {
-      case InquiryAction.Registration:
-        const uploadFiles = attachments.map(file => ({
-          name: file.name,
-          uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
-          type: file.type,
-        }));
+    const uploadFiles = attachments.map(file => ({
+      name: file.name,
+      uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+      type: file.type,
+    }));
 
-        const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
-        const deleteFiles = originalComment.attachments.filter(
-          file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
-        );
+    const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
+    const deleteFiles = originalComment.attachments.filter(
+      file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
+    );
 
-        const formData = new FormData();
-        // formData.append('images', uploadFiles);
-        uploadFilesWOS3.map(item => formData.append('image', item));
-        formData.append('index', index);
-        formData.append('content', content);
+    const formData = new FormData();
+    uploadFilesWOS3.map(item => formData.append('image', item));
+    formData.append('index', index);
+    formData.append('content', content);
 
-        await apiCommentUpdate(
-          formData,
-          onSuccessRegister(navigation, 'tb_QnaReply', originalComment.idx, deleteFiles),
-        );
+    await apiCommentUpdate(
+      formData,
+      onSuccessRegister(navigation, 'tb_QnaReply', originalComment.idx, deleteFiles),
+    );
+  };
 
-        break;
-      case InquiryAction.CancelInquiry:
-        navigation.goBack();
-        break;
-      case InquiryAction.Error:
-        break;
-    }
+  const onBSConfirmCancel = async () => {
+    hideCancelBS();
+    navigation.goBack();
   };
 
   const onSuccessRegister = (nav, tableName, idx, deleteFiles) => async data => {
@@ -101,12 +90,6 @@ function BO_DetailModifyComment({navigation, route}) {
       await apiInquiryDeleteFiles(tableName, idx, deleteFiles);
     }
     nav.goBack();
-  };
-  const onBSContinue = () => {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
   };
 
   return (
@@ -129,10 +112,11 @@ function BO_DetailModifyComment({navigation, route}) {
 
       <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet
-        sheetStatus={visibleBS}
-        onOk={() => onBSConfirm()}
-        onCancel={() => onBSContinue()}
+        sheetStatus={registerBSConfig}
+        onOk={onBSConfirmRegister}
+        onCancel={hideRegisterBS}
       />
+      <BottomSheet sheetStatus={cancelBSConfig} onOk={onBSConfirmCancel} onCancel={hideCancelBS} />
       <CustomToast />
     </SafeAreaView>
   );

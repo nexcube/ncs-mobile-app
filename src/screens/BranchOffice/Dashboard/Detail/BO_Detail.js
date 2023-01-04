@@ -12,6 +12,7 @@ import CommentList from '../../../../components/BranchOffice/Detail/CommentList'
 import CustomInput from '../../../../components/common/CustomInput';
 import {useFocusEffect} from '@react-navigation/native';
 import apiInquiryDeleteItem from '../../../../services/api/inquiry/deleteItem';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
@@ -61,13 +62,11 @@ function BO_Detail({navigation, route}) {
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
   const onModify = async () => {
-    await apiInquiryBranch(onSuccessBranch);
-  };
-
-  const onSuccessBranch = data => {
-    const result = data.map(value => value);
-    const params = {inquiryItem: inquiryItem, branchList: result};
-    navigation.navigate('BO_Detail_Modify', params);
+    await apiInquiryBranch().then(data => {
+      const result = data.map(value => value);
+      const params = {inquiryItem: inquiryItem, branchList: result};
+      navigation.navigate('BO_Detail_Modify', params);
+    });
   };
 
   const onDelete = async () => {
@@ -86,6 +85,7 @@ function BO_Detail({navigation, route}) {
   };
 
   const onPressAddComment = () => {
+    console.log('onPressAddComment');
     const params = {index: index};
     navigation.navigate('BO_Detail_Add_Comment', params);
   };
@@ -125,12 +125,14 @@ function BO_Detail({navigation, route}) {
       </ScrollView>
 
       <View style={[styles.addComment]}>
-        <CustomInput
-          placeholder="댓글 입력..."
-          editable={false}
-          onPressIn={onPressAddComment}
-          height={32}
-        />
+        <Pressable onPress={onPressAddComment}>
+          <CustomInput
+            placeholder="댓글 입력..."
+            editable={false}
+            // onPressIn={onPressAddComment}
+            height={32}
+          />
+        </Pressable>
       </View>
     </SafeAreaView>
   );

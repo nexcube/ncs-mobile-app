@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import globalStyles from '../../../styles/globalStyles';
 import CustomButton from '../CustomButton';
-globalStyles;
 
 const RegistrationSheet = ({onOk, onCancel}) => {
   return (

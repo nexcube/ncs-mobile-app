@@ -12,11 +12,12 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import CustomToast from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
 import produce from 'immer';
-import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
+import BottomSheet, {BottomSheetType} from '../../../../components/common/bottomsheet/BottomSheet';
 import apiInquiryCategory from '../../../../services/api/inquiry/category';
 import apiInquiryUpdate from '../../../../services/api/inquiry/update';
 import Attachments from '../../../../components/BranchOffice/Dashboard/Attachments';
 import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
+import useBottomSheet from '../../../../hooks/useBottomSheet';
 
 function BO_DetailModify({navigation, route}) {
   // 라우터 파라미터 처리
@@ -59,11 +60,12 @@ function BO_DetailModify({navigation, route}) {
   });
   // 첨부파일
   const [attachments, setAttachments] = useState([...inquiryItem.attachments]);
-  // BottomSheet visible 설정.
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: InquiryAction.Registration,
-  });
+
+  // BottomSheet
+  const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
+    BottomSheetType.Registration,
+  );
+  const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
 
   // event handler /////////////////////////////////////////////////////////////////////////////////
   const onPressRegister = () => {
@@ -75,68 +77,49 @@ function BO_DetailModify({navigation, route}) {
       displayToast('내용을 입력해 주세요');
       return;
     }
-
-    const newBSConfig = produce(visibleBS, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.Registration;
-    });
-    setVisibleBS(newBSConfig);
+    showRegisterBS();
   };
 
   const onPressBack = () => {
     if (title.length > 0 || content.length > 0) {
-      const newSheetStatus = produce(visibleBS, draft => {
-        draft.visible = true;
-        draft.format = InquiryAction.CancelInquiry;
-      });
-      setVisibleBS(newSheetStatus);
+      showCancelBS();
     } else {
       navigation.pop();
     }
   };
 
-  const onBSConfirm = async () => {
-    switch (visibleBS.format) {
-      case InquiryAction.Registration:
-        const staffId = await userData.getStaffId();
+  const onBSConfirmRegister = async () => {
+    const staffId = await userData.getStaffId();
+    const uploadFiles = attachments.map(file => ({
+      name: file.name,
+      uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+      type: file.type,
+    }));
 
-        const uploadFiles = attachments.map(file => ({
-          name: file.name,
-          uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
-          type: file.type,
-        }));
+    const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
+    const deleteFiles = inquiryItem.attachments.filter(
+      file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
+    );
 
-        const uploadFilesWOS3 = uploadFiles.filter(file => !file.uri.startsWith('https://'));
-        const deleteFiles = inquiryItem.attachments.filter(
-          file => uploadFiles.findIndex(attach => attach.uri === file.path) === -1,
-        );
+    const formData = new FormData();
+    uploadFilesWOS3.map(item => formData.append('image', item));
+    formData.append('index', inquiryItem.idx);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('category', classify.index);
+    formData.append('facilityCode', branch.facilityCode);
+    formData.append('staffId', staffId);
 
-        const formData = new FormData();
-        uploadFilesWOS3.map(item => formData.append('image', item));
-        formData.append('index', inquiryItem.idx);
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('category', classify.index);
-        formData.append('facilityCode', branch.facilityCode);
-        formData.append('staffId', staffId);
+    await apiInquiryUpdate(
+      formData,
+      onSuccessUpdate(navigation, 'tb_Qna', inquiryItem.idx, deleteFiles),
+    );
+    hideRegisterBS();
+  };
 
-        await apiInquiryUpdate(
-          formData,
-          onSuccessUpdate(navigation, 'tb_Qna', inquiryItem.idx, deleteFiles),
-        );
-
-        break;
-      case InquiryAction.CancelInquiry:
-        navigation.goBack();
-        break;
-      case InquiryAction.Error:
-        break;
-    }
-
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
+  const onBSConfirmCancel = () => {
+    navigation.goBack();
+    hideCancelBS();
   };
 
   const onSuccessUpdate = (nav, tableName, index, deleteFiles) => async data => {
@@ -146,11 +129,12 @@ function BO_DetailModify({navigation, route}) {
     nav.navigate('BO_Detail', {index: inquiryItem.idx, refresh: true});
   };
 
-  const onBSContinue = () => {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
+  const onBSContinueRegister = () => {
+    hideRegisterBS();
+  };
+
+  const onBSContinueCancel = () => {
+    hideCancelBS();
   };
 
   const onClassify = async () => {
@@ -213,9 +197,14 @@ function BO_DetailModify({navigation, route}) {
       </ScrollView>
       <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet
-        sheetStatus={visibleBS}
-        onOk={() => onBSConfirm()}
-        onCancel={() => onBSContinue()}
+        sheetStatus={registerBSConfig}
+        onOk={onBSConfirmRegister}
+        onCancel={onBSContinueRegister}
+      />
+      <BottomSheet
+        sheetStatus={cancelBSConfig}
+        onOk={onBSConfirmCancel}
+        onCancel={onBSContinueCancel}
       />
       <CustomToast />
     </SafeAreaView>

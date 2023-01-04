@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Animated, Dimensions, Modal, StyleSheet, Text, View} from 'react-native';
-import CustomButton from '../CustomButton';
-import globalStyles from '../../../styles/globalStyles';
+import React, {useEffect} from 'react';
+import {Animated, Dimensions, Modal, StyleSheet, View} from 'react-native';
 import RegistrationSheet from './RegistrationSheet';
 import BackSheet from './BackSheet';
+import ResponseInfoSheet from './ResponseInfoSheet';
 
-export const InquiryAction = {
+export const BottomSheetType = {
   Registration: 'Registration',
-  CancelInquiry: 'CancelInquiry',
+  Cancel: 'Cancel',
+  ResponseInfo: 'ResponseInfo',
 };
 
 const BottomSheet = ({sheetStatus, onOk, onCancel, children}) => {
@@ -48,10 +48,12 @@ const BottomSheet = ({sheetStatus, onOk, onCancel, children}) => {
       <View style={styles.overlay}>
         <Animated.View style={[styles.container, {top}]}>
           {children}
-          {sheetStatus.format === InquiryAction.Registration ? (
+          {sheetStatus.format === BottomSheetType.Registration ? (
             <RegistrationSheet onOk={onPositive} onCancel={onNegative} />
-          ) : sheetStatus.format === InquiryAction.CancelInquiry ? (
+          ) : sheetStatus.format === BottomSheetType.Cancel ? (
             <BackSheet onOk={onPositive} onCancel={onNegative} />
+          ) : sheetStatus.format === BottomSheetType.ResponseInfo ? (
+            <ResponseInfoSheet onOk={onPositive} />
           ) : (
             <RegistrationSheet onOk={onPositive} onCancel={onNegative} />
           )}

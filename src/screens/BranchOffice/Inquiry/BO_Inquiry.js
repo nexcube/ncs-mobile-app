@@ -6,16 +6,15 @@ import SelectionList from '../../../components/common/SelectionList';
 import Attachments from '../../../components/BranchOffice/Dashboard/Attachments';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InquiryBottomBar from '../../../components/BranchOffice/Dashboard/InquiryBottomBar';
-import BottomSheet, {InquiryAction} from '../../../components/common/bottomsheet/BottomSheet';
+import BottomSheet, {BottomSheetType} from '../../../components/common/bottomsheet/BottomSheet';
 import HeaderBackButton from '../../../components/common/HeaderBackButton';
 import CustomToast, {Toast} from '../../../components/common/CustomToast';
 import globalStyles from '../../../styles/globalStyles';
 import SelectionButton from '../../../components/common/SelectionButton';
-
-import produce from 'immer';
 import userData from '../../../services/storage/DeviceStorage';
 import apiInquiryRegister from '../../../services/api/inquiry/register';
 import apiInquiryCategory from '../../../services/api/inquiry/category';
+import useBottomSheet from '../../../hooks/useBottomSheet';
 
 const initialBranch = {name: '', cMain: false, facilityCode: ''};
 const initialClassify = {name: ' 분류선택', index: -1, mainName: '', mainIndex: -1};
@@ -51,10 +50,10 @@ function BO_Inquiry({navigation, route}) {
   // 첨부파일
   const [attachments, setAttachments] = useState([]);
   // BottomSheet visible 설정.
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: InquiryAction.Registration,
-  });
+  const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
+    BottomSheetType.Registration,
+  );
+  const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
 
   function onRegistration() {
     if (title.length < 1) {
@@ -74,76 +73,52 @@ function BO_Inquiry({navigation, route}) {
       return;
     }
 
-    const newBSConfig = produce(visibleBS, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.Registration;
-    });
-    setVisibleBS(newBSConfig);
+    showRegisterBS();
   }
 
   // 앱바 백 버튼 처리
   function onBack() {
     if (title.length > 0 || content.length > 0) {
-      const newSheetStatus = produce(visibleBS, draft => {
-        draft.visible = true;
-        draft.format = InquiryAction.CancelInquiry;
-      });
-      setVisibleBS(newSheetStatus);
+      showCancelBS();
     } else {
       navigation.pop();
     }
   }
 
-  async function onBSConfirm() {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
+  const onBSConfirmCancel = () => {
+    hideCancelBS();
+    navigation.goBack();
+  };
 
-    switch (visibleBS.format) {
-      case InquiryAction.Registration:
-        const staffId = await userData.getStaffId();
+  const onBSConfirmRegister = async () => {
+    hideRegisterBS();
 
-        const uploadFiles = attachments.map(file => ({
-          name: file.name,
-          uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
-          type: file.type,
-        }));
+    const staffId = await userData.getStaffId();
 
-        // console.log(JSON.stringify(uploadFiles, null, '\t'));
+    const uploadFiles = attachments.map(file => ({
+      name: file.name,
+      uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+      type: file.type,
+    }));
 
-        const formData = new FormData();
-        // formData.append('images', uploadFiles);
-        uploadFiles.map(item => formData.append('image', item));
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('categoryIndex', classify.index);
-        formData.append('facilityCode', branch.facilityCode);
-        formData.append('staffId', staffId);
-        formData.append('status', 'NEW');
+    // console.log(JSON.stringify(uploadFiles, null, '\t'));
 
-        await apiInquiryRegister(formData, onSuccessRegister(navigation));
+    const formData = new FormData();
+    // formData.append('images', uploadFiles);
+    uploadFiles.map(item => formData.append('image', item));
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('categoryIndex', classify.index);
+    formData.append('facilityCode', branch.facilityCode);
+    formData.append('staffId', staffId);
+    formData.append('status', 'NEW');
 
-        break;
-      case InquiryAction.CancelInquiry:
-        navigation.goBack();
-        break;
-      case InquiryAction.Error:
-        break;
-    }
-  }
+    await apiInquiryRegister(formData, onSuccessRegister(navigation));
+  };
 
   const onSuccessRegister = nav => () => {
     nav.goBack();
   };
-
-  // 바텀시티 continue 클릭시
-  function onBSContinue() {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
-  }
 
   const onInquiryClassify = async () => {
     await apiInquiryCategory(onSuccessQnaCategory(navigation));
@@ -206,10 +181,12 @@ function BO_Inquiry({navigation, route}) {
 
       <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet
-        sheetStatus={visibleBS}
-        onOk={() => onBSConfirm()}
-        onCancel={() => onBSContinue()}
+        sheetStatus={registerBSConfig}
+        onOk={onBSConfirmRegister}
+        onCancel={hideRegisterBS}
       />
+
+      <BottomSheet sheetStatus={cancelBSConfig} onOk={onBSConfirmCancel} onCancel={hideCancelBS} />
       <CustomToast />
     </SafeAreaView>
   );

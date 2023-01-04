@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
-import BottomSheet, {InquiryAction} from '../../../../components/common/bottomsheet/BottomSheet';
+import BottomSheet, {BottomSheetType} from '../../../../components/common/bottomsheet/BottomSheet';
 import CustomInput from '../../../../components/common/CustomInput';
 import CustomToast, {Toast} from '../../../../components/common/CustomToast';
 import HeaderBackButton from '../../../../components/common/HeaderBackButton';
@@ -10,18 +9,18 @@ import HeaderButton from '../../../../components/common/HeaderButton';
 import Attachments from '../../../../components/BranchOffice/Dashboard/Attachments';
 import InquiryBottomBar from '../../../../components/BranchOffice/Dashboard/InquiryBottomBar';
 import globalStyles from '../../../../styles/globalStyles';
-import produce from 'immer';
 import userData from '../../../../services/storage/DeviceStorage';
 import apiCommentRegister from '../../../../services/api/comment/register';
+import useBottomSheet from '../../../../hooks/useBottomSheet';
 
 function BO_DetailAddComment({navigation, route}) {
   const index = route.params.index;
   const [content, setContent] = useState('');
   const [attachments, setAttachments] = useState([]);
-  const [visibleBS, setVisibleBS] = useState({
-    visible: false,
-    format: InquiryAction.Registration,
-  });
+  const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
+    BottomSheetType.Registration,
+  );
+  const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
 
   useEffect(() => {
     navigation.setOptions({
@@ -36,69 +35,41 @@ function BO_DetailAddComment({navigation, route}) {
       displayToast('내용을 입력해 주세요');
       return;
     }
-
-    const newBSConfig = produce(visibleBS, draft => {
-      draft.visible = true;
-      draft.format = InquiryAction.Registration;
-    });
-    setVisibleBS(newBSConfig);
+    showRegisterBS();
   };
   const onBack = () => {
     if (content.length > 0) {
-      const newSheetStatus = produce(visibleBS, draft => {
-        draft.visible = true;
-        draft.format = InquiryAction.CancelInquiry;
-      });
-      setVisibleBS(newSheetStatus);
+      showCancelBS();
     } else {
       navigation.pop();
     }
   };
 
-  const onBSConfirm = async () => {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
+  const onBSConfirmRegister = async () => {
+    hideRegisterBS();
 
-    switch (visibleBS.format) {
-      case InquiryAction.Registration:
-        const staffId = await userData.getStaffId();
+    const staffId = await userData.getStaffId();
 
-        const uploadFiles = attachments.map(file => ({
-          name: file.name,
-          uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
-          type: file.type,
-        }));
+    const uploadFiles = attachments.map(file => ({
+      name: file.name,
+      uri: Platform.OS === 'android' ? file.path : file.path.replace('file://', ''),
+      type: file.type,
+    }));
 
-        // console.log(JSON.stringify(uploadFiles, null, '\t'));
+    // console.log(JSON.stringify(uploadFiles, null, '\t'));
 
-        const formData = new FormData();
-        // formData.append('images', uploadFiles);
-        uploadFiles.map(item => formData.append('image', item));
-        formData.append('index', index);
-        formData.append('content', content);
-        formData.append('staffId', staffId);
+    const formData = new FormData();
+    uploadFiles.map(item => formData.append('image', item));
+    formData.append('index', index);
+    formData.append('content', content);
+    formData.append('staffId', staffId);
 
-        // console.log(JSON.stringify(formData, null, '\t'));
-        await apiCommentRegister(formData, onSuccessRegister(navigation));
-
-        break;
-      case InquiryAction.CancelInquiry:
-        navigation.goBack();
-        break;
-      case InquiryAction.Error:
-        break;
-    }
+    // console.log(JSON.stringify(formData, null, '\t'));
+    await apiCommentRegister(formData, onSuccessRegister(navigation));
   };
+  const onBSConfirmCancel = () => navigation.goBack();
 
   const onSuccessRegister = nav => () => nav.goBack();
-  const onBSContinue = () => {
-    const newSheetStatus = produce(visibleBS, draft => {
-      draft.visible = false;
-    });
-    setVisibleBS(newSheetStatus);
-  };
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
@@ -119,10 +90,11 @@ function BO_DetailAddComment({navigation, route}) {
 
       <InquiryBottomBar attachments={attachments} setAttachments={setAttachments} />
       <BottomSheet
-        sheetStatus={visibleBS}
-        onOk={() => onBSConfirm()}
-        onCancel={() => onBSContinue()}
+        sheetStatus={registerBSConfig}
+        onOk={onBSConfirmRegister}
+        onCancel={hideRegisterBS}
       />
+      <BottomSheet sheetStatus={cancelBSConfig} onOk={onBSConfirmCancel} onCancel={hideCancelBS} />
       <CustomToast />
     </SafeAreaView>
   );

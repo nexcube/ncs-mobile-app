@@ -4,7 +4,7 @@ import axios_error_handler from '../errorHandler';
 
 const apiCommentUpdate = async (params, onSuccess) => {
   const url = '/comment/update';
-  console.log(`${axios.defaults.baseURL}/inquiry/modifyComment`);
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
     const jwt = await userData.getJWT();
@@ -12,11 +12,15 @@ const apiCommentUpdate = async (params, onSuccess) => {
 
     const config = {
       redirect: 'follow',
-      headers: {'Content-Type': 'application/json', authorization: token},
+      headers: {'Content-Type': 'multipart/form-data', authorization: token},
       transformRequest: (data, headers) => {
         return data;
       },
     };
+
+    console.log(jwt);
+    console.log(token);
+    console.log(params);
 
     const response = await axios.put(url, params, config);
 
@@ -25,12 +29,10 @@ const apiCommentUpdate = async (params, onSuccess) => {
       onSuccess(response.data.data);
     } else {
       console.log(response.data.message);
-
       return null;
     }
   } catch (error) {
     axios_error_handler(error);
-
     return null;
   }
 };
