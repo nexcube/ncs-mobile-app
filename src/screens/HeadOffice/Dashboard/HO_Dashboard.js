@@ -1,6 +1,15 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {StyleSheet, Text, Button, View, Animated, FlatList, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  Button,
+  View,
+  Animated,
+  FlatList,
+  ImageBackground,
+  Image,
+} from 'react-native';
 
 import ResponseStatus from '../../../components/HeadOffice/Dashboard/ResponseStatus';
 import ResponseTab from '../../../components/HeadOffice/Dashboard/ResponseTab';
@@ -50,15 +59,9 @@ function HO_Dashboard({navigation, route}) {
     setVisibleBS(false);
   };
 
-  const image = {uri: 'https://reactjs.org/logo-og.png'};
   return (
     <View>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <ResponseStatus animHeaderValue={scrollOffsetY} onPressInfo={onPressInfo} />
-        <View style={[styles.tabArea]}>
-          <ResponseTab />
-        </View>
-      </ImageBackground>
+      <ResponseStatus animHeaderValue={scrollOffsetY} onPressInfo={onPressInfo} />
       <FlatList
         contentContainerStyle={[styles.list]}
         data={inquiryList}
@@ -95,22 +98,23 @@ function HO_Dashboard({navigation, route}) {
         onEndReachedThreshold={0.1}
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
       />
+
       <BottomSheet sheetStatus={visibleBS} onOk={onPressBSOk} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  tabArea: {
-    paddingHorizontal: 12,
-    backgroundColor: globalStyles.color.purple,
-  },
   list: {
     paddingHorizontal: 12,
     paddingVertical: 14,
   },
   itemSeparator: {
     height: 14,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 

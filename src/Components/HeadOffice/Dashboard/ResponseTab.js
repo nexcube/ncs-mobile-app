@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = ResponseTab;
+export default ResponseTab;

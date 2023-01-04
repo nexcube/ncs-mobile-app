@@ -2,9 +2,9 @@ import React from 'react';
 import {Animated, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import globalStyles from '../../../styles/globalStyles';
-import LogoBack from '../../../../assets/images/EDUPLEX-Logo-back.svg';
 
 import Icon from 'react-native-vector-icons/Feather';
+import ResponseTab from './ResponseTab';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
@@ -25,20 +25,23 @@ function ResponseStatus({animHeaderValue, onPressInfo}) {
 
   return (
     <View>
-      <View style={[styles.statusBar]} />
-      {/* <LogoBack style={[styles.logoBack]} /> */}
-
-      <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
-        <View style={[styles.container]}>
-          <Text style={styles.headerText}>평균 응답 시간</Text>
-          <View style={[styles.row]}>
-            <Element count={1} text="시간 " />
-            <Element count={12} text="분 " />
-            <Element count={33} text="초 " />
-            <Icon name="info" size={15} onPress={() => console.log('adsfasdf')} />
+      <ImageBackground
+        resizeMode="cover"
+        source={require('../../../../assets/images/dashboard-top.png')}>
+        <View style={[styles.statusBar]} />
+        <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
+          <View style={[styles.container]}>
+            <Text style={styles.headerText}>평균 응답 시간</Text>
+            <View style={[styles.row]}>
+              <Element count={1} text="시간 " />
+              <Element count={12} text="분 " />
+              <Element count={33} text="초 " />
+              <Icon name="info" size={15} onPress={() => console.log('adsfasdf')} />
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+        <ResponseTab />
+      </ImageBackground>
     </View>
   );
 }
@@ -56,7 +59,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: getStatusBarHeight(false),
-    backgroundColor: globalStyles.color.purple,
   },
   header: {
     justifyContent: 'flex-end',
@@ -64,18 +66,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 10,
     paddingHorizontal: 12,
-    backgroundColor: globalStyles.color.purple,
   },
-  logoBack: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    width: 150,
-    height: 150,
-    resizeMode: 'cover',
-    zIndex: 5,
-  },
-
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -93,6 +84,10 @@ const styles = StyleSheet.create({
     color: globalStyles.color.white,
     fontSize: 32,
     fontWeight: '900',
+  },
+  tabArea: {
+    paddingHorizontal: 12,
+    backgroundColor: globalStyles.color.purple,
   },
 });
 export default ResponseStatus;

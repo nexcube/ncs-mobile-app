@@ -1,10 +1,7 @@
 import React from 'react';
-import {Animated, StyleSheet, View} from 'react-native';
+import {Animated, ImageBackground, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import InquiryHeader from './InquiryHeader';
-import LogoBack from '../../../../assets/images/EDUPLEX-Logo-back.svg';
-
-import globalStyles from '../../../styles/globalStyles';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
@@ -18,11 +15,14 @@ function InquiryStatus({animHeaderValue}) {
 
   return (
     <View>
-      <View style={[styles.statusBar]} />
-      <LogoBack style={[styles.logoBack]} />
-      <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
-        <InquiryHeader />
-      </Animated.View>
+      <ImageBackground
+        resizeMode="cover"
+        source={require('../../../../assets/images/dashboard-top.png')}>
+        <View style={[styles.statusBar]} />
+        <Animated.View style={[styles.header, {height: animateHeaderHeight}]}>
+          <InquiryHeader />
+        </Animated.View>
+      </ImageBackground>
     </View>
   );
 }
@@ -30,7 +30,6 @@ function InquiryStatus({animHeaderValue}) {
 const styles = StyleSheet.create({
   statusBar: {
     height: getStatusBarHeight(false),
-    backgroundColor: globalStyles.color.purple,
   },
   header: {
     justifyContent: 'flex-end',
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     right: 0,
     paddingTop: 10,
     paddingHorizontal: 12,
-    backgroundColor: globalStyles.color.purple,
   },
   logoBack: {
     position: 'absolute',
