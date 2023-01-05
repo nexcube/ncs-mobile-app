@@ -6,6 +6,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
 import InquiryStatus from '../../../components/BranchOffice/Dashboard//inquiryStatus';
 import SearchTextInput from '../../../components/BranchOffice/Dashboard//SearchTextInput';
+import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiInquiryList from '../../../services/api/inquiry/list';
 
 import globalStyles from '../../../styles/globalStyles';
@@ -20,48 +21,52 @@ function BO_Dashboard({navigation, route}) {
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
   const [searchString, setSearchString] = useState('');
 
-  const [inquiryList, setInquiryList] = useState([]);
-
-  const [listStatus, setListStatus] = useState({
-    offset: 0,
-    loading: false,
-    isRefreshing: false,
-    noMore: false,
-  });
+  const {
+    list,
+    status,
+    resetStatus,
+    reset,
+    setLoading,
+    setNoMore,
+    setRefresh,
+    increaseOffset,
+    setData,
+    addData,
+  } = useInquiryList();
 
   //  API 처리 /////////////////////////////////////////////////////////////////////////////////////
-  // useEffect(() => {
-  //   console.log(`### Rendering #### -- list length: ${inquiryList.length}`);
-  // });
 
   useFocusEffect(
     useCallback(() => {
-      setListStatus({...listStatus, offset: 0, noMore: false});
+      // setListStatus({...listStatus, offset: 0, noMore: false});
+      reset();
+
       getInquiryList();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
   useEffect(() => {
-    if (listStatus.isRefreshing) {
+    if (status.isRefreshing) {
       getInquiryList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listStatus.isRefreshing]);
+  }, [status.isRefreshing]);
 
   const getInquiryList = useCallback(
     async search => {
-      if (listStatus.loading || listStatus.noMore) {
+      if (status.loading || status.noMore) {
         return;
       }
 
-      setListStatus({...listStatus, loading: true});
+      // setListStatus({...listStatus, loading: true});
+      setLoading();
       if (search?.length > 0) {
         apiInquiryList(search, 0, fetchCount, onSuccess, onFail);
       }
-      apiInquiryList(search, listStatus.offset, fetchCount, onSuccess, onFail);
+      apiInquiryList(search, status.offset, fetchCount, onSuccess, onFail);
     },
-    [listStatus, onFail, onSuccess],
+    [status.loading, status.noMore, status.offset, setLoading, onSuccess, onFail],
   );
 
   const onSuccess = useCallback(
@@ -69,41 +74,36 @@ function BO_Dashboard({navigation, route}) {
       // console.log(JSON.stringify(data, null, '\t'));
       // 더이상 데이터가 없는가?
       if (data.length === 0) {
-        setListStatus({...listStatus, loading: false, isRefreshing: false, noMore: true});
+        setNoMore(true);
         return;
       }
 
-      if (listStatus.offset === 0 || fromSearch) {
-        setInquiryList([...data]);
+      if (status.offset === 0 || fromSearch) {
+        setData(data);
       } else {
-        setInquiryList([...inquiryList, ...data]);
+        addData(data);
       }
 
-      setListStatus({
-        ...listStatus,
-        loading: false,
-        isRefreshing: false,
-        offset: fromSearch ? 0 : listStatus.offset + data.length,
-      });
+      increaseOffset(data.length);
     },
-    [inquiryList, listStatus],
+    [addData, increaseOffset, setData, setNoMore, status.offset],
   );
 
   const onFail = useCallback(() => {
-    setListStatus({...listStatus, loading: false});
-  }, [listStatus]);
+    setLoading(false);
+  }, [setLoading]);
 
   // 이벤트 처리 ///////////////////////////////////////////////////////////////////////////////////
   // 스크롤 처리 ///////////////////////////////////////////////////////////////////////////////////
   const onEndReached = () => {
-    if (!listStatus.loading && !listStatus.noMore) {
+    if (!status.loading && !status.noMore) {
       getInquiryList();
     }
   };
 
   // 검색 이벤트 처리
   const onSearchSubmit = async () => {
-    setListStatus({...listStatus, offset: 0, noMore: false});
+    resetStatus();
     getInquiryList(searchString);
   };
 
@@ -119,7 +119,7 @@ function BO_Dashboard({navigation, route}) {
   // 리플레쉬 이벤트
   const onRefresh = () => {
     setSearchString('');
-    setListStatus({...listStatus, offset: 0, noMore: false, isRefreshing: true});
+    setRefresh(true);
   };
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
@@ -141,7 +141,7 @@ function BO_Dashboard({navigation, route}) {
 
       <FlatList
         contentContainerStyle={[styles.list]}
-        data={inquiryList}
+        data={list}
         renderItem={({item}) => (
           <Pressable onPress={() => onItemSelected(item)}>
             <InquiryCard
@@ -175,11 +175,9 @@ function BO_Dashboard({navigation, route}) {
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
-        ListFooterComponent={
-          listStatus.loading && <ActivityIndicator size={'large'} color="0067CC" />
-        }
+        ListFooterComponent={status.loading && <ActivityIndicator size={'large'} color="0067CC" />}
         onRefresh={onRefresh}
-        refreshing={listStatus.isRefreshing}
+        refreshing={status.isRefreshing}
       />
       <InquiryButton routeName="BO_Inquiry" />
     </View>

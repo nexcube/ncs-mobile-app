@@ -1,35 +1,60 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import {StyleSheet, View, Animated, FlatList} from 'react-native';
 import ResponseStatus from '../../../components/HeadOffice/Dashboard/ResponseStatus';
-import apiInquiryList from '../../../services/api/inquiry/list';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
 import BottomSheet, {BottomSheetType} from '../../../components/common/bottomsheet/BottomSheet';
 import CustomSwitch from '../../../components/common/CustomSwitch';
 import useCustomSwitch from '../../../hooks/useCustomSwitch';
 import useBottomSheet from '../../../hooks/useBottomSheet';
-import apiResponsibilityList from '../../../services/api/setting/responsibilityList';
+import UserContext from '../../../services/context/UserContext';
+import apiInquiryListAssigned from '../../../services/api/inquiry/listAssigned';
+import useInquiryList from '../../../hooks/useInquiryLIst';
+
+const fetchCount = 7;
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
-  const [inquiryList, setInquiryList] = useState([]);
-  const {isOn, onToggle} = useCustomSwitch('isIncludeDone');
+  const {isOn: isIncludeDone, onToggle} = useCustomSwitch('isIncludeDone');
   const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
+  const [User, setUser] = useContext(UserContext);
+  const {
+    list,
+    status,
+    resetStatus,
+    reset,
+    setLoading,
+    setNoMore,
+    setRefresh,
+    increaseOffset,
+    setData,
+    addData,
+  } = useInquiryList();
 
   useFocusEffect(
     useCallback(() => {
-      apiResponsibilityList().then(responsibilityList => {
-        // console.log(JSON.stringify(data, null, '\t'));
-      });
-      // apiInquiryList('', 0, 7, onSuccess, onFail);
+      // console.log('dash:', JSON.stringify(User, null, '\t'));
+      // console.log('isOn:', isIncludeDone);
+      apiInquiryListAssigned(
+        User.staffId,
+        User.assignedCatIdx,
+        status.offset,
+        fetchCount,
+        isIncludeDone,
+        onSuccess,
+        onFail,
+      );
+      //   // console.log(JSON.stringify(data, null, '\t'));
+      // });
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
+    }, [User.staffId, isIncludeDone, status.offset]),
   );
 
   const onSuccess = data => {
-    setInquiryList([...data]);
+    // console.log(JSON.stringify(data, null, '\t'));
+    setData(data);
   };
 
   const onFail = () => {};
@@ -53,11 +78,11 @@ function HO_Dashboard({navigation, route}) {
       <FlatList
         ListHeaderComponent={
           <View style={[styles.listHeader]}>
-            <CustomSwitch text="완료 포함" value={isOn} onValueChange={onToggle} />
+            <CustomSwitch text="완료 포함" value={isIncludeDone} onValueChange={onToggle} />
           </View>
         }
         contentContainerStyle={[styles.list]}
-        data={inquiryList}
+        data={list}
         renderItem={({item}) => (
           <Pressable onPress={() => onItemSelected(item)}>
             <InquiryCard
@@ -71,6 +96,7 @@ function HO_Dashboard({navigation, route}) {
               updateDate={item.updateDate}
               status={item.status}
               commentCount={item?.commentCount ?? 0}
+              assignedStaffId={item?.assignedStaffId}
             />
           </Pressable>
         )}

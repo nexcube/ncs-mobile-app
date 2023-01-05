@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {KeyboardAvoidingView, StyleSheet, View, Platform} from 'react-native';
 import CustomButton from '../components/common/CustomButton';
 import CustomInput from '../components/common/CustomInput';
@@ -9,13 +9,16 @@ import CustomToast, {Toast} from '../components/common/CustomToast';
 import userData from '../services/storage/DeviceStorage';
 import apiLogin from '../services/api/login';
 import apiSettingQnaAccessUserListItem from '../services/api/setting/qnaAccessUser/listItem';
+import UserContext from '../services/context/UserContext';
+import apiResponsibilityList from '../services/api/setting/responsibilityList';
 
 function LoginScreen({navigation, route}) {
-  // 본사 직원: hk89131 / YAjPr5YLys
+  // 본사 직원: namhy00 / YAjPr5YLys
   // 지점 원장: schae / YAjPr5YLys
-  const [id, setId] = useState('schae'); //
+  const [id, setId] = useState('namhy00'); //
   const [password, setPassword] = useState('YAjPr5YLys');
   const [auto, setAuto] = useState(false);
+  const [User, setUser] = useContext(UserContext);
 
   // 자동 로그인
   useEffect(() => {
@@ -76,9 +79,24 @@ function LoginScreen({navigation, route}) {
     userData.setPassword(password);
     userData.setJWT(data.token);
     userData.setUserData(data.userData);
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
 
-    navigation.navigate(routesName);
+    if (routesName === 'HO_MainStack') {
+      // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.
+      apiResponsibilityList().then(responsibilityList => {
+        const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
+        console.log('catIdx:', catIdx);
+        //TODO 연관된 카테고리 정보도 추가하자.
+        // 담당 카테고리가 없는 경우도 처리하자.
+
+        setUser({...data.userData, assignedCatIdx: catIdx, relatedCatIdxs: [2, 12]});
+        console.log(JSON.stringify(User, null, '\t'));
+        navigation.navigate(routesName);
+      });
+    } else {
+      setUser(data.userData);
+      navigation.navigate(routesName);
+    }
   };
 
   const onLoginError = () => {

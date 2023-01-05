@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
 
-function InquiryCardHeader({status, commentCount = 0, forDetail}) {
+function InquiryCardHeader({status, commentCount = 0, forDetail, assignedStaffId}) {
+  const [User, , isHO] = useContext(UserContext);
+
   const containerStyle = {
     backgroundColor: forDetail
       ? globalStyles.color.white
@@ -32,8 +35,15 @@ function InquiryCardHeader({status, commentCount = 0, forDetail}) {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={[styles.status, statusStyle]}>
-        <Text style={[styles.statusText, statusTextStyle]}>{statusText}</Text>
+      <View style={[globalStyles.row]}>
+        <View style={[styles.status, statusStyle]}>
+          <Text style={[styles.statusText, statusTextStyle]}>{statusText}</Text>
+        </View>
+        {isHO && User.staffId === assignedStaffId && (
+          <View style={[styles.status, styles.assignedContainer]}>
+            <Text style={[styles.statusText, styles.assignedText]}>내담당</Text>
+          </View>
+        )}
       </View>
       {commentCount > 0 && (
         <View style={[styles.comment]}>
@@ -65,6 +75,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 5,
   },
+  assignedContainer: {backgroundColor: globalStyles.color.red, marginLeft: 5},
+  assignedText: {color: globalStyles.color.white},
 
   comment: {
     backgroundColor: globalStyles.color.white,

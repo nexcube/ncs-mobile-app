@@ -22,12 +22,26 @@ function useInquiryList() {
   const setNoMore = isNoMore =>
     setStatus({...status, loading: false, isRefreshing: false, noMore: isNoMore});
   const setRefresh = isRefresh => setStatus({...initStatus, isRefreshing: isRefresh});
-  const setNormal = () =>
-    setStatus({...status, loading: false, isRefreshing: false, noMore: false});
 
-  const increaseOffset = count => setStatus({...status, offset: status.offset + count});
+  const increaseOffset = count =>
+    setStatus({...status, loading: false, isRefreshing: false, offset: status.offset + count});
 
-  return {list, resetStatus, reset, setLoading, setNoMore, setNormal, setRefresh, increaseOffset};
+  const setData = data => setList([...data]);
+  const addData = data => setList([...list, ...data]);
+
+  return {
+    list,
+    status,
+    resetStatus,
+    reset,
+    setLoading,
+    setNoMore,
+
+    setRefresh,
+    increaseOffset,
+    setData,
+    addData,
+  };
 }
 
 export default useInquiryList;

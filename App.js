@@ -8,6 +8,7 @@ import globalStyles from './src/styles/globalStyles';
 import {DefaultTheme} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SpinnerContextProvider} from './src/services/context/SpinnerContext';
+import {UserContextProvider} from './src/services/context/UserContext';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -33,7 +34,9 @@ function App() {
     <SafeAreaProvider>
       <NavigationContainer theme={navigationTheme}>
         <SpinnerContextProvider>
-          <RootStack />
+          <UserContextProvider>
+            <RootStack />
+          </UserContextProvider>
         </SpinnerContextProvider>
       </NavigationContainer>
     </SafeAreaProvider>

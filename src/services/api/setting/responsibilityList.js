@@ -17,7 +17,7 @@ const apiResponsibilityList = async () => {
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      console.log(JSON.stringify(response.data.data, null, '\t'));
+      // console.log(JSON.stringify(response.data.data, null, '\t'));
       // const parent = response.data.data.filter(item => item.it_ParentQnaCatIdx === -1);
       // console.log(JSON.stringify(parent, null, '\t'));
       // const result = parent.map(item => ({
