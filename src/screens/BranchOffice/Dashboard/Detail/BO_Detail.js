@@ -130,7 +130,7 @@ function BO_Detail({navigation, route}) {
             placeholder="댓글 입력..."
             editable={false}
             // onPressIn={onPressAddComment}
-            height={32}
+            height={38}
           />
         </Pressable>
       </View>
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   },
   addComment: {
     paddingHorizontal: 12,
+    paddingVertical: 3,
   },
 });
 

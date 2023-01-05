@@ -9,6 +9,7 @@ import BottomSheet, {BottomSheetType} from '../../../components/common/bottomshe
 import CustomSwitch from '../../../components/common/CustomSwitch';
 import useCustomSwitch from '../../../hooks/useCustomSwitch';
 import useBottomSheet from '../../../hooks/useBottomSheet';
+import apiResponsibilityList from '../../../services/api/setting/responsibilityList';
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -19,7 +20,10 @@ function HO_Dashboard({navigation, route}) {
 
   useFocusEffect(
     useCallback(() => {
-      apiInquiryList('', 0, 7, onSuccess, onFail);
+      apiResponsibilityList().then(responsibilityList => {
+        // console.log(JSON.stringify(data, null, '\t'));
+      });
+      // apiInquiryList('', 0, 7, onSuccess, onFail);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );

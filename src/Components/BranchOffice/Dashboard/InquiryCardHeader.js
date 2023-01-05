@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../../styles/globalStyles';
 
-function InquiryCardHeader({status, commentCount, forDetail}) {
+function InquiryCardHeader({status, commentCount = 0, forDetail}) {
   const containerStyle = {
     backgroundColor: forDetail
       ? globalStyles.color.white
@@ -35,7 +35,7 @@ function InquiryCardHeader({status, commentCount, forDetail}) {
       <View style={[styles.status, statusStyle]}>
         <Text style={[styles.statusText, statusTextStyle]}>{statusText}</Text>
       </View>
-      {commentCount === 0 || (
+      {commentCount > 0 && (
         <View style={[styles.comment]}>
           <Text style={[styles.commentText]}>댓글 {commentCount}개</Text>
         </View>

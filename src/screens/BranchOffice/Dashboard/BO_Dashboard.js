@@ -18,8 +18,10 @@ function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
-  const [inquiryList, setInquiryList] = useState([]);
   const [searchString, setSearchString] = useState('');
+
+  const [inquiryList, setInquiryList] = useState([]);
+
   const [listStatus, setListStatus] = useState({
     offset: 0,
     loading: false,

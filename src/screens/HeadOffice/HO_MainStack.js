@@ -14,6 +14,7 @@ import HO_SettingPush from './Setting/HO_SettingPush';
 import HO_SettingPushTime from './Setting/HO_SettingPushTime';
 import globalStyles from '../../styles/globalStyles';
 import {Platform} from 'react-native';
+import BO_Detail from '../BranchOffice/Dashboard/Detail/BO_Detail';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,8 +36,8 @@ function HO_MainStack() {
       }}>
       <Stack.Screen name="HO_MainTab" component={HO_MainTab} options={{headerShown: false}} />
       <Stack.Screen
-        name="HO_Detail"
-        component={HO_Detail}
+        name="BO_Detail"
+        component={BO_Detail}
         options={{title: '상세 보기', animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
