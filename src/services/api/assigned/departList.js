@@ -2,8 +2,8 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiInquiryListItem = async (index, onSuccess) => {
-  const url = `/inquiry/list/${index}`;
+const apiAssignedDepartList = async onSuccess => {
+  const url = '/assigned/departList';
   console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
@@ -11,18 +11,11 @@ const apiInquiryListItem = async (index, onSuccess) => {
     const token = `${jwt}`;
 
     const data = {headers: {authorization: token}};
-
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      // comment 가 없는 경우에 null 이므로 이후 처리가 편하게 0으로 셋팅
-      if (response.data.data.commentCount === null) {
-        response.data.data.commentCount = 0;
-      }
       onSuccess(response.data.data);
     } else {
-      console.log(response.data.message);
-
       return null;
     }
   } catch (error) {
@@ -32,4 +25,4 @@ const apiInquiryListItem = async (index, onSuccess) => {
   }
 };
 
-export default apiInquiryListItem;
+export default apiAssignedDepartList;

@@ -79,18 +79,18 @@ function LoginScreen({navigation, route}) {
     userData.setPassword(password);
     userData.setJWT(data.token);
     userData.setUserData(data.userData);
-    // console.log(JSON.stringify(data, null, '\t'));
+    console.log(JSON.stringify(data, null, '\t'));
 
     if (routesName === 'HO_MainStack') {
       // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.
       apiResponsibilityList().then(responsibilityList => {
         const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
-        console.log('catIdx:', catIdx);
+        // console.log('catIdx:', catIdx);
         //TODO 연관된 카테고리 정보도 추가하자.
         // 담당 카테고리가 없는 경우도 처리하자.
 
         setUser({...data.userData, assignedCatIdx: catIdx, relatedCatIdxs: [2, 12]});
-        console.log(JSON.stringify(User, null, '\t'));
+        // console.log(JSON.stringify(User, null, '\t'));
         navigation.navigate(routesName);
       });
     } else {

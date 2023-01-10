@@ -13,9 +13,13 @@ import CustomInput from '../../../../components/common/CustomInput';
 import {useFocusEffect} from '@react-navigation/native';
 import apiInquiryDeleteItem from '../../../../services/api/inquiry/deleteItem';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import TopMenuFromHO from '../../../../components/BranchOffice/Detail/TopMenuFromHO';
+import apiInquiryUpdateShare from '../../../../services/api/inquiry/updateShare';
+import CustomToast, {infoConfig, Toast} from '../../../../components/common/CustomToast';
 
 function BO_Detail({navigation, route}) {
   const index = route.params.index;
+  const isFromHO = route.params.fromHO ?? false;
 
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
@@ -23,14 +27,23 @@ function BO_Detail({navigation, route}) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <TopMenu
-          onModify={onModify}
-          onDelete={onDelete}
-          backgroundColor={globalStyles.color.purple}
-          color={globalStyles.color.white}
-        />
-      ),
+      headerRight: () =>
+        isFromHO ? (
+          <TopMenuFromHO
+            sharedInfo={inquiryItem.share}
+            onChangeAssigned={onChangeAssigned}
+            onSharedInfo={onSharedInfo}
+            backgroundColor={globalStyles.color.purple}
+            color={globalStyles.color.white}
+          />
+        ) : (
+          <TopMenu
+            onModify={onModify}
+            onDelete={onDelete}
+            backgroundColor={globalStyles.color.purple}
+            color={globalStyles.color.white}
+          />
+        ),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inquiryItem]);
@@ -57,7 +70,8 @@ function BO_Detail({navigation, route}) {
   };
 
   const onSuccessInquiryListItem = data => {
-    setInquiryItem(data[0]);
+    setInquiryItem(data);
+    console.log(JSON.stringify(data, null, '\t'));
   };
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +92,29 @@ function BO_Detail({navigation, route}) {
       },
       {text: 'OK', onPress: () => apiInquiryDeleteItem(index, onSuccessInquiryDelete)},
     ]);
+  };
+
+  const onChangeAssigned = async share => {
+    navigation.navigate('HO_Detail_Assigned_Info', inquiryItem);
+  };
+
+  const onSharedInfo = async share => {
+    apiInquiryUpdateShare(index, share, onSuccessShareInfo);
+  };
+
+  const onSuccessShareInfo = (data, share) => {
+    console.log('onSuccessShareInfo');
+    setIsRefresh(true);
+    const message = '공유정보' + (share === 0 ? '에서 해제되었습니다.' : '로 등록되었습니다.');
+
+    Toast.show({
+      type: 'infoMsg',
+      visibilityTime: 3000,
+      props: {
+        message: message,
+      },
+      position: 'bottom',
+    });
   };
 
   const onSuccessInquiryDelete = () => {
@@ -106,6 +143,7 @@ function BO_Detail({navigation, route}) {
           updateDate={inquiryItem.updateDate}
           status={inquiryItem.status}
           commentCount={inquiryItem.commentCount}
+          isHO={isFromHO}
           forDetail={true}
         />
       </View>
@@ -134,6 +172,7 @@ function BO_Detail({navigation, route}) {
           />
         </Pressable>
       </View>
+      <CustomToast />
     </SafeAreaView>
   );
 }

@@ -17,13 +17,36 @@ const toastConfig = {
       </TouchableOpacity>
     </View>
   ),
+  infoMsg: ({props}) => (
+    <View style={[styles.containerInfo]}>
+      <Text style={[styles.toastInfoText]} numberOfLines={3}>
+        {props.message}
+      </Text>
+      <TouchableOpacity onPress={() => Toast.hide()}>
+        <Icon style={[styles.closeButton]} name="x" size={24} color="blue" />
+      </TouchableOpacity>
+    </View>
+  ),
 };
+
+const infoConfig = {};
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
     width: '90%',
     backgroundColor: '#B3261E',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+  },
+  containerInfo: {
+    borderRadius: 10,
+    borderColor: globalStyles.color.text,
+    borderWidth: 1,
+    width: '90%',
+    backgroundColor: globalStyles.color.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -36,8 +59,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginRight: 15,
   },
+  toastInfoText: {
+    flex: 1,
+    color: globalStyles.color.text,
+    fontFamily: globalStyles.font.regular,
+    fontSize: 15,
+    marginRight: 15,
+  },
   closeButton: {marginLeft: 15},
 });
 
 export default CustomToast;
-export {Toast};
+export {Toast, toastConfig as defaultConfig, infoConfig};

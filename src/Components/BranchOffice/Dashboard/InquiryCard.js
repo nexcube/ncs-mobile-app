@@ -17,6 +17,7 @@ const InquiryCard = ({
   updateDate,
   status,
   forDetail,
+  isHO,
   assignedStaffId,
   commentCount = 0,
   mode = 'elevated',
@@ -24,7 +25,9 @@ const InquiryCard = ({
   // 타임존 제거
   const date = new Date(updateDate?.slice(0, -1));
 
-  const [User, , isHO] = React.useContext(UserContext);
+  const [User, ,] = React.useContext(UserContext);
+
+  // console.log(commentCount, forDetail);
 
   return (
     <Card style={[styles.container]} mode={mode}>
@@ -52,9 +55,11 @@ const InquiryCard = ({
             <View style={[styles.separator]} />
             <Card.Content style={[{flexDirection: 'row', justifyContent: 'space-between'}]}>
               <Paragraph style={[styles.content]}>
-                {User.departName} {User.staffName} {User.rankName ?? '사원'}
+                {forDetail && '담당:'} {User.departName} {User.staffName} {User.dutyName}
               </Paragraph>
-              <Paragraph style={[styles.time]}>{getTimeDiff(date)}</Paragraph>
+              {commentCount === 0 && (
+                <Paragraph style={[styles.time]}>{getTimeDiff(date)} 경과됨</Paragraph>
+              )}
             </Card.Content>
           </View>
         )}

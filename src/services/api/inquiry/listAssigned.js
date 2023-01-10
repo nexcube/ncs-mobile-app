@@ -34,7 +34,7 @@ const apiInquiryListAssigned = async (
 
     if (response.data.code === 200) {
       // console.log(response.data);
-      onSuccess(response.data.data);
+      onSuccess(offset, response.data.data);
     } else {
       console.error(response.data.message);
       onFail();

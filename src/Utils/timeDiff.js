@@ -12,8 +12,8 @@ function getTimeDiff(date, now = new Date()) {
   return (
     (diffDay >= 1 ? `${Math.floor(diffDay)}일 ` : '') +
     (diffHour >= 1 ? `${Math.floor(diffHour)}시간 ` : '') +
-    (diffMin >= 1 ? `${Math.floor(diffMin)}분 ` : '') +
-    (diffSec >= 1 ? `${Math.floor(diffSec)}초 ` : '')
+    (diffMin >= 1 ? `${Math.floor(diffMin)}분 ` : '')
+    // (diffSec >= 1 ? `${Math.floor(diffSec)}초 ` : '')
   );
 }
 

@@ -11,12 +11,15 @@ import useBottomSheet from '../../../hooks/useBottomSheet';
 import UserContext from '../../../services/context/UserContext';
 import apiInquiryListAssigned from '../../../services/api/inquiry/listAssigned';
 import useInquiryList from '../../../hooks/useInquiryLIst';
+import {useEffect} from 'react/cjs/react.development';
+import {ActivityIndicator} from 'react-native-paper';
 
 const fetchCount = 7;
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
+  const [tabIndex, setTabIndex] = useState(0);
   const {isOn: isIncludeDone, onToggle} = useCustomSwitch('isIncludeDone');
   const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
   const [User, setUser] = useContext(UserContext);
@@ -33,10 +36,67 @@ function HO_Dashboard({navigation, route}) {
     addData,
   } = useInquiryList();
 
-  useFocusEffect(
-    useCallback(() => {
-      // console.log('dash:', JSON.stringify(User, null, '\t'));
-      // console.log('isOn:', isIncludeDone);
+  const getData = offset => {
+    apiInquiryListAssigned(
+      User.staffId,
+      User.assignedCatIdx,
+      offset,
+      fetchCount,
+      isIncludeDone,
+      onSuccess,
+      onFail,
+    );
+  };
+
+  // 리플레쉬일때 처리.
+  useEffect(() => {
+    if (status.isRefreshing) {
+      console.log('isRefreshing');
+      getData(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.isRefreshing]);
+
+  // 기본(완료 토글 포함)
+  useEffect(() => {
+    console.log('isIncludeDone');
+    getData(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIncludeDone, tabIndex]);
+
+  const onSuccess = (offset, data) => {
+    // console.log(JSON.stringify(data, null, '\t'));
+
+    if (data.length === 0) {
+      setNoMore(true);
+      return;
+    }
+
+    if (offset === 0) {
+      setData(data);
+    } else {
+      addData(data);
+    }
+    increaseOffset(data.length);
+  };
+
+  const onFail = () => {
+    setLoading(false);
+  };
+
+  // 클릭 처리
+  const onItemSelected = item => {
+    const params = {
+      index: item.idx,
+      fromHO: true,
+    };
+    // console.log(params);
+    navigation.navigate('BO_Detail', params);
+  };
+
+  const onEndReached = () => {
+    if (!status.loading && !status.noMore) {
+      console.log('onEndReached...');
       apiInquiryListAssigned(
         User.staffId,
         User.assignedCatIdx,
@@ -46,26 +106,11 @@ function HO_Dashboard({navigation, route}) {
         onSuccess,
         onFail,
       );
-      //   // console.log(JSON.stringify(data, null, '\t'));
-      // });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [User.staffId, isIncludeDone, status.offset]),
-  );
-
-  const onSuccess = data => {
-    // console.log(JSON.stringify(data, null, '\t'));
-    setData(data);
+    }
   };
 
-  const onFail = () => {};
-
-  // 클릭 처리
-  const onItemSelected = item => {
-    const params = {
-      index: item.idx,
-    };
-    // console.log(params);
-    navigation.navigate('BO_Detail', params);
+  const onRefresh = () => {
+    setRefresh(true);
   };
 
   const onPressInfo = () => {
@@ -74,7 +119,12 @@ function HO_Dashboard({navigation, route}) {
 
   return (
     <View>
-      <ResponseStatus animHeaderValue={scrollOffsetY} onPressInfo={onPressInfo} />
+      <ResponseStatus
+        animHeaderValue={scrollOffsetY}
+        onPressInfo={onPressInfo}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+      />
       <FlatList
         ListHeaderComponent={
           <View style={[styles.listHeader]}>
@@ -116,6 +166,10 @@ function HO_Dashboard({navigation, route}) {
         scrollEventThrottle={200}
         onEndReachedThreshold={0.1}
         ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+        onEndReached={onEndReached}
+        ListFooterComponent={status.loading && <ActivityIndicator size={'large'} color="0067CC" />}
+        onRefresh={onRefresh}
+        refreshing={status.isRefreshing}
       />
 
       <BottomSheet sheetStatus={config} onOk={hideInfo} />

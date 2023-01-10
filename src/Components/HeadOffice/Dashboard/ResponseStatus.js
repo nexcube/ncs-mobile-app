@@ -11,7 +11,7 @@ import {useEffect} from 'react/cjs/react.development';
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
 
-function ResponseStatus({animHeaderValue, onPressInfo}) {
+function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex}) {
   const animateHeaderHeight = animHeaderValue.interpolate({
     inputRange: [0, Header_Max_Height - Header_Min_Height],
     outputRange: [Header_Max_Height, Header_Min_Height],
@@ -43,12 +43,12 @@ function ResponseStatus({animHeaderValue, onPressInfo}) {
               <Element count={1} text="시간 " />
               <Element count={12} text="분 " />
               <Element count={33} text="초 " />
-              <Text style={[{color: 'red'}]}>{staff}</Text>
+              {/* <Text style={[{color: 'red'}]}>{staff}</Text> */}
               <Icon name="info" size={15} color={globalStyles.color.gray} onPress={onPressInfo} />
             </View>
           </View>
         </Animated.View>
-        <ResponseTab />
+        <ResponseTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </ImageBackground>
     </View>
   );

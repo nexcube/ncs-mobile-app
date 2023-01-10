@@ -4,8 +4,8 @@ import HO_MainTab from './HO_MainTab';
 import HO_Detail from './Dashboard/Detail/HO_Detail';
 import HO_DetailImageViewer from './Dashboard/Detail/HO_DetailImageViewer';
 import HO_DetailAddComment from './Dashboard/Detail/HO_DetailAddComment';
-import HO_DetailClassifierInfo from './Dashboard/Detail/HO_DetailClassifierInfo';
-import HO_DetailClassifierSearch from './Dashboard/Detail/HO_DetailClassifierSearch';
+import HO_DetailAssignedInfo from './Dashboard/Detail/HO_DetailAssignedInfo';
+import HO_DetailAssignedSearch from './Dashboard/Detail/HO_DetailAssignedSearch';
 import HO_ClassifyDetail from './Dashboard/HO_ClassifyDetail';
 import HO_Setting from './Setting/HO_Setting';
 import HO_SettingClassify from './Setting/HO_SettingClassify';
@@ -50,8 +50,17 @@ function HO_MainStack() {
         component={HO_DetailAddComment}
         options={{title: '댓글 작성'}}
       />
-      <Stack.Screen name="HO_Detail_Classifier_Info" component={HO_DetailClassifierInfo} />
-      <Stack.Screen name="HO_Detail_Classifier_Search" component={HO_DetailClassifierSearch} />
+      <Stack.Screen
+        name="HO_Detail_Assigned_Info"
+        component={HO_DetailAssignedInfo}
+        options={{title: '처리 담당자 정보'}}
+      />
+      <Stack.Screen
+        name="HO_Detail_Assigned_Search"
+        component={HO_DetailAssignedSearch}
+        options={{title: '담당자 검색'}}
+        // options={{headerShown: false}}
+      />
       <Stack.Screen name="HO_Classify_Detail" component={HO_ClassifyDetail} />
       <Stack.Screen name="HO_Setting" component={HO_Setting} />
       <Stack.Screen name="HO_Setting_Push" component={HO_SettingPush} />
