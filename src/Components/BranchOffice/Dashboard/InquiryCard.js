@@ -29,8 +29,6 @@ const InquiryCard = ({
     if (assignedStaffId) {
       apiAssignedInfo(assignedStaffId).then(data => {
         setAssignedStaff(data);
-        console.log(assignedStaffId);
-        console.log('1:', JSON.stringify(data, null, '\t'));
       });
     }
   }, [assignedStaffId]);

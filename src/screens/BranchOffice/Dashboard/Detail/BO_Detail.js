@@ -57,7 +57,7 @@ function BO_Detail({navigation, route}) {
 
   useEffect(() => {
     if (isRefresh) {
-      console.log('useEffect isRefresh');
+      // console.log('useEffect isRefresh');
       getInquiryListItem();
     }
     return setIsRefresh(false);
@@ -71,7 +71,7 @@ function BO_Detail({navigation, route}) {
 
   const onSuccessInquiryListItem = data => {
     setInquiryItem(data);
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
   };
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ function BO_Detail({navigation, route}) {
   };
 
   const onSuccessShareInfo = (data, share) => {
-    console.log('onSuccessShareInfo');
+    // console.log('onSuccessShareInfo');
     setIsRefresh(true);
     const message = '공유정보' + (share === 0 ? '에서 해제되었습니다.' : '로 등록되었습니다.');
 
@@ -122,7 +122,7 @@ function BO_Detail({navigation, route}) {
   };
 
   const onPressAddComment = () => {
-    console.log('onPressAddComment');
+    // console.log('onPressAddComment');
     const params = {index: index};
     navigation.navigate('BO_Detail_Add_Comment', params);
   };
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: globalStyles.color.white,
-    paddingBottom: 8,
   },
   contentContainer: {
     paddingVertical: 12,

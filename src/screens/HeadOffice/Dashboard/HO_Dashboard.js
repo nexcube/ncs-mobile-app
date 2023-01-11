@@ -22,7 +22,7 @@ function HO_Dashboard({navigation, route}) {
   const [tabIndex, setTabIndex] = useState(0);
   const {isOn: isIncludeDone, onToggle} = useCustomSwitch('isIncludeDone');
   const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
-  const [User, setUser, isHO] = useContext(UserContext);
+  const [User, , isHO] = useContext(UserContext);
   const {
     list,
     status,
@@ -51,21 +51,29 @@ function HO_Dashboard({navigation, route}) {
   // 리플레쉬일때 처리.
   useEffect(() => {
     if (status.isRefreshing) {
-      console.log('isRefreshing');
+      // console.log('isRefreshing');
       getData(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status.isRefreshing]);
 
   // 기본(완료 토글 포함)
-  useEffect(() => {
-    console.log('isIncludeDone');
-    getData(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isIncludeDone, tabIndex]);
+  // useEffect(() => {
+  //   console.log('isIncludeDone');
+  //   getData(0);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isIncludeDone, tabIndex]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // console.log('isIncludeDone');
+      getData(0);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isIncludeDone, tabIndex]),
+  );
 
   const onSuccess = (offset, data) => {
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
 
     if (data.length === 0) {
       setNoMore(true);
@@ -96,7 +104,7 @@ function HO_Dashboard({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      console.log('onEndReached...');
+      // console.log('onEndReached...');
       apiInquiryListAssigned(
         User.staffId,
         User.assignedCatIdx,
