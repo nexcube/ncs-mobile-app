@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: globalStyles.color.grayLight,
   },
   button: {
-    // backgroundColor: globalStyles.color.white,
+    padding: 10,
   },
 });
 

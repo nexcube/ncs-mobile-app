@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import InquiryCard from '../../../../components/BranchOffice/Dashboard/InquiryCard';
 import AssignedStaffComp from '../../../../components/HeadOffice/Detail/AssignedStaffComp';
 import globalStyles from '../../../../styles/globalStyles';
 import CategoryAssignedComp from '../../../../components/HeadOffice/Detail/CategoryAssignedComp';
+import AssignedWatchComp from '../../../../components/HeadOffice/Detail/AssignedWatchComp';
 
 function HO_DetailAssignedInfo({navigation, route}) {
   const inquiryItem = route.params;
-  console.log(JSON.stringify(inquiryItem, null, '\t'));
+  const [refresh, setRefresh] = useState(false);
 
   const onChange = () => {
-    navigation.navigate('HO_Detail_Assigned_Search');
+    setRefresh(false);
+    navigation.navigate('HO_Detail_Assigned_Search', {
+      inquiryItem: inquiryItem,
+    });
+    navigation;
   };
 
   return (
@@ -33,17 +38,20 @@ function HO_DetailAssignedInfo({navigation, route}) {
           forDetail={true}
         />
       </View>
-      <View style={[styles.assignedStaff]}>
+
+      <ScrollView style={[styles.assignedStaff]}>
         <AssignedStaffComp
           staffId={inquiryItem.assignedStaffId}
           title="지정 담당자"
           isChange={true}
           onChange={onChange}
         />
-      </View>
-      <View style={[styles.separator]} />
-      <ScrollView style={[styles.assignedStaff]}>
+
+        <View style={[styles.separator]} />
         <CategoryAssignedComp catIdx={inquiryItem.catIdx} title="분류 담당자" isChange={false} />
+        <View style={[styles.watchList]}>
+          <AssignedWatchComp catIdx={inquiryItem.catIdx} refresh={refresh} />
+        </View>
       </ScrollView>
     </View>
   );
@@ -51,7 +59,7 @@ function HO_DetailAssignedInfo({navigation, route}) {
 
 const styles = StyleSheet.create({
   fullscreen: {
-    flex: 1,
+    // flex: 1,
   },
   header: {
     backgroundColor: globalStyles.color.white,
@@ -66,6 +74,9 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: globalStyles.color.grayLight,
     marginHorizontal: 12,
+  },
+  watchList: {
+    paddingVertical: 24,
   },
 });
 

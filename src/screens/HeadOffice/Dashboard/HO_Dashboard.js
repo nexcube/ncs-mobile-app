@@ -22,7 +22,7 @@ function HO_Dashboard({navigation, route}) {
   const [tabIndex, setTabIndex] = useState(0);
   const {isOn: isIncludeDone, onToggle} = useCustomSwitch('isIncludeDone');
   const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
-  const [User, setUser] = useContext(UserContext);
+  const [User, setUser, isHO] = useContext(UserContext);
   const {
     list,
     status,
@@ -65,7 +65,7 @@ function HO_Dashboard({navigation, route}) {
   }, [isIncludeDone, tabIndex]);
 
   const onSuccess = (offset, data) => {
-    // console.log(JSON.stringify(data, null, '\t'));
+    console.log(JSON.stringify(data, null, '\t'));
 
     if (data.length === 0) {
       setNoMore(true);
@@ -145,6 +145,7 @@ function HO_Dashboard({navigation, route}) {
               levelName={item.levelName}
               updateDate={item.updateDate}
               status={item.status}
+              isHO={isHO}
               commentCount={item?.commentCount ?? 0}
               assignedStaffId={item?.assignedStaffId}
             />

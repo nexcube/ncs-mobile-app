@@ -13,8 +13,8 @@ function CategoryAssignedComp({catIdx, title, isChange}) {
   }, [catIdx]);
 
   const onSuccess = data => {
-    console.log('``````````````````````````````');
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log('``````````````````````````````');
+    // console.log(JSON.stringify(data, null, '\t'));
     setCatInfo(data);
   };
 

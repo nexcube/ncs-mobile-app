@@ -145,6 +145,7 @@ function BO_Detail({navigation, route}) {
           commentCount={inquiryItem.commentCount}
           isHO={isFromHO}
           forDetail={true}
+          assignedStaffId={inquiryItem.assignedStaffId}
         />
       </View>
 

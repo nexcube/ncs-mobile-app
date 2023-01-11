@@ -5,6 +5,7 @@ import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import React from 'react';
 import {Card} from 'react-native-paper';
+import {useFocusEffect} from '@react-navigation/native';
 
 function AssignedStaffComp({
   staffId,
@@ -19,8 +20,8 @@ function AssignedStaffComp({
   useEffect(() => {
     apiAssignedInfo(staffId).then(data => {
       setStaff(data);
-      console.log(staffId, '---------------------------------------------------------');
-      console.log(JSON.stringify(data, null, '\t'));
+      // console.log(staffId, '---------------------------------------------------------');
+      // console.log(JSON.stringify(data, null, '\t'));
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staffId]);
@@ -41,7 +42,7 @@ function AssignedStaffComp({
       <Card style={[styles.cardContainer]} mode={cardMode}>
         <Card.Title
           style={[styles.card]}
-          title={'  ' + staff?.staffName + ' ' + staff?.dutyName}
+          title={' ' + staff?.staffName + ' ' + staff?.dutyName}
           titleStyle={styles.title}
           titleVariant="labelLarge"
           subtitle={'  ' + staff?.departName + '∙' + staff?.positionName}

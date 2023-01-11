@@ -1,11 +1,10 @@
-import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Card, Paragraph} from 'react-native-paper';
-import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
-
 import InquiryCardHeader from './InquiryCardHeader';
 import {getTimeDiff} from '../../../Utils/timeDiff';
+import apiAssignedInfo from '../../../services/api/assigned/info';
 
 const InquiryCard = ({
   title,
@@ -24,10 +23,17 @@ const InquiryCard = ({
 }) => {
   // 타임존 제거
   const date = new Date(updateDate?.slice(0, -1));
+  const [assignedStaff, setAssignedStaff] = useState({});
 
-  const [User, ,] = React.useContext(UserContext);
-
-  // console.log(commentCount, forDetail);
+  useEffect(() => {
+    if (assignedStaffId) {
+      apiAssignedInfo(assignedStaffId).then(data => {
+        setAssignedStaff(data);
+        console.log(assignedStaffId);
+        console.log('1:', JSON.stringify(data, null, '\t'));
+      });
+    }
+  }, [assignedStaffId]);
 
   return (
     <Card style={[styles.container]} mode={mode}>
@@ -53,9 +59,10 @@ const InquiryCard = ({
         {isHO && (
           <View>
             <View style={[styles.separator]} />
-            <Card.Content style={[{flexDirection: 'row', justifyContent: 'space-between'}]}>
+            <Card.Content style={[styles.cardContent]}>
               <Paragraph style={[styles.content]}>
-                {forDetail && '담당:'} {User.departName} {User.staffName} {User.dutyName}
+                {forDetail && '담당:'} {assignedStaff.departName} {assignedStaff.staffName}{' '}
+                {assignedStaff.dutyName}
               </Paragraph>
               {commentCount === 0 && (
                 <Paragraph style={[styles.time]}>{getTimeDiff(date)} 경과됨</Paragraph>
@@ -63,13 +70,14 @@ const InquiryCard = ({
             </Card.Content>
           </View>
         )}
-        <View style={[{paddingBottom: 8}]} />
+        <View style={[styles.space]} />
       </View>
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
+  cardContent: {flexDirection: 'row', justifyContent: 'space-between'},
   container: {
     backgroundColor: globalStyles.color.white,
   },
@@ -102,6 +110,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     color: globalStyles.color.gray,
+  },
+  space: {
+    paddingBottom: 8,
   },
 });
 

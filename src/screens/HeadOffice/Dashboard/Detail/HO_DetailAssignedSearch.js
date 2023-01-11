@@ -12,6 +12,7 @@ import apiAssignedDepartList from '../../../../services/api/assigned/departList'
 import DepartGroup from '../../../../components/HeadOffice/Detail/DepartGroup';
 
 function HO_DetailAssignedSearch({navigation, route}) {
+  const inquiryItem = route.params?.inquiryItem;
   const {isOn: isIncludeRetire, onToggle} = useCustomSwitch('isIncludeRetire');
   const [departs, setDeparts] = useState([]);
   const [staffCount, setStaffCount] = useState(0);
@@ -26,11 +27,7 @@ function HO_DetailAssignedSearch({navigation, route}) {
   }, [isIncludeRetire]);
 
   const onSuccessDepartList = data => {
-    console.log(JSON.stringify(data, null, '\t'));
     const result = data.filter(item => item.idx !== item.parentIdx);
-    // .map(parent => ({...parent, children: data.filter(v => v.parentIdx === parent.idx)}));
-
-    console.log(JSON.stringify(result, null, '\t'));
     setDeparts(result);
   };
 
@@ -58,14 +55,16 @@ function HO_DetailAssignedSearch({navigation, route}) {
         </View>
       </View>
       <ScrollView>
-        <List.AccordionGroup expandedId={departs[0]?.idx}>
+        <List.AccordionGroup>
           {departs.map(depart => (
             <DepartGroup
+              key={depart.idx}
               idx={depart.idx}
               name={depart.name}
               isIncludeRetire={isIncludeRetire}
               setStaffCount={setStaffCount}
               searchString={searchString}
+              inquiryItem={inquiryItem}
             />
           ))}
         </List.AccordionGroup>
