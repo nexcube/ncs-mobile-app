@@ -15,10 +15,11 @@ import apiInquiryDeleteItem from '../../../../services/api/inquiry/deleteItem';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import TopMenuFromHO from '../../../../components/BranchOffice/Detail/TopMenuFromHO';
 import apiInquiryUpdateShare from '../../../../services/api/inquiry/updateShare';
-import CustomToast, {infoConfig, Toast} from '../../../../components/common/CustomToast';
+import CustomToast, {Toast} from '../../../../components/common/CustomToast';
+import {QnaStatus} from '../../../../services/config';
 
 function BO_Detail({navigation, route}) {
-  const index = route.params.index;
+  const qnaIndex = route.params.index;
   const isFromHO = route.params.fromHO ?? false;
 
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
@@ -66,12 +67,12 @@ function BO_Detail({navigation, route}) {
   }, [isRefresh]);
 
   const getInquiryListItem = async () => {
-    await apiInquiryListItem(index, onSuccessInquiryListItem);
+    await apiInquiryListItem(qnaIndex, onSuccessInquiryListItem);
   };
 
   const onSuccessInquiryListItem = data => {
     setInquiryItem(data);
-    // console.log(JSON.stringify(data, null, '\t'));
+    console.log(JSON.stringify(data, null, '\t'));
   };
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +91,7 @@ function BO_Detail({navigation, route}) {
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => apiInquiryDeleteItem(index, onSuccessInquiryDelete)},
+      {text: 'OK', onPress: () => apiInquiryDeleteItem(qnaIndex, onSuccessInquiryDelete)},
     ]);
   };
 
@@ -99,7 +100,7 @@ function BO_Detail({navigation, route}) {
   };
 
   const onSharedInfo = async share => {
-    apiInquiryUpdateShare(index, share, onSuccessShareInfo);
+    apiInquiryUpdateShare(qnaIndex, share, onSuccessShareInfo);
   };
 
   const onSuccessShareInfo = (data, share) => {
@@ -122,8 +123,9 @@ function BO_Detail({navigation, route}) {
   };
 
   const onPressAddComment = () => {
-    // console.log('onPressAddComment');
-    const params = {index: index};
+    console.log('onPressAddComment');
+
+    const params = {index: qnaIndex, status: QnaStatus[inquiryItem.status]};
     navigation.navigate('BO_Detail_Add_Comment', params);
   };
 
@@ -160,7 +162,7 @@ function BO_Detail({navigation, route}) {
         {/* <View style={[styles.commentLayout]}>
           <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
         </View> */}
-        <CommentList index={index} />
+        <CommentList index={qnaIndex} />
       </ScrollView>
 
       <View style={[styles.addComment]}>
@@ -168,7 +170,7 @@ function BO_Detail({navigation, route}) {
           <CustomInput
             placeholder="댓글 입력..."
             editable={false}
-            // onPressIn={onPressAddComment}
+            onPressIn={onPressAddComment}
             height={38}
           />
         </Pressable>

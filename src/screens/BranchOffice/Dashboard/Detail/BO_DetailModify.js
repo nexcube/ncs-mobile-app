@@ -109,6 +109,7 @@ function BO_DetailModify({navigation, route}) {
     formData.append('category', classify.index);
     formData.append('facilityCode', branch.facilityCode);
     formData.append('staffId', staffId);
+    formData.append('assignedStaffId', inquiryItem.assignedStaffId);
 
     await apiInquiryUpdate(
       formData,

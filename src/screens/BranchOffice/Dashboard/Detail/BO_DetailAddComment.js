@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BottomSheet, {BottomSheetType} from '../../../../components/common/bottomsheet/BottomSheet';
@@ -12,15 +12,22 @@ import globalStyles from '../../../../styles/globalStyles';
 import userData from '../../../../services/storage/DeviceStorage';
 import apiCommentRegister from '../../../../services/api/comment/register';
 import useBottomSheet from '../../../../hooks/useBottomSheet';
+import SelectionList from '../../../../components/common/SelectionList';
+import {QnaStatus} from '../../../../services/config';
+import UserContext from '../../../../services/context/UserContext';
+import apiInquiryUpdateStatus from '../../../../services/api/inquiry/updateStatus';
 
 function BO_DetailAddComment({navigation, route}) {
   const index = route.params.index;
+  // console.log(route.params.status);
+  const [qnaStatus, setQnaStatus] = useState(route.params.status);
   const [content, setContent] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
     BottomSheetType.Registration,
   );
   const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
+  const [User, , isHO] = useContext(UserContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -69,11 +76,28 @@ function BO_DetailAddComment({navigation, route}) {
   };
   const onBSConfirmCancel = () => navigation.goBack();
 
-  const onSuccessRegister = nav => () => nav.goBack();
+  const onSuccessRegister = nav => () => {
+    if (qnaStatus !== route.params.status) {
+      apiInquiryUpdateStatus(index, qnaStatus.value).then(data => {
+        console.log('문의의 진행 상태가 변경되었습니다.');
+      });
+    }
+    nav.goBack();
+  };
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
       <ScrollView style={[styles.container]}>
+        {isHO && (
+          <SelectionList
+            placeholder="상태 변경"
+            hasMarginBottom
+            data={[QnaStatus.NEW, QnaStatus.INPROGRESS, QnaStatus.DONE]}
+            setSelected={setQnaStatus}
+            defaultSelection={qnaStatus.name}
+          />
+        )}
+
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"

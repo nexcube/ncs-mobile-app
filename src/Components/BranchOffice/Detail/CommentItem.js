@@ -1,8 +1,9 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import apiCommentDeleteItem from '../../../services/api/comment/deleteItem';
+import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
 
 import Attachments from '../Dashboard/Attachments';
@@ -10,11 +11,12 @@ import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
 const CommentItem = ({commentData, commentList, setCommentList}) => {
-  // console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
+  console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
   const [attachments, setAttachments] = useState(commentData.attachments);
+  const [User, ,] = useContext(UserContext);
 
   const onModify = useCallback(() => {
     navigation.navigate('BO_Detail_Modify_Comment', {
@@ -62,7 +64,9 @@ const CommentItem = ({commentData, commentList, setCommentList}) => {
             <Text style={[styles.date]}>{date.toLocaleString()}</Text>
           </View>
         </View>
-        <TopMenu onModify={onModify} onDelete={onDelete} menuColor={globalStyles.color.text} />
+        {commentData.staffId === User.staffId && (
+          <TopMenu onModify={onModify} onDelete={onDelete} menuColor={globalStyles.color.text} />
+        )}
       </View>
       <View style={[styles.contentContainer]}>
         <Text>{commentData.content}</Text>

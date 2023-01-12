@@ -15,6 +15,8 @@ import HO_SettingPushTime from './Setting/HO_SettingPushTime';
 import globalStyles from '../../styles/globalStyles';
 import {Platform} from 'react-native';
 import BO_Detail from '../BranchOffice/Dashboard/Detail/BO_Detail';
+import BO_DetailModify from '../BranchOffice/Dashboard/Detail/BO_DetailModify';
+import BO_DetailAddComment from '../BranchOffice/Dashboard/Detail/BO_DetailAddComment';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,14 +43,19 @@ function HO_MainStack() {
         options={{title: '상세 보기', animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
+        name="BO_Detail_Add_Comment"
+        component={BO_DetailAddComment}
+        options={{title: '댓글 작성'}}
+      />
+      <Stack.Screen
+        name="BO_Detail_Modify"
+        component={BO_DetailModify}
+        options={{title: '수정하기'}}
+      />
+      <Stack.Screen
         name="HO_Detail_Image_Viewer"
         component={HO_DetailImageViewer}
         options={{title: '첨부된 이미지'}}
-      />
-      <Stack.Screen
-        name="HO_Detail_Add_Comment"
-        component={HO_DetailAddComment}
-        options={{title: '댓글 작성'}}
       />
       <Stack.Screen
         name="HO_Detail_Assigned_Info"

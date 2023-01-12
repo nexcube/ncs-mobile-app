@@ -3,14 +3,20 @@ import {StyleSheet, View} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import globalStyles from '../../styles/globalStyles';
 
-function SelectionList({hasMarginBottom, data, setSelected, defaultSelection = ''}) {
+function SelectionList({
+  placeholder = '관련 지점',
+  hasMarginBottom,
+  data,
+  setSelected,
+  defaultSelection = '',
+}) {
   const [isSelect, setIsSelect] = useState(false);
   const hasDefault = defaultSelection.length > 1;
 
   return (
     <View style={[hasMarginBottom && styles.margin]}>
       <SelectList
-        placeholder="관련 지점"
+        placeholder={placeholder}
         search={false}
         fontFamily={globalStyles.font.regular}
         setSelected={val => {
