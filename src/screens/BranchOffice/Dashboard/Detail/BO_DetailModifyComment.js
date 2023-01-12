@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Platform, ScrollView, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
 import BottomSheet, {BottomSheetType} from '../../../../components/common/bottomsheet/BottomSheet';
 import CustomInput from '../../../../components/common/CustomInput';
 import CustomToast, {Toast} from '../../../../components/common/CustomToast';
@@ -10,26 +9,26 @@ import HeaderButton from '../../../../components/common/HeaderButton';
 import Attachments from '../../../../components/BranchOffice/Dashboard/Attachments';
 import InquiryBottomBar from '../../../../components/BranchOffice/Dashboard/InquiryBottomBar';
 import globalStyles from '../../../../styles/globalStyles';
-import produce from 'immer';
 import apiCommentUpdate from '../../../../services/api/comment/update';
 import apiInquiryDeleteFiles from '../../../../services/api/inquiry/deleteFiles';
 import useBottomSheet from '../../../../hooks/useBottomSheet';
+import SelectionList from '../../../../components/common/SelectionList';
+import {QnaStatus} from '../../../../services/config';
+import UserContext from '../../../../services/context/UserContext';
+import apiInquiryUpdateStatus from '../../../../services/api/inquiry/updateStatus';
 
 function BO_DetailModifyComment({navigation, route}) {
-  // console.log('BO_DetailModifyComment : ', route.params.data);
   const originalComment = route.params.data;
-  const index = originalComment.idx;
+  const commentIndex = originalComment.idx;
+  const qnaIndex = route.params.qnaIndex;
   const [content, setContent] = useState(originalComment.content);
   const [attachments, setAttachments] = useState(originalComment.attachments);
-  // const [visibleBS, setVisibleBS] = useState({
-  //   visible: false,
-  //   format: BottomSheetType.Registration,
-  // });
-
+  const [qnaStatus, setQnaStatus] = useState(route.params.status);
   const [registerBSConfig, showRegisterBS, hideRegisterBS] = useBottomSheet(
     BottomSheetType.Registration,
   );
   const [cancelBSConfig, showCancelBS, hideCancelBS] = useBottomSheet(BottomSheetType.Cancel);
+  const [User, , isHO] = useContext(UserContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -71,7 +70,7 @@ function BO_DetailModifyComment({navigation, route}) {
 
     const formData = new FormData();
     uploadFilesWOS3.map(item => formData.append('image', item));
-    formData.append('index', index);
+    formData.append('index', commentIndex);
     formData.append('content', content);
 
     await apiCommentUpdate(
@@ -89,12 +88,26 @@ function BO_DetailModifyComment({navigation, route}) {
     if (deleteFiles.length > 0) {
       await apiInquiryDeleteFiles(tableName, idx, deleteFiles);
     }
+    if (qnaStatus !== route.params.status) {
+      apiInquiryUpdateStatus(qnaIndex, qnaStatus.value).then(res => {
+        console.log('문의의 진행 상태가 변경되었습니다.');
+      });
+    }
     nav.goBack();
   };
 
   return (
     <SafeAreaView edges={['bottom']} style={[styles.fullscreen]}>
       <ScrollView style={[styles.container]}>
+        {isHO && (
+          <SelectionList
+            placeholder="상태 변경"
+            hasMarginBottom
+            data={[QnaStatus.NEW, QnaStatus.INPROGRESS, QnaStatus.DONE]}
+            setSelected={setQnaStatus}
+            defaultSelection={qnaStatus.name}
+          />
+        )}
         <CustomInput
           hasMarginBottom
           textAlignVertical="top"

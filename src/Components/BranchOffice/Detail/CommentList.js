@@ -4,7 +4,7 @@ import React, {useCallback, useState} from 'react';
 import apiCommentList from '../../../services/api/comment/list';
 import CommentItem from './CommentItem';
 
-const CommentList = ({index}) => {
+const CommentList = ({index, qnaIndex, qnaStatus}) => {
   const [commentList, setCommentList] = useState([]);
 
   useFocusEffect(
@@ -61,6 +61,8 @@ const CommentList = ({index}) => {
       commentData={item}
       commentList={commentList}
       setCommentList={setCommentList}
+      qnaIndex={qnaIndex}
+      qnaStatus={qnaStatus}
     />
   ));
   // return <Text>parkcom</Text>;

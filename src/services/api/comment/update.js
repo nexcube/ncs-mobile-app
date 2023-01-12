@@ -4,7 +4,7 @@ import axios_error_handler from '../errorHandler';
 
 const apiCommentUpdate = async (params, onSuccess) => {
   const url = '/comment/update';
-  console.log(`${axios.defaults.baseURL}${url}`);
+  // console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
     const jwt = await userData.getJWT();
@@ -17,10 +17,6 @@ const apiCommentUpdate = async (params, onSuccess) => {
         return data;
       },
     };
-
-    console.log(jwt);
-    console.log(token);
-    console.log(params);
 
     const response = await axios.put(url, params, config);
 

@@ -3,6 +3,7 @@ import React, {useCallback, useContext, useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import apiCommentDeleteItem from '../../../services/api/comment/deleteItem';
+import {QnaStatus} from '../../../services/config';
 import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
 
@@ -10,8 +11,8 @@ import Attachments from '../Dashboard/Attachments';
 import TopMenu from './TopMenu';
 
 // {staffId, content, updateDate}
-const CommentItem = ({commentData, commentList, setCommentList}) => {
-  console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
+const CommentItem = ({commentData, commentList, setCommentList, qnaIndex, qnaStatus}) => {
+  // console.log('CommentItem..... : ', JSON.stringify(commentData, null, '\t'));
   // 타임존 제거
   const date = new Date(commentData.updateDate.slice(0, -1));
   const navigation = useNavigation();
@@ -21,8 +22,10 @@ const CommentItem = ({commentData, commentList, setCommentList}) => {
   const onModify = useCallback(() => {
     navigation.navigate('BO_Detail_Modify_Comment', {
       data: {...commentData, attachments: attachments},
+      status: QnaStatus[qnaStatus],
+      qnaIndex: qnaIndex,
     });
-  }, [attachments, commentData, navigation]);
+  }, [attachments, commentData, navigation, qnaIndex, qnaStatus]);
 
   useFocusEffect(
     useCallback(() => {

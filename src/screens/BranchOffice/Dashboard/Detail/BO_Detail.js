@@ -72,7 +72,7 @@ function BO_Detail({navigation, route}) {
 
   const onSuccessInquiryListItem = data => {
     setInquiryItem(data);
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
   };
 
   // Event Handler /////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ function BO_Detail({navigation, route}) {
   };
 
   const onPressAddComment = () => {
-    console.log('onPressAddComment');
+    // console.log('onPressAddComment');
 
     const params = {index: qnaIndex, status: QnaStatus[inquiryItem.status]};
     navigation.navigate('BO_Detail_Add_Comment', params);
@@ -162,7 +162,7 @@ function BO_Detail({navigation, route}) {
         {/* <View style={[styles.commentLayout]}>
           <Text style={[styles.commentText]}>댓글수 {inquiryItem?.commentCount ?? 0}</Text>
         </View> */}
-        <CommentList index={qnaIndex} />
+        <CommentList index={qnaIndex} qnaStatus={inquiryItem.status} qnaIndex={inquiryItem.idx} />
       </ScrollView>
 
       <View style={[styles.addComment]}>

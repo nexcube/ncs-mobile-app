@@ -17,6 +17,7 @@ import {Platform} from 'react-native';
 import BO_Detail from '../BranchOffice/Dashboard/Detail/BO_Detail';
 import BO_DetailModify from '../BranchOffice/Dashboard/Detail/BO_DetailModify';
 import BO_DetailAddComment from '../BranchOffice/Dashboard/Detail/BO_DetailAddComment';
+import BO_DetailModifyComment from '../BranchOffice/Dashboard/Detail/BO_DetailModifyComment';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,11 @@ function HO_MainStack() {
         name="BO_Detail_Add_Comment"
         component={BO_DetailAddComment}
         options={{title: '댓글 작성'}}
+      />
+      <Stack.Screen
+        name="BO_Detail_Modify_Comment"
+        component={BO_DetailModifyComment}
+        options={{title: '댓글 수정'}}
       />
       <Stack.Screen
         name="BO_Detail_Modify"
