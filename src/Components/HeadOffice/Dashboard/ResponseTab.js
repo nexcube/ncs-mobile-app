@@ -5,7 +5,7 @@ import apiInquiryCountInquiry from '../../../services/api/inquiry/countInquiry';
 import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
 
-const ResponseTab = ({tabIndex, setTabIndex}) => {
+const ResponseTab = ({tabIndex, setTabIndex, isIncludeDone}) => {
   const [User] = useContext(UserContext);
   const [count, setCount] = useState({assignedMe: 0, relatedMe: 0, allInquiry: 0});
 
@@ -26,11 +26,12 @@ const ResponseTab = ({tabIndex, setTabIndex}) => {
       User.staffId,
       User.assignedCatIdx,
       User.relatedCatIdxs,
+      isIncludeDone,
       onSuccess,
       onFail,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isIncludeDone]);
 
   const onSuccess = data => {
     // console.log(JSON.stringify(data, null, '\t'));

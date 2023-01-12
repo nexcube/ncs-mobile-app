@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useRef, useState} from 'react';
-import {StyleSheet, View, Animated, FlatList} from 'react-native';
+import {StyleSheet, View, Animated, FlatList, Text} from 'react-native';
 import ResponseStatus from '../../../components/HeadOffice/Dashboard/ResponseStatus';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
@@ -13,6 +13,8 @@ import apiInquiryListAssigned from '../../../services/api/inquiry/listAssigned';
 import useInquiryList from '../../../hooks/useInquiryLIst';
 import {useEffect} from 'react/cjs/react.development';
 import {ActivityIndicator} from 'react-native-paper';
+import apiInquiryListRelated from '../../../services/api/inquiry/listRelated';
+import apiInquiryList from '../../../services/api/inquiry/list';
 
 const fetchCount = 7;
 
@@ -37,16 +39,42 @@ function HO_Dashboard({navigation, route}) {
   } = useInquiryList();
 
   const getData = offset => {
-    apiInquiryListAssigned(
-      User.staffId,
-      User.assignedCatIdx,
-      offset,
-      fetchCount,
-      isIncludeDone,
-      onSuccess,
-      onFail,
-    );
+    switch (tabIndex) {
+      case 0: // assignedMe
+        apiInquiryListAssigned(
+          User.staffId,
+          User.assignedCatIdx,
+          offset,
+          fetchCount,
+          isIncludeDone,
+          onSuccess,
+          onFail,
+        );
+        break;
+      case 1: // relatedMe
+        apiInquiryListRelated(
+          User.staffId,
+          User.assignedCatIdx,
+          User.relatedCatIdxs,
+          offset,
+          fetchCount,
+          isIncludeDone,
+          onSuccess,
+          onFail,
+        );
+        break;
+      case 2: // all
+        apiInquiryList('', offset, fetchCount, isIncludeDone, onSuccess, onFail);
+        break;
+    }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      getData(0);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isIncludeDone, tabIndex]),
+  );
 
   // 리플레쉬일때 처리.
   useEffect(() => {
@@ -56,21 +84,6 @@ function HO_Dashboard({navigation, route}) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status.isRefreshing]);
-
-  // 기본(완료 토글 포함)
-  // useEffect(() => {
-  //   console.log('isIncludeDone');
-  //   getData(0);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isIncludeDone, tabIndex]);
-
-  useFocusEffect(
-    useCallback(() => {
-      // console.log('isIncludeDone');
-      getData(0);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isIncludeDone, tabIndex]),
-  );
 
   const onSuccess = (offset, data) => {
     // console.log(JSON.stringify(data, null, '\t'));
@@ -104,16 +117,8 @@ function HO_Dashboard({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      // console.log('onEndReached...');
-      apiInquiryListAssigned(
-        User.staffId,
-        User.assignedCatIdx,
-        status.offset,
-        fetchCount,
-        isIncludeDone,
-        onSuccess,
-        onFail,
-      );
+      console.log('onEndReached...');
+      getData(status.offset);
     }
   };
 
@@ -132,7 +137,9 @@ function HO_Dashboard({navigation, route}) {
         onPressInfo={onPressInfo}
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
+        isIncludeDone={isIncludeDone}
       />
+
       <FlatList
         ListHeaderComponent={
           <View style={[styles.listHeader]}>
@@ -141,11 +148,11 @@ function HO_Dashboard({navigation, route}) {
         }
         contentContainerStyle={[styles.list]}
         data={list}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <Pressable onPress={() => onItemSelected(item)}>
             <InquiryCard
               key={item.idx}
-              title={item.idx.toString() + ' : ' + item.title}
+              title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
               mainCatName={item.mainCatName}
               subCatName={item.subCatName}
               branchOfficeName={item.branchOfficeName}
@@ -201,6 +208,14 @@ const styles = StyleSheet.create({
   listHeader: {
     alignItems: 'flex-end',
     marginBottom: 12,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 100,
+
+    left: 100,
+
+    color: 'red',
   },
 });
 

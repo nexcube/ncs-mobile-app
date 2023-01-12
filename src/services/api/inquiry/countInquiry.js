@@ -6,6 +6,7 @@ const apiInquiryCountInquiry = async (
   staffId,
   assignedCatIdx,
   relatedCatIdxs,
+  isIncludeDone,
   onSuccess,
   onFail,
 ) => {
@@ -20,6 +21,7 @@ const apiInquiryCountInquiry = async (
       staffId: staffId,
       assignedCatIdx: assignedCatIdx,
       relatedCatIdxs: relatedCatIdxs,
+      isIncludeDone: isIncludeDone,
     };
     const data = {
       headers: {authorization: token},

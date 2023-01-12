@@ -7,11 +7,14 @@ import BO_MainStack from './BranchOffice/BO_MainStack';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SpinnerContext from '../services/context/SpinnerContext';
 import globalStyles from '../styles/globalStyles';
+import UserContext from '../services/context/UserContext';
+import DebugView from '../components/common/DebugView';
 
 const Stack = createNativeStackNavigator();
 
 function RootStack() {
   const [spinConfig] = useContext(SpinnerContext);
+  const [User, ,] = useContext(UserContext);
 
   return (
     <>
@@ -20,6 +23,8 @@ function RootStack() {
         textContent={spinConfig.text}
         textStyle={globalStyles.spinnerTextStyle}
       />
+      <DebugView text={User} />
+
       <Stack.Navigator>
         <Stack.Screen name="LogIn" component={LoginScreen} options={{headerShown: false}} />
         <Stack.Screen name="HO_MainStack" component={HO_MainStack} options={{headerShown: false}} />

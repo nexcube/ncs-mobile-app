@@ -59,8 +59,8 @@ const InquiryCard = ({
             <View style={[styles.separator]} />
             <Card.Content style={[styles.cardContent]}>
               <Paragraph style={[styles.content]}>
-                {forDetail && '담당:'} {assignedStaff.departName} {assignedStaff.staffName}{' '}
-                {assignedStaff.dutyName}
+                {forDetail && assignedStaff && '담당:'} {assignedStaff.departName}{' '}
+                {assignedStaff.staffName} {assignedStaff.dutyName}
               </Paragraph>
               {commentCount === 0 && (
                 <Paragraph style={[styles.time]}>{getTimeDiff(date)} 경과됨</Paragraph>

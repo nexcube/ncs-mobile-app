@@ -62,15 +62,15 @@ function BO_Dashboard({navigation, route}) {
       // setListStatus({...listStatus, loading: true});
       setLoading();
       if (search?.length > 0) {
-        apiInquiryList(search, 0, fetchCount, onSuccess, onFail);
+        apiInquiryList(search, 0, fetchCount, true, onSuccess, onFail);
       }
-      apiInquiryList(search, status.offset, fetchCount, onSuccess, onFail);
+      apiInquiryList(search, status.offset, fetchCount, true, onSuccess, onFail);
     },
     [status.loading, status.noMore, status.offset, setLoading, onSuccess, onFail],
   );
 
   const onSuccess = useCallback(
-    (data, fromSearch = false) => {
+    (offset, data, fromSearch = false) => {
       // console.log(JSON.stringify(data, null, '\t'));
       // 더이상 데이터가 없는가?
       if (data.length === 0) {
@@ -78,7 +78,7 @@ function BO_Dashboard({navigation, route}) {
         return;
       }
 
-      if (status.offset === 0 || fromSearch) {
+      if (offset === 0 || fromSearch) {
         setData(data);
       } else {
         addData(data);
@@ -86,7 +86,7 @@ function BO_Dashboard({navigation, route}) {
 
       increaseOffset(data.length);
     },
-    [addData, increaseOffset, setData, setNoMore, status.offset],
+    [addData, increaseOffset, setData, setNoMore],
   );
 
   const onFail = useCallback(() => {

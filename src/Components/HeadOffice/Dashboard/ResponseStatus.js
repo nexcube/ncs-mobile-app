@@ -11,7 +11,7 @@ import {useEffect} from 'react/cjs/react.development';
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
 
-function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex}) {
+function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, isIncludeDone}) {
   const animateHeaderHeight = animHeaderValue.interpolate({
     inputRange: [0, Header_Max_Height - Header_Min_Height],
     outputRange: [Header_Max_Height, Header_Min_Height],
@@ -48,7 +48,7 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex}) {
             </View>
           </View>
         </Animated.View>
-        <ResponseTab tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <ResponseTab tabIndex={tabIndex} setTabIndex={setTabIndex} isIncludeDone={isIncludeDone} />
       </ImageBackground>
     </View>
   );
