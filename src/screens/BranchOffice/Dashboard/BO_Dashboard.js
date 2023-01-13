@@ -6,14 +6,14 @@ import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
 import InquiryStatus from '../../../components/BranchOffice/Dashboard//inquiryStatus';
 import SearchTextInput from '../../../components/BranchOffice/Dashboard//SearchTextInput';
+import NoResult from '../../../components/NoResult';
 import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiInquiryList from '../../../services/api/inquiry/list';
+import apiInquirySearch from '../../../services/api/inquiry/search';
+import {fetchCount} from '../../../services/config';
 
 import globalStyles from '../../../styles/globalStyles';
 import InquiryButton from '../Inquiry/InquiryButton';
-
-// 리스트 기본 갯수;
-const fetchCount = 7;
 
 function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -62,7 +62,7 @@ function BO_Dashboard({navigation, route}) {
       // setListStatus({...listStatus, loading: true});
       setLoading();
       if (search?.length > 0) {
-        apiInquiryList(search, 0, fetchCount, true, onSuccess, onFail);
+        apiInquirySearch(search, 0, fetchCount, true, true, onSuccess, onFail);
       }
       apiInquiryList(search, status.offset, fetchCount, true, onSuccess, onFail);
     },
@@ -75,6 +75,9 @@ function BO_Dashboard({navigation, route}) {
       // 더이상 데이터가 없는가?
       if (data.length === 0) {
         setNoMore(true);
+        if (offset === 0) {
+          setData([]);
+        }
         return;
       }
 
@@ -139,46 +142,52 @@ function BO_Dashboard({navigation, route}) {
         />
       </View>
 
-      <FlatList
-        contentContainerStyle={[styles.list]}
-        data={list}
-        renderItem={({item}) => (
-          <Pressable onPress={() => onItemSelected(item)}>
-            <InquiryCard
-              key={item.idx}
-              title={item.idx.toString() + ' : ' + item.title}
-              mainCatName={item.mainCatName}
-              subCatName={item.subCatName}
-              branchOfficeName={item.branchOfficeName}
-              inquirer={item.inquirer}
-              levelName={item.levelName}
-              updateDate={item.updateDate}
-              status={item.status}
-              commentCount={item?.commentCount ?? 0}
-            />
-          </Pressable>
-        )}
-        keyExtractor={item => item.idx}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  y: scrollOffsetY,
+      {list.length === 0 ? (
+        <NoResult />
+      ) : (
+        <FlatList
+          contentContainerStyle={[styles.list]}
+          data={list}
+          renderItem={({item}) => (
+            <Pressable onPress={() => onItemSelected(item)}>
+              <InquiryCard
+                key={item.idx}
+                title={item.idx.toString() + ' : ' + item.title}
+                mainCatName={item.mainCatName}
+                subCatName={item.subCatName}
+                branchOfficeName={item.branchOfficeName}
+                inquirer={item.inquirer}
+                levelName={item.levelName}
+                updateDate={item.updateDate}
+                status={item.status}
+                commentCount={item?.commentCount ?? 0}
+              />
+            </Pressable>
+          )}
+          keyExtractor={item => item.idx}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: scrollOffsetY,
+                  },
                 },
               },
-            },
-          ],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={200}
-        ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={status.loading && <ActivityIndicator size={'large'} color="0067CC" />}
-        onRefresh={onRefresh}
-        refreshing={status.isRefreshing}
-      />
+            ],
+            {useNativeDriver: false},
+          )}
+          scrollEventThrottle={200}
+          ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={
+            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
+          }
+          onRefresh={onRefresh}
+          refreshing={status.isRefreshing}
+        />
+      )}
       <InquiryButton routeName="BO_Inquiry" />
     </View>
     //  </SafeAreaView>
@@ -192,6 +201,7 @@ const styles = StyleSheet.create({
   searchArea: {
     paddingHorizontal: 12,
     backgroundColor: globalStyles.color.purple,
+    flexDirection: 'row',
   },
 
   list: {

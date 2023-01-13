@@ -15,8 +15,8 @@ import {useEffect} from 'react/cjs/react.development';
 import {ActivityIndicator} from 'react-native-paper';
 import apiInquiryListRelated from '../../../services/api/inquiry/listRelated';
 import apiInquiryList from '../../../services/api/inquiry/list';
-
-const fetchCount = 7;
+import {fetchCount} from '../../../services/config';
+import NoResult from '../../../components/NoResult';
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -90,6 +90,9 @@ function HO_Dashboard({navigation, route}) {
 
     if (data.length === 0) {
       setNoMore(true);
+      if (offset === 0) {
+        setData([]);
+      }
       return;
     }
 
@@ -139,54 +142,60 @@ function HO_Dashboard({navigation, route}) {
         setTabIndex={setTabIndex}
         isIncludeDone={isIncludeDone}
       />
-
-      <FlatList
-        ListHeaderComponent={
-          <View style={[styles.listHeader]}>
-            <CustomSwitch text="완료 포함" value={isIncludeDone} onValueChange={onToggle} />
-          </View>
-        }
-        contentContainerStyle={[styles.list]}
-        data={list}
-        renderItem={({item, index}) => (
-          <Pressable onPress={() => onItemSelected(item)}>
-            <InquiryCard
-              key={item.idx}
-              title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
-              mainCatName={item.mainCatName}
-              subCatName={item.subCatName}
-              branchOfficeName={item.branchOfficeName}
-              inquirer={item.inquirer}
-              levelName={item.levelName}
-              updateDate={item.updateDate}
-              status={item.status}
-              isHO={isHO}
-              commentCount={item?.commentCount ?? 0}
-              assignedStaffId={item?.assignedStaffId}
-            />
-          </Pressable>
-        )}
-        keyExtractor={item => item.idx}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  y: scrollOffsetY,
+      {list.length === 0 ? (
+        <NoResult />
+      ) : (
+        <FlatList
+          ListHeaderComponent={
+            <View style={[styles.listHeader]}>
+              <CustomSwitch text="완료 포함" value={isIncludeDone} onValueChange={onToggle} />
+            </View>
+          }
+          contentContainerStyle={[styles.list]}
+          data={list}
+          renderItem={({item, index}) => (
+            <Pressable onPress={() => onItemSelected(item)}>
+              <InquiryCard
+                key={item.idx}
+                title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
+                mainCatName={item.mainCatName}
+                subCatName={item.subCatName}
+                branchOfficeName={item.branchOfficeName}
+                inquirer={item.inquirer}
+                levelName={item.levelName}
+                updateDate={item.updateDate}
+                status={item.status}
+                isHO={isHO}
+                commentCount={item?.commentCount ?? 0}
+                assignedStaffId={item?.assignedStaffId}
+                share={item?.share}
+              />
+            </Pressable>
+          )}
+          keyExtractor={item => item.idx}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: scrollOffsetY,
+                  },
                 },
               },
-            },
-          ],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={200}
-        onEndReachedThreshold={0.1}
-        ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
-        onEndReached={onEndReached}
-        ListFooterComponent={status.loading && <ActivityIndicator size={'large'} color="0067CC" />}
-        onRefresh={onRefresh}
-        refreshing={status.isRefreshing}
-      />
+            ],
+            {useNativeDriver: false},
+          )}
+          scrollEventThrottle={200}
+          onEndReachedThreshold={0.1}
+          ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+          onEndReached={onEndReached}
+          ListFooterComponent={
+            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
+          }
+          onRefresh={onRefresh}
+          refreshing={status.isRefreshing}
+        />
+      )}
 
       <BottomSheet sheetStatus={config} onOk={hideInfo} />
     </View>

@@ -1,147 +1,182 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback} from 'react';
-import {StyleSheet, Text, Button, FlatList, View, Animated} from 'react-native';
-import {getStatusBarHeight} from 'react-native-safearea-height';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import {StyleSheet, FlatList, View, Text} from 'react-native';
+
 import {useEffect, useState} from 'react/cjs/react.development';
+
+import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';
-import SearchTextInput from '../../../components/BranchOffice/Dashboard/SearchTextInput';
-import CustomSwitch from '../../../components/common/CustomSwitch';
-import useCustomSwitch from '../../../hooks/useCustomSwitch';
-import apiInquiryList from '../../../services/api/inquiry/list';
+import useInquiryList from '../../../hooks/useInquiryLIst';
+import apiInquiryListShare from '../../../services/api/inquiry/listShare';
+import {fetchCount} from '../../../services/config';
+import {ActivityIndicator} from 'react-native-paper';
+import apiInquirySearch from '../../../services/api/inquiry/search';
+import apiInquirySearchByDepart from '../../../services/api/inquiry/searchByDepart';
+import apiInquirySearchByCat from '../../../services/api/inquiry/searchByCat';
 import globalStyles from '../../../styles/globalStyles';
-import DropDownPicker from 'react-native-dropdown-picker';
+import NoResult from '../../../components/NoResult';
+import apiInquirySearchByStaff from '../../../services/api/inquiry/searchByStaff';
 
 function HO_Search({navigation, route}) {
-  const [inquiryList, setInquiryList] = useState([]);
-  const {isOn, onToggle} = useCustomSwitch('isIncludeDone');
+  const {
+    list,
+    status,
+    resetStatus,
+    reset,
+    setLoading,
+    setNoMore,
+    setRefresh,
+    increaseOffset,
+    setData,
+    addData,
+  } = useInquiryList();
+
+  const [searchString, setSearchString] = useState('');
+  const [searchIndex, setSearchIndex] = useState(-1);
+  //0:지점명, 1:제목, 2:제목&내용, 3:분류명, 4:담당자
+
+  const getData = offset => {
+    switch (searchIndex) {
+      case 0: // 지점명
+        apiInquirySearchByDepart(searchString, offset, fetchCount, onSuccess, onFail);
+        break;
+      case 1: // 제목
+        apiInquirySearch(searchString, offset, fetchCount, true, false, onSuccess, onFail);
+        break;
+      case 2: // 제목&내용
+        apiInquirySearch(searchString, offset, fetchCount, true, true, onSuccess, onFail);
+        break;
+      case 3: // 분류명
+        apiInquirySearchByCat(searchString, offset, fetchCount, onSuccess, onFail);
+        break;
+      case 4: // 담당자
+        apiInquirySearchByStaff(searchString, offset, fetchCount, onSuccess, onFail);
+        break;
+    }
+  };
 
   useFocusEffect(
     useCallback(() => {
-      apiInquiryList('', 0, 7, onSuccess, onFail);
+      getData(0);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana'},
-    {label: 'Banana', value: 'banana'},
-    {label: 'Banana', value: 'banana'},
-  ]);
+  // 리플레쉬일때 처리.
+  useEffect(() => {
+    if (status.isRefreshing) {
+      // console.log('isRefreshing');
+      getData(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.isRefreshing]);
 
-  const onSuccess = data => {
-    setInquiryList([...data]);
+  const onSuccess = (offset, data) => {
+    // console.log(JSON.stringify(data, null, '\t'));
+
+    if (data.length === 0) {
+      setNoMore(true);
+      if (offset === 0) {
+        setData([]);
+      }
+      return;
+    }
+
+    if (offset === 0) {
+      setData(data);
+    } else {
+      addData(data);
+    }
+    increaseOffset(data.length);
   };
 
-  const onFail = () => {};
-  // 클릭 처리
+  const onFail = () => {
+    setLoading(false);
+  };
+
   const onItemSelected = item => {
     const params = {
       index: item.idx,
+      fromHO: true,
     };
     // console.log(params);
     navigation.navigate('BO_Detail', params);
   };
 
-  return (
-    <View>
-      <View style={[styles.searchArea]}>
-        <View style={[styles.statusBar]} />
-        <View style={[{flexDirection: 'row', justifyContent: 'center'}]}>
-          <Text style={[styles.headerTitle]}>검색</Text>
-        </View>
-        <View style={[styles.searchContainer]}>
-          <DropDownPicker
-            containerStyle={{width: 100}}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            zIndex={1000}
-          />
-          <SearchTextInput
-            style={[{marginHorizontal: 20}]}
-            // onSubmitEditing={onSearchSubmit}
-            // hasMarginBottom
-            keyboardType="default"
-            returnKeyType="search"
-            autoCapitalize="none"
-            placeholder="제목, 내용, 댓글, 담당자로 검색"
-            // value={searchString}
-            // onChangeText={setSearchString}
-          />
-        </View>
-      </View>
+  const onEndReached = () => {
+    if (!status.loading && !status.noMore) {
+      // console.log('onEndReached...');
+      getData(status.offset);
+    }
+  };
 
-      <FlatList
-        ListHeaderComponent={
-          <View style={[styles.listHeader]}>
-            <CustomSwitch text="완료 포함" value={isOn} onValueChange={onToggle} />
-          </View>
-        }
-        contentContainerStyle={[styles.list]}
-        data={inquiryList}
-        renderItem={({item}) => (
-          <Pressable onPress={() => onItemSelected(item)}>
-            <InquiryCard
-              key={item.idx}
-              title={item.idx.toString() + ' : ' + item.title}
-              mainCatName={item.mainCatName}
-              subCatName={item.subCatName}
-              branchOfficeName={item.branchOfficeName}
-              inquirer={item.inquirer}
-              levelName={item.levelName}
-              updateDate={item.updateDate}
-              status={item.status}
-              commentCount={item?.commentCount ?? 0}
-            />
-          </Pressable>
-        )}
-        keyExtractor={item => item.idx}
-        scrollEventThrottle={200}
-        onEndReachedThreshold={0.1}
-        ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+  const onSearchSubmit = async () => {
+    resetStatus();
+    getData(0);
+  };
+
+  const onRefresh = () => {
+    setRefresh(true);
+  };
+
+  return (
+    <View style={[styles.container]}>
+      <SearchHeader
+        searchString={searchString}
+        setSearchString={setSearchString}
+        searchIndex={searchIndex}
+        setSearchIndex={setSearchIndex}
+        onSearchSubmit={onSearchSubmit}
       />
+      {list.length === 0 ? (
+        <NoResult />
+      ) : (
+        <FlatList
+          contentContainerStyle={[styles.list]}
+          data={list}
+          renderItem={({item, index}) => (
+            <Pressable onPress={() => onItemSelected(item)}>
+              <InquiryCard
+                key={item.idx}
+                title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
+                mainCatName={item.mainCatName}
+                subCatName={item.subCatName}
+                branchOfficeName={item.branchOfficeName}
+                inquirer={item.inquirer}
+                levelName={item.levelName}
+                updateDate={item.updateDate}
+                status={item.status}
+                // isHO={isHO}
+                commentCount={item?.commentCount ?? 0}
+                assignedStaffId={item?.assignedStaffId}
+                // share={item?.share}
+              />
+            </Pressable>
+          )}
+          keyExtractor={item => item.idx}
+          scrollEventThrottle={200}
+          onEndReachedThreshold={0.1}
+          ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
+          onEndReached={onEndReached}
+          ListFooterComponent={
+            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
+          }
+          onRefresh={onRefresh}
+          refreshing={status.isRefreshing}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  statusBar: {
-    height: getStatusBarHeight(false),
-  },
-  headerTitle: {
-    fontWeight: 'bold',
-    fontSize: 17,
-    color: globalStyles.color.white,
+  container: {
+    flex: 1,
   },
   list: {
     paddingHorizontal: 12,
     paddingVertical: 14,
-  },
-  itemSeparator: {
-    height: 14,
-  },
-  image: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  listHeader: {
-    alignItems: 'flex-end',
-    marginBottom: 12,
-  },
-  searchArea: {
-    // alignItems: 'center',
-    paddingHorizontal: 12,
-    backgroundColor: globalStyles.color.purple,
-  },
-  searchContainer: {
-    flexDirection: 'row',
   },
 });
 

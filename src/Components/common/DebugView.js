@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {List} from 'react-native-paper';
 
-function DebugView({right = 10, top = 100, text}) {
+function DebugView({right = 60, top = 60, text}) {
   return (
     <View style={[styles.container, {right: right, top: top}]}>
       <List.Accordion title="유저 정보" style={[styles.accordion]}>

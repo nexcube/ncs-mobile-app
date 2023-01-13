@@ -4,7 +4,7 @@ import {QnaStatus} from '../../../services/config';
 import UserContext from '../../../services/context/UserContext';
 import globalStyles from '../../../styles/globalStyles';
 
-function InquiryCardHeader({status, commentCount = 0, forDetail, assignedStaffId}) {
+function InquiryCardHeader({status, share, commentCount = 0, forDetail, assignedStaffId}) {
   const [User, , isHO] = useContext(UserContext);
 
   const containerStyle = {
@@ -50,11 +50,19 @@ function InquiryCardHeader({status, commentCount = 0, forDetail, assignedStaffId
           </View>
         )}
       </View>
-      {commentCount > 0 && (
-        <View style={[styles.comment]}>
-          <Text style={[styles.commentText]}>댓글 {commentCount}개</Text>
-        </View>
-      )}
+      <View style={[globalStyles.row]}>
+        {isHO && share > 0 && (
+          <View style={[styles.comment]}>
+            <Text style={[styles.commentText]}>모두공유</Text>
+          </View>
+        )}
+
+        {commentCount > 0 && (
+          <View style={[styles.comment]}>
+            <Text style={[styles.commentText]}>댓글 {commentCount}개</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -88,6 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderColor: globalStyles.color.white,
     borderWidth: 1,
+    marginLeft: 5,
   },
   commentText: {
     fontFamily: globalStyles.font.title,

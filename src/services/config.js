@@ -16,3 +16,5 @@ export const QnaStatus = {
     value: 'HOLD',
   },
 };
+
+export const fetchCount = 7;

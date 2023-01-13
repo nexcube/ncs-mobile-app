@@ -17,6 +17,7 @@ const InquiryCard = ({
   status,
   forDetail,
   isHO,
+  share,
   assignedStaffId,
   commentCount = 0,
   mode = 'elevated',
@@ -40,6 +41,7 @@ const InquiryCard = ({
         status={status}
         commentCount={commentCount}
         assignedStaffId={assignedStaffId}
+        share={share}
       />
       <View
         // eslint-disable-next-line react-native/no-inline-styles
