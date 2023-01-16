@@ -58,7 +58,7 @@ function HO_MainTab() {
         options={{
           title: '환경설정',
           headerTintColor: globalStyles.color.white,
-          headerShown: true,
+          headerShown: false,
           tabBarIcon: ({color}) => <Icon name="settings" size={24} color={color} />,
         }}
       />

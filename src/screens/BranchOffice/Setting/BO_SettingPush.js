@@ -1,14 +1,23 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
+import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';
 
+const pushTypeName_BO = 'pushTypeName_BO';
 function BO_SettingPush({navigation, route}) {
   const [checked, setChecked] = useState('first');
+  userData.getItem(pushTypeName_BO).then(data => setChecked(data === undefined ? 'first' : data));
+
+  const onPress = select => {
+    setChecked(select);
+    userData.setItem(pushTypeName_BO, select);
+  };
+
   return (
     <View style={[styles.fullscreen]}>
       <Card style={[styles.card]}>
-        <TouchableOpacity style={[styles.radioButtonFirst]} onPress={() => setChecked('first')}>
+        <TouchableOpacity style={[styles.radioButtonFirst]} onPress={() => onPress('first')}>
           <Text style={[styles.text]}>소리와 진동</Text>
           <RadioButton
             value="first"
@@ -18,7 +27,7 @@ function BO_SettingPush({navigation, route}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity style={[styles.radioButton]} onPress={() => setChecked('second')}>
+        <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('second')}>
           <Text style={[styles.text]}>소리</Text>
           <RadioButton
             value="second"
@@ -28,7 +37,7 @@ function BO_SettingPush({navigation, route}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity style={[styles.radioButton]} onPress={() => setChecked('third')}>
+        <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('third')}>
           <Text style={[styles.text]}>진동</Text>
           <RadioButton
             value="third"
@@ -38,7 +47,7 @@ function BO_SettingPush({navigation, route}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity style={[styles.radioButtonLast]} onPress={() => setChecked('fourth')}>
+        <TouchableOpacity style={[styles.radioButtonLast]} onPress={() => onPress('fourth')}>
           <Text style={[styles.text]}>무음</Text>
           <RadioButton
             value="fourth"

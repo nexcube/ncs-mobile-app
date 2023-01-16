@@ -1,11 +1,11 @@
 import React from 'react';
-import {Alert, StyleSheet, Text} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import SettingButton from '../../../components/BranchOffice/Setting/SettingButton';
-
-import SettingButtonWithInfo from '../../../components/BranchOffice/Setting/SettingButtonWithInfo';
+import SettingButtons from '../../../components/common/Setting/SettingButtons';
 import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';
+import {getVersion} from 'react-native-device-info';
+import {VerticalSpace24} from '../../../components/common/VericalSpace';
 
 function BO_Setting({navigation, route}) {
   const onPressPush = () => navigation.navigate('BO_Setting_Push');
@@ -30,37 +30,59 @@ function BO_Setting({navigation, route}) {
     ]);
   };
 
+  const configPush = [
+    {
+      title: '푸시알림 설정',
+      subTitle: '푸시알림 도착시 알림 방식을 설정합니다.',
+      icon: 'bell',
+      onPress: onPressPush,
+    },
+  ];
+
+  const configUser = [
+    {
+      title: '사용자 설정',
+      subTitle: '앱을 사용할 수 있는 구성원을 추가합니다.',
+      icon: 'user-check',
+      onPress: onPressUserSetting,
+    },
+  ];
+
+  const configSystem = [
+    {
+      title: '로그아웃',
+      subTitle: '',
+      icon: 'log-out',
+      onPress: onPressLogout,
+    },
+    {
+      title: '앱 버전',
+      subTitle: getVersion(),
+      icon: 'log-out',
+      onPress: () => null,
+    },
+  ];
+
   return (
-    <SafeAreaView style={[styles.fullscreen]}>
-      <Text style={[styles.subject]}>알림</Text>
-      <SettingButton
-        title="푸시알림 설정"
-        subTitle="푸시알림 도착시 알림 방식을 설정합니다."
-        icon="bell"
-        onPress={onPressPush}
-      />
-      <Text style={[styles.subject]}>지점 환경</Text>
-      <SettingButton
-        title="사용자 설정"
-        subTitle="앱을 사용할 수 있는 구성원을 추가합니다."
-        icon="user-check"
-        onPress={onPressUserSetting}
-      />
-      <Text style={[styles.subject]}>시스템</Text>
-      <SettingButtonWithInfo
-        title="로그아웃"
-        info="푸시알림 도착시 알림 방식을 설정합니다."
-        icon="log-out"
-        onPress={onPressLogout}
-      />
-    </SafeAreaView>
+    <ScrollView alwaysBounceVertical={false}>
+      <View style={[styles.container]}>
+        <Text style={[styles.subject]}>알림</Text>
+        <SettingButtons settings={configPush} />
+        <VerticalSpace24 />
+        <Text style={[styles.subject]}>지점 환경</Text>
+        <SettingButtons settings={configUser} />
+        <VerticalSpace24 />
+        <Text style={[styles.subject]}>시스템</Text>
+        <SettingButtons settings={configSystem} />
+        <VerticalSpace24 />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  fullscreen: {
+  container: {
     paddingHorizontal: 12,
-    justifyContent: 'flex-start',
   },
   subject: {
     fontFamily: globalStyles.font.bold,

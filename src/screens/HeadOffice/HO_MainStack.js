@@ -73,7 +73,11 @@ function HO_MainStack() {
         // options={{headerShown: false}}
       />
       <Stack.Screen name="HO_Classify_Detail" component={HO_ClassifyDetail} />
-      <Stack.Screen name="HO_Setting" component={HO_Setting} />
+      <Stack.Screen
+        name="HO_Setting"
+        component={HO_Setting}
+        options={{title: '처리 담당자 정보'}}
+      />
       <Stack.Screen name="HO_Setting_Push" component={HO_SettingPush} />
       <Stack.Screen name="HO_Setting_Classify" component={HO_SettingClassify} />
       <Stack.Screen name="HO_Setting_Classifier_Change" component={HO_SettingClassifierChange} />
