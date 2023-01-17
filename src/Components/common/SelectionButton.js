@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: globalStyles.font.regular,
     fontSize: 17,
-    color: '#C7C7CD',
+    color: globalStyles.color.grayLight,
   },
   image: {
     width: 16,

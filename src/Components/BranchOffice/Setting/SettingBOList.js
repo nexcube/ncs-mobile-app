@@ -87,6 +87,7 @@ function SettingBOList({
 const styles = StyleSheet.create({
   listContainer: {
     marginVertical: 12,
+    paddingHorizontal: 12,
   },
   card: {
     backgroundColor: globalStyles.color.white,

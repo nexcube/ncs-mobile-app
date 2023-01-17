@@ -4,7 +4,7 @@ import {Divider} from 'react-native-paper';
 
 import SelectDropdown from 'react-native-select-dropdown';
 import DayOfWeekToggleButton from '../../../components/common/Setting/DayOfWeekToggleButton';
-import {VerticalSpace12} from '../../../components/common/VericalSpace';
+import {VerticalSpace12} from '../../../components/common/VerticalSpace';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 

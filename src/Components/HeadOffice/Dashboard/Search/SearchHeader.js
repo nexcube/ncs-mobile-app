@@ -5,28 +5,39 @@ import SelectDropdown from 'react-native-select-dropdown';
 import globalStyles from '../../../../styles/globalStyles';
 import SearchTextInput from '../../../BranchOffice/Dashboard/SearchTextInput';
 import Icon from 'react-native-vector-icons/Feather';
-import {useState} from 'react/cjs/react.development';
+import HeaderBackButton from '../../../common/HeaderBackButton';
+import {useNavigation} from '@react-navigation/native';
 
 function SearchHeader({
+  title,
+  searchCategory,
+  searchPlaceHolder,
   searchString,
   setSearchString,
   searchIndex,
   setSearchIndex,
   onSearchSubmit,
+  isBackButton = false,
 }) {
-  const searchCategory = ['지점명', '제목', '제목&내용', '분류명', '담당자'];
-
+  const navigation = useNavigation();
   return (
     <View style={[styles.container]}>
       <View style={[styles.statusBar]} />
-
+      <View style={[styles.space6]} />
       <View style={[styles.searchTitleContainer]}>
-        <Text style={[styles.headerTitle]}>검색</Text>
+        <HeaderBackButton
+          onPress={() => (isBackButton ? navigation.goBack() : null)}
+          color={isBackButton ? globalStyles.color.white : globalStyles.color.purple}
+        />
+        <View style={[styles.headerContainer]}>
+          <Text style={[styles.headerTitle]}>{title}</Text>
+        </View>
+        <HeaderBackButton color={globalStyles.color.purple} />
       </View>
 
       <View style={[styles.searchContainer]}>
         <SelectDropdown
-          defaultButtonText="지점명"
+          defaultButtonText={searchCategory[0]}
           buttonStyle={styles.buttonStyle}
           data={searchCategory}
           onSelect={(selectedItem, index) => {
@@ -50,7 +61,7 @@ function SearchHeader({
           keyboardType="default"
           returnKeyType="search"
           autoCapitalize="none"
-          placeholder="제목, 내용, 분류명, 지점명, 담당자로 검색"
+          placeholder={searchPlaceHolder}
           value={searchString}
           onChangeText={setSearchString}
         />
@@ -66,13 +77,19 @@ const styles = StyleSheet.create({
   statusBar: {
     height: getStatusBarHeight(false),
   },
+  space6: {
+    height: 6,
+  },
   searchTitleContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  headerContainer: {
     justifyContent: 'center',
   },
-
   headerTitle: {
-    fontWeight: 'bold',
+    // fontFamily: globalStyles.font.bold,
+    fontWeight: '600',
     fontSize: 17,
     color: globalStyles.color.white,
   },

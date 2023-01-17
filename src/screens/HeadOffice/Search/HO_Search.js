@@ -1,20 +1,16 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import {StyleSheet, FlatList, View, Text} from 'react-native';
-
 import {useEffect, useState} from 'react/cjs/react.development';
-
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';
 import useInquiryList from '../../../hooks/useInquiryLIst';
-import apiInquiryListShare from '../../../services/api/inquiry/listShare';
 import {fetchCount} from '../../../services/config';
 import {ActivityIndicator} from 'react-native-paper';
 import apiInquirySearch from '../../../services/api/inquiry/search';
 import apiInquirySearchByDepart from '../../../services/api/inquiry/searchByDepart';
 import apiInquirySearchByCat from '../../../services/api/inquiry/searchByCat';
-import globalStyles from '../../../styles/globalStyles';
 import NoResult from '../../../components/NoResult';
 import apiInquirySearchByStaff from '../../../services/api/inquiry/searchByStaff';
 
@@ -33,8 +29,9 @@ function HO_Search({navigation, route}) {
   } = useInquiryList();
 
   const [searchString, setSearchString] = useState('');
-  const [searchIndex, setSearchIndex] = useState(-1);
+  const [searchIndex, setSearchIndex] = useState(0);
   //0:지점명, 1:제목, 2:제목&내용, 3:분류명, 4:담당자
+  const searchCategory = ['지점명', '제목', '제목&내용', '분류명', '담당자'];
 
   const getData = offset => {
     switch (searchIndex) {
@@ -123,6 +120,9 @@ function HO_Search({navigation, route}) {
   return (
     <View style={[styles.container]}>
       <SearchHeader
+        title="공유정보"
+        searchCategory={searchCategory}
+        searchPlaceHolder="제목, 내용, 분류명, 지점명, 담당자로 검색"
         searchString={searchString}
         setSearchString={setSearchString}
         searchIndex={searchIndex}

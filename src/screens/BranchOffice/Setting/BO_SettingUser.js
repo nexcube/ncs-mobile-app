@@ -120,10 +120,10 @@ function BO_SettingUser({navigation, route}) {
 const styles = StyleSheet.create({
   fullscreen: {
     flex: 1,
-    paddingHorizontal: 18,
   },
   info: {
     paddingVertical: 24,
+    paddingHorizontal: 12,
   },
   infoText: {
     fontFamily: globalStyles.font.regular,

@@ -78,10 +78,10 @@ function HO_MainStack() {
         component={HO_Setting}
         options={{title: '처리 담당자 정보'}}
       />
-      <Stack.Screen name="HO_Setting_Push" component={HO_SettingPush} />
+      {/* <Stack.Screen name="HO_Setting_Push" component={HO_SettingPush} />
       <Stack.Screen name="HO_Setting_Classify" component={HO_SettingClassify} />
       <Stack.Screen name="HO_Setting_Classifier_Change" component={HO_SettingClassifierChange} />
-      <Stack.Screen name="HO_Setting_Push_Time" component={HO_SettingPushTime} />
+      <Stack.Screen name="HO_Setting_Push_Time" component={HO_SettingPushTime} /> */}
     </Stack.Navigator>
   );
 }

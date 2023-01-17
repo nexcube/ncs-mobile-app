@@ -3,7 +3,7 @@ import {StyleSheet, TouchableHighlight, TouchableOpacity, View} from 'react-nati
 import {Card, Divider} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
-import {VerticalSpace12, VerticalSpace24} from '../VericalSpace';
+import {VerticalSpace12, VerticalSpace24} from '../VerticalSpace';
 
 function SettingButtons({settings}) {
   const items = settings.map((item, index) => (

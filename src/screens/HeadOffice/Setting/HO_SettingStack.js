@@ -8,6 +8,7 @@ import {Platform} from 'react-native';
 import HO_SettingClassify from './HO_SettingClassify';
 import HO_SettingClassifierChange from './HO_SettingClassifierChange';
 import HO_SettingPushTime from './HO_SettingPushTime';
+import HO_SettingClassifyDetail from './HO_SettingClassifyDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,7 +34,12 @@ function HO_SettingStack() {
       <Stack.Screen
         name="HO_Setting_Classify"
         component={HO_SettingClassify}
-        options={{title: '분류 설정'}}
+        options={{title: '분류 설정', headerShown: false}}
+      />
+      <Stack.Screen
+        name="HO_Setting_Classify_Detail"
+        component={HO_SettingClassifyDetail}
+        options={{title: '분류 상세', headerShown: true}}
       />
       <Stack.Screen
         name="HO_Setting_Classifier_Change"

@@ -5,7 +5,7 @@ import SettingButtons from '../../../components/common/Setting/SettingButtons';
 import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';
 import {getVersion} from 'react-native-device-info';
-import {VerticalSpace24} from '../../../components/common/VericalSpace';
+import {VerticalSpace24} from '../../../components/common/VerticalSpace';
 
 function BO_Setting({navigation, route}) {
   const onPressPush = () => navigation.navigate('BO_Setting_Push');

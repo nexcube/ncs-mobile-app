@@ -39,7 +39,7 @@ function HO_DetailAssignedInfo({navigation, route}) {
         />
       </View>
 
-      <ScrollView style={[styles.assignedStaff]}>
+      <ScrollView style={[styles.assignedStaff]} alwaysBounceVertical={false}>
         <AssignedStaffComp
           staffId={inquiryItem.assignedStaffId}
           title="지정 담당자"

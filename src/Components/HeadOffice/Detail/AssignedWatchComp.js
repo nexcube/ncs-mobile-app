@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
@@ -7,7 +7,7 @@ import {useCallback, useEffect, useState} from 'react/cjs/react.development';
 import apiAssignedListCategoryWatchStaff from '../../../services/api/assigned/listCategoryWatchStaff';
 import apiAssignedInfo from '../../../services/api/assigned/info';
 
-function AssignedWatchComp({catIdx}) {
+function AssignedWatchComp({catIdx, isChange = false, onChange}) {
   const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
@@ -53,6 +53,11 @@ function AssignedWatchComp({catIdx}) {
     <View>
       <View style={[styles.container]}>
         <Text style={[styles.assignedTitle]}>분류 참관자</Text>
+        {isChange && (
+          <TouchableOpacity onPress={onChange}>
+            <Text style={[styles.changeTitle]}>추가 ></Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <Card style={[styles.cardContainer]} mode="elevated">
@@ -109,6 +114,12 @@ const styles = StyleSheet.create({
     height: 1,
     paddingLeft: 20,
     backgroundColor: globalStyles.color.separator,
+  },
+  changeTitle: {
+    fontFamily: globalStyles.font.bold,
+    fontSize: 13,
+    fontWeight: '900',
+    color: globalStyles.color.blue,
   },
 });
 

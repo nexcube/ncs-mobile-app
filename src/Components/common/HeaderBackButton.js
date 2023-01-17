@@ -1,32 +1,20 @@
 import React from 'react';
 import {StyleSheet, Pressable, Platform, Image, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+import {back} from 'react-native/Libraries/Animated/Easing';
 import globalStyles from '../../styles/globalStyles';
 
-function HeaderBackButton({onPress}) {
+function HeaderBackButton({onPress, color = globalStyles.color.white}) {
   return (
     <Pressable
       onPress={onPress}
-      style={({pressed}) => [
-        Platform.OS === 'ios' && pressed && {opacity: 0.5},
-        globalStyles.backButtonPadding,
-      ]}
+      style={({pressed}) => [Platform.OS === 'ios' && pressed && {opacity: 0.5}]}
       android_ripple={{
         color: globalStyles.color.white,
       }}>
-      <Image style={[styles.image]} source={require('../../../assets/images/chevron-left.png')} />
+      <Icon name="chevron-left" size={32} color={color} />
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: 10,
-    height: 32,
-  },
-  padding: {
-    paddingRight: 24,
-    paddingVertical: 10,
-  },
-});
 
 export default HeaderBackButton;
