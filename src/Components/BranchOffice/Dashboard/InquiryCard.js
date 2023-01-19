@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Avatar, Card, Paragraph} from 'react-native-paper';
+import {Card, Paragraph} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import InquiryCardHeader from './InquiryCardHeader';
 import {getTimeDiff} from '../../../Utils/timeDiff';
-import apiAssignedInfo from '../../../services/api/assigned/info';
-import Icon from 'react-native-vector-icons/Feather';
 
 const InquiryCard = ({
   title,
@@ -19,22 +17,13 @@ const InquiryCard = ({
   forDetail,
   isHO,
   share,
-  assignedStaffId,
+  assignedInfo,
   commentCount = 0,
   isRead,
   mode = 'elevated',
 }) => {
   // 타임존 제거
   const date = new Date(updateDate?.slice(0, -1));
-  const [assignedStaff, setAssignedStaff] = useState({});
-
-  useEffect(() => {
-    if (assignedStaffId) {
-      apiAssignedInfo(assignedStaffId).then(data => {
-        setAssignedStaff(data);
-      });
-    }
-  }, [assignedStaffId]);
 
   const textElement = (
     <Text style={[styles.title, {color: globalStyles.color.blue}]}>
@@ -49,7 +38,7 @@ const InquiryCard = ({
         forDetail={forDetail}
         status={status}
         commentCount={commentCount}
-        assignedStaffId={assignedStaffId}
+        assignedStaffId={assignedInfo?.staffId}
         share={share}
       />
 
@@ -73,8 +62,8 @@ const InquiryCard = ({
             <View style={[styles.separator]} />
             <Card.Content style={[styles.cardContent]}>
               <Paragraph style={[styles.content]}>
-                {forDetail && assignedStaff && '담당:'} {assignedStaff.departName}{' '}
-                {assignedStaff.staffName} {assignedStaff.dutyName}
+                {forDetail && assignedInfo && '담당:'} {assignedInfo?.departName}{' '}
+                {assignedInfo?.staffName} {assignedInfo?.dutyName}
               </Paragraph>
               {commentCount === 0 && (
                 <Paragraph style={[styles.time]}>{getTimeDiff(date)} 경과됨</Paragraph>

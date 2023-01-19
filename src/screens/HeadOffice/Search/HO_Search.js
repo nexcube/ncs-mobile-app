@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
@@ -13,6 +13,7 @@ import apiInquirySearchByDepart from '../../../services/api/inquiry/searchByDepa
 import apiInquirySearchByCat from '../../../services/api/inquiry/searchByCat';
 import NoResult from '../../../components/NoResult';
 import apiInquirySearchByStaff from '../../../services/api/inquiry/searchByStaff';
+import UserContext from '../../../services/context/UserContext';
 
 function HO_Search({navigation, route}) {
   const {
@@ -32,6 +33,7 @@ function HO_Search({navigation, route}) {
   const [searchIndex, setSearchIndex] = useState(0);
   //0:지점명, 1:제목, 2:제목&내용, 3:분류명, 4:담당자
   const searchCategory = ['지점명', '제목', '제목&내용', '분류명', '담당자'];
+  const [User, , isHO] = useContext(UserContext);
 
   const getData = offset => {
     switch (searchIndex) {
@@ -147,9 +149,10 @@ function HO_Search({navigation, route}) {
                 levelName={item.levelName}
                 updateDate={item.updateDate}
                 status={item.status}
-                // isHO={isHO}
+                isHO={isHO}
                 commentCount={item?.commentCount ?? 0}
-                assignedStaffId={item?.assignedStaffId}
+                assignedInfo={item?.assignedInfo}
+                isRead={item.isRead !== null}
                 // share={item?.share}
               />
             </Pressable>
@@ -177,6 +180,9 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 12,
     paddingVertical: 14,
+  },
+  itemSeparator: {
+    height: 14,
   },
 });
 

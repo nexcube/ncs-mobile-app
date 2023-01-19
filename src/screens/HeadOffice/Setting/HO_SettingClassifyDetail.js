@@ -60,18 +60,13 @@ function HO_SettingClassifyDetail({navigation, route}) {
   }
 
   const onPressSave = () => {
-    if (categoryInfo?.keyword.split(',').every(word => !containsWhitespace(word))) {
-      // console.log(searchKeyword);
-      // console.log('없넹');
-
-      apiCategoryUpdateKeyword(categoryIndex, categoryInfo?.keyword).then(data => {
-        // console.log(data);
-      });
-    } else {
-      Alert.alert('주의', '검색 키워드 단어에 공백이 있습니다.', [
-        {text: 'OK', onPress: () => null},
-      ]);
-    }
+    // if (categoryInfo?.keyword.split(',').every(word => !containsWhitespace(word))) {
+    apiCategoryUpdateKeyword(categoryIndex, categoryInfo?.keyword).then(data => {});
+    // } else {
+    //   Alert.alert('주의', '검색 키워드 단어에 공백이 있습니다.', [
+    //     {text: 'OK', onPress: () => null},
+    //   ]);
+    // }
   };
 
   const onChangeSearchKeyword = e => {

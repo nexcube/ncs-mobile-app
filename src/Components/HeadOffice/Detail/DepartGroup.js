@@ -20,6 +20,7 @@ function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, c
   useEffect(() => {
     setStaffs([]);
     apiAssignedDepartStaffs(idx, isIncludeRetire).then(async data => {
+      console.log(JSON.stringify(data, null, '\t'));
       const result = data.map(item => item.staffId);
       setStaffCount(prev => prev + result.length);
 

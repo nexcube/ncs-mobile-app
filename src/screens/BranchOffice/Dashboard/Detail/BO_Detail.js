@@ -69,7 +69,6 @@ function BO_Detail({navigation, route}) {
   }, [isRefresh]);
 
   const getInquiryListItem = async () => {
-    console.log('getInquiryListItem ~~~~~~~~~~~~~~~~');
     await apiInquiryListItem(qnaIndex, User.staffId, onSuccessInquiryListItem);
   };
 
@@ -150,7 +149,7 @@ function BO_Detail({navigation, route}) {
           commentCount={inquiryItem.commentCount}
           isHO={isFromHO}
           forDetail={true}
-          assignedStaffId={inquiryItem.assignedStaffId}
+          assignedInfo={inquiryItem?.assignedInfo}
         />
       </View>
 

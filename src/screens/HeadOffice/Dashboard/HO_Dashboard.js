@@ -179,7 +179,7 @@ function HO_Dashboard({navigation, route}) {
                 status={item.status}
                 isHO={isHO}
                 commentCount={item?.commentCount ?? 0}
-                assignedStaffId={item?.assignedStaffId}
+                assignedInfo={item?.assignedInfo}
                 share={item?.share}
                 isRead={item.isRead !== null}
               />

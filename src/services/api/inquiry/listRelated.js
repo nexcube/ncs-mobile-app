@@ -13,7 +13,7 @@ const apiInquiryListRelated = async (
   onFail,
 ) => {
   const url = '/inquiry/listRelated';
-  console.log(`${axios.defaults.baseURL}${url}?offset=${offset}&fetchCount=${fetchCount}`);
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
     const jwt = await userData.getJWT();

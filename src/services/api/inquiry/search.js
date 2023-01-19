@@ -34,7 +34,7 @@ const apiInquirySearch = async (
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      console.log(JSON.stringify(response.data.data, null, '\t'));
+      // console.log(JSON.stringify(response.data.data, null, '\t'));
       onSuccess(offset, response.data.data, true);
     } else {
       console.error(response.data.message);

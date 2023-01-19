@@ -118,7 +118,8 @@ function HO_SharedInfo({navigation, route}) {
                 status={item.status}
                 isHO={isHO}
                 commentCount={item?.commentCount ?? 0}
-                assignedStaffId={item?.assignedStaffId}
+                assignedInfo={item?.assignedInfo}
+                isRead={item.isRead !== null}
                 // share={item?.share}
               />
             </Pressable>

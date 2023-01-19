@@ -5,7 +5,7 @@ import axios_error_handler from '../errorHandler';
 const apiInquiryBranch = async () => {
   const url = '/inquiry/branch';
   const staffId = await userData.getStaffId();
-  console.log(`${axios.defaults.baseURL}${url}?id=${staffId}`);
+  console.log(`${axios.defaults.baseURL}${url}`);
 
   try {
     const jwt = await userData.getJWT();
