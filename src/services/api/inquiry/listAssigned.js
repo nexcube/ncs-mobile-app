@@ -4,7 +4,7 @@ import axios_error_handler from '../errorHandler';
 
 const apiInquiryListAssigned = async (
   staffId,
-  catIdx,
+  catIdxs,
   offset,
   fetchCount,
   isIncludeDone,
@@ -20,11 +20,12 @@ const apiInquiryListAssigned = async (
 
     const params = {
       staffId: staffId,
-      catIdx: catIdx,
+      catIdxs: catIdxs,
       offset: offset,
       fetchCount: fetchCount,
       isIncludeDone: isIncludeDone,
     };
+
     const data = {
       headers: {authorization: token},
       params: params,

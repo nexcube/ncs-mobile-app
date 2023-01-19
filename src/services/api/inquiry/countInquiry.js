@@ -4,7 +4,7 @@ import axios_error_handler from '../errorHandler';
 
 const apiInquiryCountInquiry = async (
   staffId,
-  assignedCatIdx,
+  assignedCatIdxs,
   relatedCatIdxs,
   isIncludeDone,
   onSuccess,
@@ -19,7 +19,7 @@ const apiInquiryCountInquiry = async (
 
     const params = {
       staffId: staffId,
-      assignedCatIdx: assignedCatIdx,
+      assignedCatIdxs: assignedCatIdxs,
       relatedCatIdxs: relatedCatIdxs,
       isIncludeDone: isIncludeDone,
     };

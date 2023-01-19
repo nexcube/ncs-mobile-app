@@ -9,10 +9,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import UserContext from '../../../services/context/UserContext';
 import {useNavigation} from '@react-navigation/native';
 import apiInquiryUpdateAssigned from '../../../services/api/inquiry/updateAssigned';
+import apiAssignedRegisterCategoryWatchStaff from '../../../services/api/assigned/registerCategoryWatchStaff';
+import apiCategoryUpdateStaff from '../../../services/api/category/updateStaff';
 
-function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, inquiryItem}) {
+function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, customData}) {
   const navigation = useNavigation();
   const [staffs, setStaffs] = useState([]);
+  const [User, ,] = useContext(UserContext);
 
   useEffect(() => {
     setStaffs([]);
@@ -37,15 +40,67 @@ function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, i
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIncludeRetire]);
 
+  // customData = {
+  //   type: inquiry, category, assigned ...
+  //   returnRouter: ... , goBack,
+  //   data:
+  // }
   const onPressCard = staff => {
-    // apiAssignedRegisterCategoryWatchStaff(categoryIndex, staff.staffId, User.staffId, onSuccess);
-    apiInquiryUpdateAssigned(inquiryItem.idx, staff.staffId, onSuccess);
+    switch (customData.type) {
+      case 'inquiryAssignedUpdate':
+        apiInquiryUpdateAssigned(
+          customData.data.idx,
+          staff.staffId,
+          onSuccessInquiryAssignedUpdate,
+        );
+        break;
+      case 'categoryUpdateStaff':
+        apiCategoryUpdateStaff(customData.data.categoryIndex, staff.staffId, onSuccessStaff);
+        break;
+      case 'registerCategoryWatch':
+        apiAssignedRegisterCategoryWatchStaff(
+          customData.data.categoryIndex,
+          staff.staffId,
+          User.staffId,
+          onSuccessWatch,
+        );
+        break;
+      case 'selectAssignedStaff':
+        navigation.navigate({
+          name: customData.returnRouter,
+          params: {newAssigned: staff.staffId},
+          merge: true,
+        });
+        break;
+      case 'selectReceiveStaff':
+        navigation.navigate({
+          name: customData.returnRouter,
+          params: {receiver: staff.staffId},
+          merge: true,
+        });
+        break;
+    }
   };
 
-  const onSuccess = (staffId, data) => {
+  const onSuccessStaff = (staffId, data) => {
+    navigation.navigate({
+      name: customData.returnRouter,
+      params: {newAssigned: staffId},
+      merge: true,
+    });
+  };
+  const onSuccessWatch = (staffId, data) => {
+    navigation.navigate({
+      name: customData.returnRouter,
+      params: {refresh: staffId},
+      merge: true,
+    });
+  };
+
+  const onSuccessInquiryAssignedUpdate = (staffId, data) => {
     // navigation.goBack();
-    inquiryItem.assignedStaffId = staffId;
-    navigation.navigate({name: 'HO_Detail_Assigned_Info', params: inquiryItem, merge: true});
+    customData.data.assignedStaffId = staffId;
+    navigation.navigate({name: 'HO_Detail_Assigned_Info', params: customData.data, merge: true});
   };
 
   const cardList = () => {

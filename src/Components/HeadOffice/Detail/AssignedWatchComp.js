@@ -6,8 +6,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import {useCallback, useEffect, useState} from 'react/cjs/react.development';
 import apiAssignedListCategoryWatchStaff from '../../../services/api/assigned/listCategoryWatchStaff';
 import apiAssignedInfo from '../../../services/api/assigned/info';
+import {useFocusEffect} from '@react-navigation/native';
 
-function AssignedWatchComp({catIdx, isChange = false, onChange}) {
+function AssignedWatchComp({catIdx, refresh, isChange = false, onChange}) {
   const [staffs, setStaffs] = useState([]);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function AssignedWatchComp({catIdx, isChange = false, onChange}) {
         setStaffs(prev => [...prev, info]);
       }
     });
-  }, [catIdx]);
+  }, [catIdx, refresh]);
 
   const list = useCallback(() => {
     if (staffs.length > 0) {

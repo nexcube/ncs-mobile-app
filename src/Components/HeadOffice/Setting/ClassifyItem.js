@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
-import {VerticalSpace12, VerticalSpace24} from '../../common/VerticalSpace';
 
 function ClassifyItem({
   title,
@@ -36,19 +35,23 @@ function ClassifyItem({
   );
   return (
     <TouchableOpacity onPress={onSelect}>
-      <Divider horizontalInset={true} />
+      <Divider horizontalInset={true} style={[styles.divider]} />
       <Card.Title
         title={title}
         titleStyle={styles.title}
         subtitle={subtitle}
         titleNumberOfLines={2}
         subtitleNumberOfLines={2}
+        style={[styles.card]}
       />
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  divider: {backgroundColor: globalStyles.color.separator},
+  card: {backgroundColor: globalStyles.color.white},
+
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -70,14 +73,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
     color: globalStyles.color.text,
-    lineHeight: 60,
   },
   subtitle: {
     fontFamily: globalStyles.font.regular,
     fontSize: 13,
     fontWeight: '600',
     color: globalStyles.color.grayDark,
-    lineHeight: 40,
   },
 });
 

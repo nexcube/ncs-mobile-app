@@ -10,11 +10,15 @@ const ResponseTab = ({tabIndex, setTabIndex, isIncludeDone}) => {
   const [count, setCount] = useState({assignedMe: 0, relatedMe: 0, allInquiry: 0});
 
   const onPressMine = () => {
-    setTabIndex(0);
+    if (User.assignedCatIdxs.length > 0) {
+      setTabIndex(0);
+    }
   };
 
   const onPressRelateToMe = () => {
-    setTabIndex(1);
+    if (User.relatedCatIdxs.length > 0) {
+      setTabIndex(1);
+    }
   };
 
   const onPressAll = () => {
@@ -24,7 +28,7 @@ const ResponseTab = ({tabIndex, setTabIndex, isIncludeDone}) => {
   useEffect(() => {
     apiInquiryCountInquiry(
       User.staffId,
-      User.assignedCatIdx,
+      User.assignedCatIdxs,
       User.relatedCatIdxs,
       isIncludeDone,
       onSuccess,

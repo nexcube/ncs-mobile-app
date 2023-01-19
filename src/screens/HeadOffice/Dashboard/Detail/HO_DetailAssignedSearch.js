@@ -12,7 +12,8 @@ import apiAssignedDepartList from '../../../../services/api/assigned/departList'
 import DepartGroup from '../../../../components/HeadOffice/Detail/DepartGroup';
 
 function HO_DetailAssignedSearch({navigation, route}) {
-  const inquiryItem = route.params?.inquiryItem;
+  const customData = route.params?.customData;
+
   const {isOn: isIncludeRetire, onToggle} = useCustomSwitch('isIncludeRetire');
   const [departs, setDeparts] = useState([]);
   const [staffCount, setStaffCount] = useState(0);
@@ -64,7 +65,7 @@ function HO_DetailAssignedSearch({navigation, route}) {
               isIncludeRetire={isIncludeRetire}
               setStaffCount={setStaffCount}
               searchString={searchString}
-              inquiryItem={inquiryItem}
+              customData={customData}
             />
           ))}
         </List.AccordionGroup>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     backgroundColor: globalStyles.color.purple,
     paddingHorizontal: 12,
+    height: 96,
   },
   headerBottom: {
     flexDirection: 'row',

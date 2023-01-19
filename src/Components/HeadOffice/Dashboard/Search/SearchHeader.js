@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 24,
     paddingHorizontal: 12,
+    width: '100%',
   },
 
   buttonStyle: {

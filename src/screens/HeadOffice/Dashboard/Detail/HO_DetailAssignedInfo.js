@@ -13,9 +13,12 @@ function HO_DetailAssignedInfo({navigation, route}) {
   const onChange = () => {
     setRefresh(false);
     navigation.navigate('HO_Detail_Assigned_Search', {
-      inquiryItem: inquiryItem,
+      customData: {
+        type: 'inquiryAssignedUpdate',
+        returnRouter: 'HO_Detail_Assigned_Info',
+        data: inquiryItem,
+      },
     });
-    navigation;
   };
 
   return (

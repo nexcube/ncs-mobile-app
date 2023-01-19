@@ -1,7 +1,6 @@
 import React from 'react';
-import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {getVersion} from 'react-native-device-info';
-import {Card} from 'react-native-paper';
 import SettingButtons from '../../../components/common/Setting/SettingButtons';
 import {VerticalSpace24} from '../../../components/common/VerticalSpace';
 import userData from '../../../services/storage/DeviceStorage';

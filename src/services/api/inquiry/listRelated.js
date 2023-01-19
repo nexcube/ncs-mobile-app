@@ -4,7 +4,7 @@ import axios_error_handler from '../errorHandler';
 
 const apiInquiryListRelated = async (
   staffId,
-  catIdx,
+  catIdxs,
   relatedCatIdxs,
   offset,
   fetchCount,
@@ -21,7 +21,7 @@ const apiInquiryListRelated = async (
 
     const params = {
       staffId: staffId,
-      catIdx: catIdx,
+      catIdxs: catIdxs,
       relatedCatIdxs: relatedCatIdxs,
       offset: offset,
       fetchCount: fetchCount,

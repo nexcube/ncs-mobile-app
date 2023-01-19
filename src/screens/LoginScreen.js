@@ -84,13 +84,19 @@ function LoginScreen({navigation, route}) {
     if (routesName === 'HO_MainStack') {
       // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.
       apiResponsibilityList().then(responsibilityList => {
-        const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
+        // console.log(responsibilityList);
+        // const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
+        const assignedCatIdxs = responsibilityList
+          .filter(i => i.staffId === data.userData.staffId)
+          .map(j => j.catIndex);
+        // console.log(catIdx);
+        // console.log(assignedCatIdxs);
         //TODO 연관된 카테고리 정보도 추가하자.
         // 담당 카테고리가 없는 경우도 처리하자.
         apiAssignedRelatedCategoryWatchStaff(data.userData.staffId).then(catIdxs => {
           const newUser = {
             ...data.userData,
-            assignedCatIdx: catIdx,
+            assignedCatIdxs: assignedCatIdxs,
             relatedCatIdxs: catIdxs.map(v => v.catIdx),
           };
           setUser(newUser);

@@ -14,7 +14,6 @@ import apiCategorySearchByWatch from '../../../services/api/category/searchByWat
 import {fetchCount} from '../../../services/config';
 
 function HO_SettingClassify({navigation, route}) {
-  const onClassifyDetail = () => navigation.navigate('HO_Classify_Detail');
   const [searchString, setSearchString] = useState('');
   const [searchIndex, setSearchIndex] = useState(0);
   const searchCategory = ['분류명', '담당자', '참관자'];
@@ -39,7 +38,6 @@ function HO_SettingClassify({navigation, route}) {
         break;
       case 1: // 담당자
         apiCategorySearchByStaff(offset, fetchCount, searchString, onSuccess);
-        // apiInquirySearch(searchString, offset, fetchCount, true, false, onSuccess, onFail);
         break;
       case 2: // 참관자
         apiCategorySearchByWatch(offset, fetchCount, searchString, onSuccess);
@@ -65,7 +63,7 @@ function HO_SettingClassify({navigation, route}) {
   }, [status.isRefreshing]);
 
   const onSuccess = (offset, data) => {
-    console.log(JSON.stringify(data, null, '\t'));
+    // console.log(JSON.stringify(data, null, '\t'));
 
     if (data.length === 0) {
       setNoMore(true);
@@ -81,10 +79,6 @@ function HO_SettingClassify({navigation, route}) {
       addData(data);
     }
     increaseOffset(data.length);
-  };
-
-  const onFail = () => {
-    setLoading(false);
   };
 
   const onSearchSubmit = async () => {
@@ -105,9 +99,9 @@ function HO_SettingClassify({navigation, route}) {
 
   const onItemSelected = item => {
     const params = {
-      item: item,
+      categoryIndex: item.idx,
     };
-    console.log(params);
+    // console.log(params);
     navigation.navigate('HO_Setting_Classify_Detail', params);
   };
 

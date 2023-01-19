@@ -120,7 +120,7 @@ function HO_Search({navigation, route}) {
   return (
     <View style={[styles.container]}>
       <SearchHeader
-        title="공유정보"
+        title="검색"
         searchCategory={searchCategory}
         searchPlaceHolder="제목, 내용, 분류명, 지점명, 담당자로 검색"
         searchString={searchString}

@@ -21,10 +21,15 @@ import NoResult from '../../../components/NoResult';
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
-  const [tabIndex, setTabIndex] = useState(0);
+
   const {isOn: isIncludeDone, onToggle} = useCustomSwitch('isIncludeDone');
   const [config, showInfo, hideInfo] = useBottomSheet(BottomSheetType.ResponseInfo);
   const [User, , isHO] = useContext(UserContext);
+
+  const [tabIndex, setTabIndex] = useState(
+    User.assignedCatIdxs.length > 0 ? 0 : User.relatedCatIdxs.length > 0 ? 1 : 2,
+  );
+
   const {
     list,
     status,
@@ -43,7 +48,7 @@ function HO_Dashboard({navigation, route}) {
       case 0: // assignedMe
         apiInquiryListAssigned(
           User.staffId,
-          User.assignedCatIdx,
+          User.assignedCatIdxs,
           offset,
           fetchCount,
           isIncludeDone,
@@ -54,7 +59,7 @@ function HO_Dashboard({navigation, route}) {
       case 1: // relatedMe
         apiInquiryListRelated(
           User.staffId,
-          User.assignedCatIdx,
+          User.assignedCatIdxs,
           User.relatedCatIdxs,
           offset,
           fetchCount,
@@ -69,11 +74,12 @@ function HO_Dashboard({navigation, route}) {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getData(0);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isIncludeDone, tabIndex]),
+  useEffect(
+    () => {
+      getData(tabIndex);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tabIndex],
   );
 
   // 리플레쉬일때 처리.
@@ -97,6 +103,7 @@ function HO_Dashboard({navigation, route}) {
     }
 
     if (offset === 0) {
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
       setData(data);
     } else {
       addData(data);

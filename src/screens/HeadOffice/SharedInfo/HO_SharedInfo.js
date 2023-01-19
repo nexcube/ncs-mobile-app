@@ -2,7 +2,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect} from 'react';
 import {StyleSheet, Text, Button, Image, ImageBackground, View, FlatList} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';
 import CustomSwitch from '../../../components/common/CustomSwitch';

@@ -1,46 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {VerticalSpace24} from '../../../components/common/VerticalSpace';
 import AssignedStaffComp from '../../../components/HeadOffice/Detail/AssignedStaffComp';
 import AssignedWatchComp from '../../../components/HeadOffice/Detail/AssignedWatchComp';
-import CategoryAssignedComp from '../../../components/HeadOffice/Detail/CategoryAssignedComp';
 import apiCategoryUpdateKeyword from '../../../services/api/category/updateKeyword';
 import globalStyles from '../../../styles/globalStyles';
+import apiCategoryAssignedInfo from '../../../services/api/assigned/categoryAssignedInfo';
+import {useFocusEffect} from '@react-navigation/native';
+import {isFrozen} from 'immer/dist/internal';
 
 function HO_SettingClassifyDetail({navigation, route}) {
-  const detail = route.params.item;
-  const [searchKeyword, setSearchKeyword] = useState(detail.qnaKeyword);
+  const categoryIndex = route.params.categoryIndex;
+  const [categoryInfo, setCategoryInfo] = useState({});
+  const [refresh, setRefresh] = useState(false);
 
-  function containsWhitespace(str) {
-    const isHaveSpace = /\s/.test(str);
-    // console.log(str, isHaveSpace);
-    return isHaveSpace;
-  }
+  // 라우터 파라미터로 UI 갱싱
+  const isRefresh = route.params?.refresh;
+  console.log('isRefresh: ', isRefresh);
 
-  const onPressSave = () => {
-    if (searchKeyword.split(',').every(word => !containsWhitespace(word))) {
-      console.log(searchKeyword);
-      console.log('없넹');
+  const newAssigned = route.params?.newAssigned;
+  useEffect(() => {
+    setRefresh(prev => !prev);
+  }, [isRefresh, newAssigned]);
 
-      apiCategoryUpdateKeyword(detail.idx, searchKeyword).then(data => {
-        console.log(data);
-      });
-    } else {
-      Alert.alert('주의', '검색 키워드 단어에 공백이 있습니다.', [
-        {text: 'OK', onPress: () => null},
-      ]);
-    }
-  };
+  //////////////////////////////
+  console.log(route.params);
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -50,20 +36,75 @@ function HO_SettingClassifyDetail({navigation, route}) {
       ),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchKeyword]);
+  }, [categoryInfo]);
 
-  const onChangeSearchKeyword = e => {
-    setSearchKeyword(e);
+  // useEffect(() => {
+  //   console.log('useEffect => watchReceiver: ', watchReceiver);
+  // }, [watchReceiver]);
+
+  useFocusEffect(
+    useCallback(() => {
+      apiCategoryAssignedInfo(categoryIndex, onSuccess);
+    }, [categoryIndex]),
+  );
+  //
+  const onSuccess = data => {
+    // console.log(JSON.stringify(data, null, 't'));
+    setCategoryInfo(data);
   };
 
-  const [refresh, setRefresh] = useState(false);
+  function containsWhitespace(str) {
+    const isHaveSpace = /\s/.test(str);
+    // console.log(str, isHaveSpace);
+    return isHaveSpace;
+  }
+
+  const onPressSave = () => {
+    if (categoryInfo?.keyword.split(',').every(word => !containsWhitespace(word))) {
+      // console.log(searchKeyword);
+      // console.log('없넹');
+
+      apiCategoryUpdateKeyword(categoryIndex, categoryInfo?.keyword).then(data => {
+        // console.log(data);
+      });
+    } else {
+      Alert.alert('주의', '검색 키워드 단어에 공백이 있습니다.', [
+        {text: 'OK', onPress: () => null},
+      ]);
+    }
+  };
+
+  const onChangeSearchKeyword = e => {
+    console.log(e);
+    setCategoryInfo({...categoryInfo, keyword: e});
+    // setKeyword(e);
+  };
 
   const onChangeAssigned = () => {
-    navigation.navigate('HO_Setting_Classifier_Change', {assigned: detail});
+    // navigation.navigate('HO_Setting_Classifier_Change', {assigned: categoryInfo.staffId});
+
+    navigation.navigate('HO_Detail_Assigned_Search', {
+      customData: {
+        type: 'categoryUpdateStaff',
+        returnRouter: 'HO_Setting_Classify_Detail',
+        data: {
+          categoryIndex: categoryIndex,
+        },
+      },
+    });
   };
 
   const onChangeWatch = () => {
     console.log('onChangeWatch');
+    navigation.navigate('HO_Detail_Assigned_Search', {
+      customData: {
+        type: 'registerCategoryWatch',
+        returnRouter: 'HO_Setting_Classify_Detail',
+        data: {
+          categoryIndex: categoryIndex,
+        },
+      },
+    });
   };
 
   return (
@@ -71,7 +112,7 @@ function HO_SettingClassifyDetail({navigation, route}) {
       <VerticalSpace24 />
       <View style={[styles.titleContainer]}>
         <Text style={[styles.titleName]}>분류 키워드</Text>
-        <Text style={[styles.titleKeyword]}>{detail.qnaCatName}</Text>
+        <Text style={[styles.titleKeyword]}>{categoryInfo?.name}</Text>
       </View>
       <VerticalSpace24 />
       <View style={[styles.searchKeywordContainer]}>
@@ -82,7 +123,7 @@ function HO_SettingClassifyDetail({navigation, route}) {
             returnKeyType="done"
             rows={4}
             style={[styles.searchKeywordTextInput]}
-            value={searchKeyword}
+            value={categoryInfo?.keyword}
             onChangeText={onChangeSearchKeyword}
           />
         </View>
@@ -93,17 +134,17 @@ function HO_SettingClassifyDetail({navigation, route}) {
       </View>
       <VerticalSpace24 />
       <VerticalSpace24 />
-      <ScrollView style={[styles.assignedStaff]} alwaysBounceVertical={false}>
+      <ScrollView style={[styles.assignedStaff]}>
         <View style={[styles.separator]} />
         <AssignedStaffComp
-          staffId={detail.staffId}
+          staffId={categoryInfo?.staffId}
           title="분류 담당자"
           isChange={true}
           onChange={onChangeAssigned}
         />
         <View style={[styles.watchList]}>
           <AssignedWatchComp
-            catIdx={detail.idx}
+            catIdx={categoryIndex}
             refresh={refresh}
             isChange={true}
             onChange={onChangeWatch}
