@@ -7,7 +7,7 @@ import CustomSwitch from '../../../../components/common/CustomSwitch';
 import useCustomSwitch from '../../../../hooks/useCustomSwitch';
 import globalStyles from '../../../../styles/globalStyles';
 import {List} from 'react-native-paper';
-import {useEffect} from 'react/cjs/react.development';
+import {useEffect} from 'react';
 import apiAssignedDepartList from '../../../../services/api/assigned/departList';
 import DepartGroup from '../../../../components/HeadOffice/Detail/DepartGroup';
 

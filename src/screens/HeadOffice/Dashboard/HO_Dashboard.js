@@ -11,7 +11,7 @@ import useBottomSheet from '../../../hooks/useBottomSheet';
 import UserContext from '../../../services/context/UserContext';
 import apiInquiryListAssigned from '../../../services/api/inquiry/listAssigned';
 import useInquiryList from '../../../hooks/useInquiryLIst';
-import {useEffect} from 'react/cjs/react.development';
+import {useEffect} from 'react';
 import {ActivityIndicator} from 'react-native-paper';
 import apiInquiryListRelated from '../../../services/api/inquiry/listRelated';
 import apiInquiryList from '../../../services/api/inquiry/list';
@@ -69,17 +69,21 @@ function HO_Dashboard({navigation, route}) {
         );
         break;
       case 2: // all
-        apiInquiryList('', offset, fetchCount, isIncludeDone, onSuccess, onFail);
+        apiInquiryList('', offset, fetchCount, isIncludeDone, User.staffId, onSuccess, onFail);
         break;
     }
   };
 
   useEffect(
     () => {
-      getData(tabIndex);
+      // console.log(
+      //   `${route.name} :useEffect ---------------------------------------`,
+      //   isIncludeDone,
+      // );
+      getData(0);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tabIndex],
+    [tabIndex, isIncludeDone],
   );
 
   // 리플레쉬일때 처리.
@@ -92,6 +96,7 @@ function HO_Dashboard({navigation, route}) {
   }, [status.isRefreshing]);
 
   const onSuccess = (offset, data) => {
+    console.log(data.map(i => i.idx));
     // console.log(JSON.stringify(data, null, '\t'));
 
     if (data.length === 0) {
@@ -103,7 +108,6 @@ function HO_Dashboard({navigation, route}) {
     }
 
     if (offset === 0) {
-      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
       setData(data);
     } else {
       addData(data);
@@ -127,7 +131,8 @@ function HO_Dashboard({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      console.log('onEndReached...');
+      // console.log('onEndReached...', status.offset);
+
       getData(status.offset);
     }
   };
@@ -176,6 +181,7 @@ function HO_Dashboard({navigation, route}) {
                 commentCount={item?.commentCount ?? 0}
                 assignedStaffId={item?.assignedStaffId}
                 share={item?.share}
+                isRead={item.isRead !== null}
               />
             </Pressable>
           )}

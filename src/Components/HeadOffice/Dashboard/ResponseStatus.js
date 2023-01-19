@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Animated, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-safearea-height';
 import globalStyles from '../../../styles/globalStyles';
@@ -6,7 +6,6 @@ import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import ResponseTab from './ResponseTab';
 import userData from '../../../services/storage/DeviceStorage';
-import {useEffect} from 'react/cjs/react.development';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;

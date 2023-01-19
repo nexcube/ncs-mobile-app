@@ -7,6 +7,7 @@ const apiInquiryList = async (
   offset,
   fetchCount,
   isIncludeDone = true,
+  staffId,
   onSuccess,
   onFail,
 ) => {
@@ -21,6 +22,7 @@ const apiInquiryList = async (
       offset: offset,
       fetchCount: fetchCount,
       isIncludeDone: isIncludeDone,
+      staffId: staffId,
     };
     const data = {
       headers: {authorization: token},
@@ -37,7 +39,7 @@ const apiInquiryList = async (
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      console.log(JSON.stringify(response.data.data, null, '\t'));
+      // console.log(JSON.stringify(response.data.data, null, '\t'));
       onSuccess(offset, response.data.data, fromSearch);
     } else {
       console.error(response.data.message);

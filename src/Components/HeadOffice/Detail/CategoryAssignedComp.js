@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react/cjs/react.development';
+import {useEffect, useState} from 'react';
 import React from 'react';
 import AssignedStaffComp from './AssignedStaffComp';
 import apiCategoryAssignedInfo from '../../../services/api/assigned/categoryAssignedInfo';

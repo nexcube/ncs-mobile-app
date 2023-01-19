@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {useEffect} from 'react/cjs/react.development';
+import {useEffect} from 'react';
 import SettingBOList from '../../../components/BranchOffice/Setting/SettingBOList';
 
 import apiInquiryBranch from '../../../services/api/inquiry/branch';

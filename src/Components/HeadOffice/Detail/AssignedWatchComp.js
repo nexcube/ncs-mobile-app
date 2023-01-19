@@ -3,10 +3,9 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
-import {useCallback, useEffect, useState} from 'react/cjs/react.development';
+import {useCallback, useEffect, useState} from 'react';
 import apiAssignedListCategoryWatchStaff from '../../../services/api/assigned/listCategoryWatchStaff';
 import apiAssignedInfo from '../../../services/api/assigned/info';
-import {useFocusEffect} from '@react-navigation/native';
 
 function AssignedWatchComp({catIdx, refresh, isChange = false, onChange}) {
   const [staffs, setStaffs] = useState([]);

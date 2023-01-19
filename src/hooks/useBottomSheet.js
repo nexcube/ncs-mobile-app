@@ -1,4 +1,4 @@
-import {useState} from 'react/cjs/react.development';
+import {useState} from 'react';
 
 function useBottomSheet(format) {
   const [config, setConfig] = useState({visible: false, format: format});

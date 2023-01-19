@@ -1,11 +1,9 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useEffect, useState} from 'react/cjs/react.development';
 import apiAssignedInfo from '../../../services/api/assigned/info';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card} from 'react-native-paper';
-import {useFocusEffect} from '@react-navigation/native';
 
 function AssignedStaffComp({
   staffId,

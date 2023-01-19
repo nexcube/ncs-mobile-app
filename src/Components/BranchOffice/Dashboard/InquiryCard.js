@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Card, Paragraph} from 'react-native-paper';
+import {StyleSheet, Text, View} from 'react-native';
+import {Avatar, Card, Paragraph} from 'react-native-paper';
 import globalStyles from '../../../styles/globalStyles';
 import InquiryCardHeader from './InquiryCardHeader';
 import {getTimeDiff} from '../../../Utils/timeDiff';
 import apiAssignedInfo from '../../../services/api/assigned/info';
+import Icon from 'react-native-vector-icons/Feather';
 
 const InquiryCard = ({
   title,
@@ -20,6 +21,7 @@ const InquiryCard = ({
   share,
   assignedStaffId,
   commentCount = 0,
+  isRead,
   mode = 'elevated',
 }) => {
   // 타임존 제거
@@ -34,6 +36,13 @@ const InquiryCard = ({
     }
   }, [assignedStaffId]);
 
+  const textElement = (
+    <Text style={[styles.title, {color: globalStyles.color.blue}]}>
+      {!isRead && '● '}
+      <Text style={[styles.title]}>{title}</Text>
+    </Text>
+  );
+
   return (
     <Card style={[styles.container]} mode={mode}>
       <InquiryCardHeader
@@ -43,10 +52,13 @@ const InquiryCard = ({
         assignedStaffId={assignedStaffId}
         share={share}
       />
+
       <View
         // eslint-disable-next-line react-native/no-inline-styles
         style={[{opacity: status === 'HOLD' ? 0.6 : 1}]}>
-        <Card.Title titleStyle={[styles.title]} title={title} titleNumberOfLines={2} />
+        {/* <Card.Title titleStyle={[styles.title]} title={'● ' + title} titleNumberOfLines={2} /> */}
+        <Card.Title title={textElement} titleNumberOfLines={2} />
+
         <View style={[styles.separator]} />
         <Card.Content style={[forDetail && styles.contentContainer]}>
           <Paragraph style={[styles.content]}>

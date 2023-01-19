@@ -7,7 +7,6 @@ import Attachments from '../../../../components/BranchOffice/Dashboard/Attachmen
 import {SafeAreaView} from 'react-native-safe-area-context';
 import apiInquiryBranch from '../../../../services/api/inquiry/branch';
 import apiInquiryListItem from '../../../../services/api/inquiry/listItem';
-
 import CommentList from '../../../../components/BranchOffice/Detail/CommentList';
 import CustomInput from '../../../../components/common/CustomInput';
 import {useFocusEffect} from '@react-navigation/native';
@@ -17,6 +16,8 @@ import TopMenuFromHO from '../../../../components/BranchOffice/Detail/TopMenuFro
 import apiInquiryUpdateShare from '../../../../services/api/inquiry/updateShare';
 import CustomToast, {Toast} from '../../../../components/common/CustomToast';
 import {QnaStatus} from '../../../../services/config';
+import {useContext} from 'react';
+import UserContext from '../../../../services/context/UserContext';
 
 function BO_Detail({navigation, route}) {
   const qnaIndex = route.params.index;
@@ -25,6 +26,7 @@ function BO_Detail({navigation, route}) {
   // Status ////////////////////////////////////////////////////////////////////////////////////////\
   const [inquiryItem, setInquiryItem] = useState({});
   const [isRefresh, setIsRefresh] = useState(false);
+  const [User, ,] = useContext(UserContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -67,7 +69,8 @@ function BO_Detail({navigation, route}) {
   }, [isRefresh]);
 
   const getInquiryListItem = async () => {
-    await apiInquiryListItem(qnaIndex, onSuccessInquiryListItem);
+    console.log('getInquiryListItem ~~~~~~~~~~~~~~~~');
+    await apiInquiryListItem(qnaIndex, User.staffId, onSuccessInquiryListItem);
   };
 
   const onSuccessInquiryListItem = data => {

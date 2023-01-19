@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react/cjs/react.development';
+import {useEffect, useState} from 'react';
 import userData from '../services/storage/DeviceStorage';
 
 function useCustomSwitch(key) {

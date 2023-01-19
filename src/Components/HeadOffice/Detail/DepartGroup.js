@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, List} from 'react-native-paper';
-import {useEffect} from 'react/cjs/react.development';
+import {useEffect} from 'react';
 import apiAssignedDepartStaffs from '../../../services/api/assigned/departStaffs';
 import apiAssignedInfo from '../../../services/api/assigned/info';
 import globalStyles from '../../../styles/globalStyles';
@@ -51,11 +51,17 @@ function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, c
         apiInquiryUpdateAssigned(
           customData.data.idx,
           staff.staffId,
+          User.staffId,
           onSuccessInquiryAssignedUpdate,
         );
         break;
       case 'categoryUpdateStaff':
-        apiCategoryUpdateStaff(customData.data.categoryIndex, staff.staffId, onSuccessStaff);
+        apiCategoryUpdateStaff(
+          customData.data.categoryIndex,
+          staff.staffId,
+          User.staffId,
+          onSuccessStaff,
+        );
         break;
       case 'registerCategoryWatch':
         apiAssignedRegisterCategoryWatchStaff(

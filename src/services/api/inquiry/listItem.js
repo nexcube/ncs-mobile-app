@@ -2,8 +2,8 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiInquiryListItem = async (index, onSuccess) => {
-  const url = `/inquiry/list/${index}`;
+const apiInquiryListItem = async (index, staffId, onSuccess) => {
+  const url = `/inquiry/list/${index}/${staffId}`;
   console.log(`${axios.defaults.baseURL}${url}`);
 
   try {

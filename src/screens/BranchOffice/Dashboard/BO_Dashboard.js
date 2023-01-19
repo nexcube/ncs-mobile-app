@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -11,12 +11,15 @@ import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiInquiryList from '../../../services/api/inquiry/list';
 import apiInquirySearch from '../../../services/api/inquiry/search';
 import {fetchCount} from '../../../services/config';
+import UserContext from '../../../services/context/UserContext';
 
 import globalStyles from '../../../styles/globalStyles';
 import InquiryButton from '../Inquiry/InquiryButton';
 
 function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
+
+  const [User, ,] = useContext(UserContext);
 
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
   const [searchString, setSearchString] = useState('');
@@ -64,9 +67,9 @@ function BO_Dashboard({navigation, route}) {
       if (search?.length > 0) {
         apiInquirySearch(search, 0, fetchCount, true, true, onSuccess, onFail);
       }
-      apiInquiryList(search, status.offset, fetchCount, true, onSuccess, onFail);
+      apiInquiryList(search, status.offset, fetchCount, true, User.staffId, onSuccess, onFail);
     },
-    [status.loading, status.noMore, status.offset, setLoading, onSuccess, onFail],
+    [status.loading, status.noMore, status.offset, setLoading, User.staffId, onSuccess, onFail],
   );
 
   const onSuccess = useCallback(
@@ -161,6 +164,7 @@ function BO_Dashboard({navigation, route}) {
                 updateDate={item.updateDate}
                 status={item.status}
                 commentCount={item?.commentCount ?? 0}
+                isRead={item.isRead !== null}
               />
             </Pressable>
           )}

@@ -1,7 +1,7 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback} from 'react';
-import {StyleSheet, FlatList, View, Text} from 'react-native';
-import {useEffect, useState} from 'react/cjs/react.development';
+import {StyleSheet, FlatList, View} from 'react-native';
+import {useEffect, useState} from 'react';
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';

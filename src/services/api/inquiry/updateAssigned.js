@@ -2,7 +2,7 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiInquiryUpdateAssigned = async (index, staffId, onSuccess) => {
+const apiInquiryUpdateAssigned = async (index, staffId, makeStaffId, onSuccess) => {
   const url = '/inquiry/updateAssigned';
   console.log(`${axios.defaults.baseURL}${url}`);
 
@@ -14,7 +14,11 @@ const apiInquiryUpdateAssigned = async (index, staffId, onSuccess) => {
       headers: {authorization: token},
     };
 
-    const response = await axios.put(url, {index: index, staffId: staffId}, config);
+    const response = await axios.put(
+      url,
+      {index: index, staffId: staffId, makeStaffId: makeStaffId},
+      config,
+    );
 
     if (response.data.code === 200) {
       // console.log(response.data);
