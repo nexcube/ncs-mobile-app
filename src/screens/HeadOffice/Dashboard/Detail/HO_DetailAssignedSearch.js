@@ -6,22 +6,23 @@ import CustomSwitch from '../../../../components/common/CustomSwitch';
 
 import useCustomSwitch from '../../../../hooks/useCustomSwitch';
 import globalStyles from '../../../../styles/globalStyles';
-import {List} from 'react-native-paper';
+import {ActivityIndicator, List} from 'react-native-paper';
 import {useEffect} from 'react';
 import apiAssignedDepartList from '../../../../services/api/assigned/departList';
 import DepartGroup from '../../../../components/HeadOffice/Detail/DepartGroup';
 
 function HO_DetailAssignedSearch({navigation, route}) {
   const customData = route.params?.customData;
+  const {isOn: isIncludeRetire, onToggle: setIsIncludeRetire} = useCustomSwitch('isIncludeRetire');
 
-  const {isOn: isIncludeRetire, onToggle} = useCustomSwitch('isIncludeRetire');
   const [departs, setDeparts] = useState([]);
   const [staffCount, setStaffCount] = useState(0);
   const [searchString, setSearchString] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    apiAssignedDepartList(onSuccessDepartList);
-  }, []);
+    apiAssignedDepartList(isIncludeRetire, onSuccessDepartList);
+  }, [isIncludeRetire]);
 
   useEffect(() => {
     setStaffCount(0);
@@ -29,12 +30,19 @@ function HO_DetailAssignedSearch({navigation, route}) {
 
   const onSuccessDepartList = data => {
     const result = data.filter(item => item.idx !== item.parentIdx);
+    setIsLoading(false);
+    // console.log(JSON.stringify(data, null, '\t'));
     setDeparts(result);
   };
 
   const onChangeText = text => {
     console.log(text);
     setSearchString(text);
+  };
+
+  const onToggle = () => {
+    setIsLoading(true);
+    setIsIncludeRetire(prev => !prev);
   };
 
   return (
@@ -55,26 +63,35 @@ function HO_DetailAssignedSearch({navigation, route}) {
           <CustomSwitch text="퇴사자 포함" value={isIncludeRetire} onValueChange={onToggle} />
         </View>
       </View>
-      <ScrollView>
-        <List.AccordionGroup>
-          {departs.map(depart => (
-            <DepartGroup
-              key={depart.idx}
-              idx={depart.idx}
-              name={depart.name}
-              isIncludeRetire={isIncludeRetire}
-              setStaffCount={setStaffCount}
-              searchString={searchString}
-              customData={customData}
-            />
-          ))}
-        </List.AccordionGroup>
-      </ScrollView>
+      {isLoading ? (
+        <View style={[styles.loading]}>
+          <ActivityIndicator size="large" color={globalStyles.color.purple} />
+        </View>
+      ) : (
+        <ScrollView>
+          <List.AccordionGroup>
+            {departs.map(depart => (
+              <DepartGroup
+                key={depart.idx}
+                idx={depart.idx}
+                name={depart.name}
+                staffs={depart.staffs.map(v => v.info)}
+                isIncludeRetire={isIncludeRetire}
+                setStaffCount={setStaffCount}
+                searchString={searchString}
+                customData={customData}
+              />
+            ))}
+          </List.AccordionGroup>
+        </ScrollView>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  loading: {alignItems: 'center', justifyContent: 'center', flex: 1},
+
   fullscreen: {
     flex: 1,
   },

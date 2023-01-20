@@ -12,40 +12,21 @@ import apiInquiryUpdateAssigned from '../../../services/api/inquiry/updateAssign
 import apiAssignedRegisterCategoryWatchStaff from '../../../services/api/assigned/registerCategoryWatchStaff';
 import apiCategoryUpdateStaff from '../../../services/api/category/updateStaff';
 
-function DepartGroup({idx, name, isIncludeRetire, setStaffCount, searchString, customData}) {
+function DepartGroup({
+  idx,
+  name,
+  // isIncludeRetire,
+  setStaffCount,
+  searchString,
+  customData,
+  staffs,
+}) {
   const navigation = useNavigation();
-  const [staffs, setStaffs] = useState([]);
+  // const [staffs, setStaffs] = useState([]);
   const [User, ,] = useContext(UserContext);
 
-  useEffect(() => {
-    setStaffs([]);
-    apiAssignedDepartStaffs(idx, isIncludeRetire).then(async data => {
-      console.log(JSON.stringify(data, null, '\t'));
-      const result = data.map(item => item.staffId);
-      setStaffCount(prev => prev + result.length);
+  // console.log(JSON.stringify(staffs, null, '\t'));
 
-      for (const staffId of result) {
-        let info = await apiAssignedInfo(staffId);
-
-        const found = data.find(v => v.staffId === staffId);
-        // 퇴사자 정보 주입
-        if (found) {
-          const date = new Date(found.outDate);
-          const now = new Date();
-
-          info = {...info, isRetire: date < now};
-        }
-        setStaffs(prev => [...prev, info]);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isIncludeRetire]);
-
-  // customData = {
-  //   type: inquiry, category, assigned ...
-  //   returnRouter: ... , goBack,
-  //   data:
-  // }
   const onPressCard = staff => {
     switch (customData.type) {
       case 'inquiryAssignedUpdate':

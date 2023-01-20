@@ -2,7 +2,7 @@ import axios from 'axios';
 import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
-const apiAssignedDepartList = async onSuccess => {
+const apiAssignedDepartList = async (isIncludeRetire, onSuccess) => {
   const url = '/assigned/departList';
   console.log(`${axios.defaults.baseURL}${url}`);
 
@@ -10,7 +10,7 @@ const apiAssignedDepartList = async onSuccess => {
     const jwt = await userData.getJWT();
     const token = `${jwt}`;
 
-    const data = {headers: {authorization: token}};
+    const data = {headers: {authorization: token}, params: {isIncludeRetire: isIncludeRetire}};
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
