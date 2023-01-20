@@ -1,8 +1,9 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
 import ClassifyItem from '../../../components/HeadOffice/Setting/ClassifyItem';
@@ -11,12 +12,13 @@ import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiCategorySearch from '../../../services/api/category/search';
 import apiCategorySearchByStaff from '../../../services/api/category/searchByStaff';
 import apiCategorySearchByWatch from '../../../services/api/category/searchByWatch';
-import {fetchCount} from '../../../services/config';
+import {fetchCount, fetchCountForCategory} from '../../../services/config';
 
 function HO_SettingClassify({navigation, route}) {
   const [searchString, setSearchString] = useState('');
   const [searchIndex, setSearchIndex] = useState(0);
   const searchCategory = ['분류명', '담당자', '참관자'];
+  const listRef = useRef();
 
   const {
     list,
@@ -34,13 +36,13 @@ function HO_SettingClassify({navigation, route}) {
   const getData = offset => {
     switch (searchIndex) {
       case 0: // 분류명
-        apiCategorySearch(offset, fetchCount, searchString, onSuccess);
+        apiCategorySearch(offset, fetchCountForCategory, searchString, onSuccess);
         break;
       case 1: // 담당자
-        apiCategorySearchByStaff(offset, fetchCount, searchString, onSuccess);
+        apiCategorySearchByStaff(offset, fetchCountForCategory, searchString, onSuccess);
         break;
       case 2: // 참관자
-        apiCategorySearchByWatch(offset, fetchCount, searchString, onSuccess);
+        apiCategorySearchByWatch(offset, fetchCountForCategory, searchString, onSuccess);
         // apiInquirySearch(searchString, offset, fetchCount, true, true, onSuccess, onFail);
         break;
     }
@@ -64,7 +66,7 @@ function HO_SettingClassify({navigation, route}) {
 
   const onSuccess = (offset, data) => {
     // console.log(JSON.stringify(data, null, '\t'));
-
+    setLoading(false);
     if (data.length === 0) {
       setNoMore(true);
       if (offset === 0) {
@@ -93,6 +95,8 @@ function HO_SettingClassify({navigation, route}) {
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
       // console.log('onEndReached...');
+      listRef.current.scrollToEnd();
+      setLoading(true);
       getData(status.offset);
     }
   };
@@ -122,6 +126,7 @@ function HO_SettingClassify({navigation, route}) {
         <NoResult />
       ) : (
         <FlatList
+          ref={listRef}
           contentContainerStyle={[styles.list]}
           data={list}
           renderItem={({item, index}) => (
@@ -143,9 +148,7 @@ function HO_SettingClassify({navigation, route}) {
           onEndReachedThreshold={0.01}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
-          ListFooterComponent={
-            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
-          }
+          ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}
         />

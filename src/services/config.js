@@ -18,3 +18,4 @@ export const QnaStatus = {
 };
 
 export const fetchCount = 7;
+export const fetchCountForCategory = 20;

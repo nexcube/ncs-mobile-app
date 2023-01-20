@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useRef} from 'react';
 import {StyleSheet, FlatList, View} from 'react-native';
 import {useEffect, useState} from 'react';
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
@@ -14,6 +14,7 @@ import apiInquirySearchByCat from '../../../services/api/inquiry/searchByCat';
 import NoResult from '../../../components/NoResult';
 import apiInquirySearchByStaff from '../../../services/api/inquiry/searchByStaff';
 import UserContext from '../../../services/context/UserContext';
+import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 
 function HO_Search({navigation, route}) {
   const {
@@ -34,6 +35,8 @@ function HO_Search({navigation, route}) {
   //0:지점명, 1:제목, 2:제목&내용, 3:분류명, 4:담당자
   const searchCategory = ['지점명', '제목', '제목&내용', '분류명', '담당자'];
   const [User, , isHO] = useContext(UserContext);
+
+  const listRef = useRef();
 
   const getData = offset => {
     switch (searchIndex) {
@@ -74,6 +77,7 @@ function HO_Search({navigation, route}) {
   const onSuccess = (offset, data) => {
     // console.log(JSON.stringify(data, null, '\t'));
 
+    setLoading(false);
     if (data.length === 0) {
       setNoMore(true);
       if (offset === 0) {
@@ -106,6 +110,8 @@ function HO_Search({navigation, route}) {
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
       // console.log('onEndReached...');
+      listRef.current.scrollToEnd();
+      setLoading(true);
       getData(status.offset);
     }
   };
@@ -135,6 +141,7 @@ function HO_Search({navigation, route}) {
         <NoResult />
       ) : (
         <FlatList
+          ref={listRef}
           contentContainerStyle={[styles.list]}
           data={list}
           renderItem={({item, index}) => (
@@ -163,9 +170,7 @@ function HO_Search({navigation, route}) {
           onEndReachedThreshold={0.1}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
-          ListFooterComponent={
-            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
-          }
+          ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}
         />

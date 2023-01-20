@@ -23,11 +23,11 @@ function App() {
   ]);
 
   axios.defaults.baseURL = Platform.select({
-    ios: 'http://192.168.0.37',
-    android: 'http://192.168.0.37',
+    // ios: 'http://192.168.0.37',
+    // android: 'http://192.168.0.37',
 
-    // ios: 'http://3.39.59.30',
-    // android: 'http://3.39.59.30',
+    ios: 'http://3.39.59.30',
+    android: 'http://3.39.59.30',
   });
 
   return (

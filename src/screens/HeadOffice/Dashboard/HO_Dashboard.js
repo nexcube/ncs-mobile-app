@@ -17,6 +17,8 @@ import apiInquiryListRelated from '../../../services/api/inquiry/listRelated';
 import apiInquiryList from '../../../services/api/inquiry/list';
 import {fetchCount} from '../../../services/config';
 import NoResult from '../../../components/NoResult';
+import globalStyles from '../../../styles/globalStyles';
+import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 
 function HO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
@@ -29,6 +31,8 @@ function HO_Dashboard({navigation, route}) {
   const [tabIndex, setTabIndex] = useState(
     User.assignedCatIdxs.length > 0 ? 0 : User.relatedCatIdxs.length > 0 ? 1 : 2,
   );
+
+  const listRef = useRef();
 
   const {
     list,
@@ -106,6 +110,7 @@ function HO_Dashboard({navigation, route}) {
   }, [status.isRefreshing]);
 
   const onSuccess = (offset, data) => {
+    setLoading(false);
     console.log(data.map(i => i.idx));
     // console.log(JSON.stringify(data, null, '\t'));
 
@@ -141,8 +146,8 @@ function HO_Dashboard({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      // console.log('onEndReached...', status.offset);
-
+      listRef.current.scrollToEnd();
+      setLoading(true);
       getData(status.offset);
     }
   };
@@ -156,7 +161,7 @@ function HO_Dashboard({navigation, route}) {
   };
 
   return (
-    <View>
+    <View style={[styles.container]}>
       <ResponseStatus
         animHeaderValue={scrollOffsetY}
         onPressInfo={onPressInfo}
@@ -168,6 +173,7 @@ function HO_Dashboard({navigation, route}) {
         <NoResult />
       ) : (
         <FlatList
+          ref={listRef}
           ListHeaderComponent={
             <View style={[styles.listHeader]}>
               <CustomSwitch text="완료 포함" value={isIncludeDone} onValueChange={onToggle} />
@@ -213,9 +219,7 @@ function HO_Dashboard({navigation, route}) {
           onEndReachedThreshold={0.1}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
-          ListFooterComponent={
-            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
-          }
+          ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}
         />
@@ -227,6 +231,12 @@ function HO_Dashboard({navigation, route}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  margin10: {
+    margin: 10,
+  },
   list: {
     paddingHorizontal: 12,
     paddingVertical: 14,

@@ -1,10 +1,11 @@
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useContext, useEffect} from 'react';
+import React, {useCallback, useContext, useEffect, useRef} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';
 import CustomSwitch from '../../../components/common/CustomSwitch';
+import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 import NoResult from '../../../components/NoResult';
 import useCustomSwitch from '../../../hooks/useCustomSwitch';
 import useInquiryList from '../../../hooks/useInquiryLIst';
@@ -28,6 +29,8 @@ function HO_SharedInfo({navigation, route}) {
     addData,
   } = useInquiryList();
 
+  const listRef = useRef();
+
   const getData = offset => {
     apiInquiryListShare(offset, fetchCount, isExceptDone, onSuccess, onFail);
   };
@@ -50,7 +53,7 @@ function HO_SharedInfo({navigation, route}) {
 
   const onSuccess = (offset, data) => {
     // console.log(JSON.stringify(data, null, '\t'));
-
+    setLoading(false);
     if (data.length === 0) {
       setNoMore(true);
       if (offset === 0) {
@@ -82,7 +85,9 @@ function HO_SharedInfo({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      console.log('onEndReached...');
+      // console.log('onEndReached...');
+      listRef.current.scrollToEnd();
+      setLoading(true);
       getData(status.offset);
     }
   };
@@ -97,6 +102,7 @@ function HO_SharedInfo({navigation, route}) {
         <NoResult />
       ) : (
         <FlatList
+          ref={listRef}
           ListHeaderComponent={
             <View style={[styles.listHeader]}>
               <CustomSwitch text="진행중만 보기" value={isExceptDone} onValueChange={onToggle} />
@@ -130,9 +136,7 @@ function HO_SharedInfo({navigation, route}) {
           onEndReachedThreshold={0.1}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
-          ListFooterComponent={
-            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
-          }
+          ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}
         />

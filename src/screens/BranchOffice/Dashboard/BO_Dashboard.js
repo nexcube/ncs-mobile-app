@@ -6,6 +6,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
 import InquiryStatus from '../../../components/BranchOffice/Dashboard//inquiryStatus';
 import SearchTextInput from '../../../components/BranchOffice/Dashboard//SearchTextInput';
+import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 import NoResult from '../../../components/NoResult';
 import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiInquiryList from '../../../services/api/inquiry/list';
@@ -20,6 +21,8 @@ function BO_Dashboard({navigation, route}) {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
 
   const [User, ,] = useContext(UserContext);
+
+  const listRef = useRef();
 
   // 상태 //////////////////////////////////////////////////////////////////////////////////////////
   const [searchString, setSearchString] = useState('');
@@ -74,6 +77,7 @@ function BO_Dashboard({navigation, route}) {
 
   const onSuccess = useCallback(
     (offset, data, fromSearch = false) => {
+      setLoading(false);
       // console.log(JSON.stringify(data, null, '\t'));
       // 더이상 데이터가 없는가?
       if (data.length === 0) {
@@ -92,7 +96,7 @@ function BO_Dashboard({navigation, route}) {
 
       increaseOffset(data.length);
     },
-    [addData, increaseOffset, setData, setNoMore],
+    [addData, increaseOffset, setData, setLoading, setNoMore],
   );
 
   const onFail = useCallback(() => {
@@ -103,6 +107,8 @@ function BO_Dashboard({navigation, route}) {
   // 스크롤 처리 ///////////////////////////////////////////////////////////////////////////////////
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
+      listRef.current.scrollToEnd();
+      setLoading(true);
       getInquiryList();
     }
   };
@@ -149,6 +155,7 @@ function BO_Dashboard({navigation, route}) {
         <NoResult />
       ) : (
         <FlatList
+          ref={listRef}
           contentContainerStyle={[styles.list]}
           data={list}
           renderItem={({item}) => (
@@ -186,9 +193,7 @@ function BO_Dashboard({navigation, route}) {
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.1}
-          ListFooterComponent={
-            status.loading && <ActivityIndicator size={'large'} color="0067CC" />
-          }
+          ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}
         />
