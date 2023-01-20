@@ -17,4 +17,19 @@ function getTimeDiff(date, now = new Date()) {
   );
 }
 
-export {getTimeDiff};
+function getTime(seconds) {
+  var hour =
+    parseInt(seconds / 3600, 10) < 10
+      ? '0' + parseInt(seconds / 3600, 10)
+      : parseInt(seconds / 3600, 10);
+  var min =
+    parseInt((seconds % 3600) / 60, 10) < 10
+      ? '0' + parseInt((seconds % 3600) / 60, 10)
+      : parseInt((seconds % 3600) / 60, 10);
+  var sec = seconds % 60 < 10 ? '0' + (seconds % 60) : seconds % 60;
+  sec = Math.floor(sec);
+
+  return {hour, min, sec};
+}
+
+export {getTimeDiff, getTime};

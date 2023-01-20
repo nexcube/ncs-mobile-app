@@ -6,6 +6,8 @@ import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import ResponseTab from './ResponseTab';
 import userData from '../../../services/storage/DeviceStorage';
+import apiCommonAverageResponseTime from '../../../services/api/common/averageResponseTime';
+import {getTimeDiff, getTime} from '../../../Utils/timeDiff';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
@@ -16,6 +18,33 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, is
     outputRange: [Header_Max_Height, Header_Min_Height],
     extrapolate: 'clamp',
   });
+  const [time, setTime] = useState({});
+  useEffect(() => {
+    apiCommonAverageResponseTime(onSuccess);
+  }, []);
+
+  const onSuccess = data => {
+    // console.log(JSON.stringify(data, null, '\t'));
+    const now = new Date();
+    const localTime = now.getTime() - now.getTimezoneOffset() * 60 * 1000;
+    const hasReplyResponseTime = data.hasReply.reduce((sum, cur, index) => {
+      sum = sum + (new Date(cur.firstAnswerDate) - new Date(cur.dt_QnaMake));
+
+      return sum;
+    }, 0);
+
+    const totalHasReplySecTime = hasReplyResponseTime / 1000;
+
+    const noReplyResponseTime = data.noReply.reduce((sum, cur, index) => {
+      sum = sum + (localTime - new Date(cur.dt_QnaMake));
+      return sum;
+    }, 0);
+    const totalNoReplaySecTime = noReplyResponseTime / 1000;
+
+    const total =
+      (totalHasReplySecTime + totalNoReplaySecTime) / (data.hasReply.length + data.noReply.length);
+    setTime(getTime(total));
+  };
 
   const Element = ({count, text}) => (
     <View style={[styles.row]}>
@@ -23,11 +52,6 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, is
       <Text style={[styles.rowText]}>{text}</Text>
     </View>
   );
-
-  const [staff, setStaff] = useState('');
-  useEffect(() => {
-    userData.getStaffId().then(s => setStaff(s));
-  });
 
   return (
     <View>
@@ -39,10 +63,9 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, is
           <View style={[styles.container]}>
             <Text style={styles.headerText}>평균 응답 시간</Text>
             <View style={[styles.row]}>
-              <Element count={1} text="시간 " />
-              <Element count={12} text="분 " />
-              <Element count={33} text="초 " />
-              {/* <Text style={[{color: 'red'}]}>{staff}</Text> */}
+              <Element count={time.hour} text="시간 " />
+              <Element count={time.min} text="분 " />
+              <Element count={time.sec} text="초 " />
               <Icon name="info" size={15} color={globalStyles.color.gray} onPress={onPressInfo} />
             </View>
           </View>

@@ -9,7 +9,7 @@ const ResponseInfoSheet = ({onOk, onCancel}) => {
       <Text style={[styles.headerText]}>평균 응답 시간</Text>
       <View style={[styles.textContainer]}>
         <Text style={[styles.text]}>
-          신규 등록된 뭉의에 첫 댓글이 달릴 때까지 지난 7일간의 평균 시간입니다.
+          신규 등록된 문의에 첫 댓글이 달릴 때까지 지난 7일간의 평균 시간입니다.
         </Text>
       </View>
       <CustomButton title="확인" onPress={onOk} hasMarginBottom />
