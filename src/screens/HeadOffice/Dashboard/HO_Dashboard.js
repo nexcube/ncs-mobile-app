@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useRef, useState} from 'react';
-import {StyleSheet, View, Animated, FlatList, Text} from 'react-native';
+import {StyleSheet, View, Animated, FlatList} from 'react-native';
 import ResponseStatus from '../../../components/HeadOffice/Dashboard/ResponseStatus';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
@@ -74,16 +74,26 @@ function HO_Dashboard({navigation, route}) {
     }
   };
 
-  useEffect(
-    () => {
-      // console.log(
-      //   `${route.name} :useEffect ---------------------------------------`,
-      //   isIncludeDone,
-      // );
+  // useEffect(
+  //   () => {
+  //     console.log(
+  //       `${route.name} :useEffect ---------------------------------------`,
+  //       isIncludeDone,
+  //     );
+  //     getData(0);
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [tabIndex, isIncludeDone],
+  // );
+
+  // 읽음 효과를 즉시 부여하기 위해서 useEffect 에서 useFocusEffect로 변경하였음.
+  // 부가적으로 탭 변경 시에도 다시 읽어 드림.
+  useFocusEffect(
+    useCallback(() => {
+      // console.log('useFocusEffect++++++++++++++++++++');
       getData(0);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [tabIndex, isIncludeDone],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tabIndex, isIncludeDone]),
   );
 
   // 리플레쉬일때 처리.
@@ -170,7 +180,7 @@ function HO_Dashboard({navigation, route}) {
               <InquiryCard
                 key={item.idx}
                 // title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
-                title={`${item.title} `}
+                title={item.title}
                 mainCatName={item.mainCatName}
                 subCatName={item.subCatName}
                 branchOfficeName={item.branchOfficeName}

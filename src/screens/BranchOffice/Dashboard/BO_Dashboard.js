@@ -155,7 +155,8 @@ function BO_Dashboard({navigation, route}) {
             <Pressable onPress={() => onItemSelected(item)}>
               <InquiryCard
                 key={item.idx}
-                title={item.idx.toString() + ' : ' + item.title}
+                title={item.title}
+                // title={item.idx.toString() + ' : ' + item.title}
                 mainCatName={item.mainCatName}
                 subCatName={item.subCatName}
                 branchOfficeName={item.branchOfficeName}

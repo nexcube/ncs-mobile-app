@@ -7,7 +7,7 @@ function getTimeDiff(date, now = new Date()) {
   var diffDay = Math.floor(dateGap / (1000 * 60 * 60 * 24)); // 일수
   var diffHour = timeGap.getHours(); // 시간
   var diffMin = timeGap.getMinutes(); // 분
-  var diffSec = timeGap.getSeconds(); // 초
+  // var diffSec = timeGap.getSeconds(); // 초
 
   return (
     (diffDay >= 1 ? `${Math.floor(diffDay)}일 ` : '') +

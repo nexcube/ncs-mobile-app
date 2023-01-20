@@ -149,6 +149,7 @@ function BO_Detail({navigation, route}) {
           commentCount={inquiryItem.commentCount}
           isHO={isFromHO}
           forDetail={true}
+          isRead={inquiryItem.isRead !== null}
           assignedInfo={inquiryItem?.assignedInfo}
         />
       </View>

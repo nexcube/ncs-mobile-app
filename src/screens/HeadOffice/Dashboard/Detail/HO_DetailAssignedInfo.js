@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import InquiryCard from '../../../../components/BranchOffice/Dashboard/InquiryCard';
 import AssignedStaffComp from '../../../../components/HeadOffice/Detail/AssignedStaffComp';

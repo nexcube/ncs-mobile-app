@@ -1,9 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, List} from 'react-native-paper';
-import {useEffect} from 'react';
-import apiAssignedDepartStaffs from '../../../services/api/assigned/departStaffs';
-import apiAssignedInfo from '../../../services/api/assigned/info';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 import UserContext from '../../../services/context/UserContext';

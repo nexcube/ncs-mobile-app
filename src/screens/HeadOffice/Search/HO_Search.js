@@ -141,7 +141,8 @@ function HO_Search({navigation, route}) {
             <Pressable onPress={() => onItemSelected(item)}>
               <InquiryCard
                 key={item.idx}
-                title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
+                title={item.title}
+                // title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
                 mainCatName={item.mainCatName}
                 subCatName={item.subCatName}
                 branchOfficeName={item.branchOfficeName}

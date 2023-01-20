@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {VerticalSpace24} from '../../../components/common/VerticalSpace';
 import AssignedStaffComp from '../../../components/HeadOffice/Detail/AssignedStaffComp';
@@ -8,7 +8,6 @@ import apiCategoryUpdateKeyword from '../../../services/api/category/updateKeywo
 import globalStyles from '../../../styles/globalStyles';
 import apiCategoryAssignedInfo from '../../../services/api/assigned/categoryAssignedInfo';
 import {useFocusEffect} from '@react-navigation/native';
-import {isFrozen} from 'immer/dist/internal';
 
 function HO_SettingClassifyDetail({navigation, route}) {
   const categoryIndex = route.params.categoryIndex;
@@ -53,11 +52,11 @@ function HO_SettingClassifyDetail({navigation, route}) {
     setCategoryInfo(data);
   };
 
-  function containsWhitespace(str) {
-    const isHaveSpace = /\s/.test(str);
-    // console.log(str, isHaveSpace);
-    return isHaveSpace;
-  }
+  // function containsWhitespace(str) {
+  //   const isHaveSpace = /\s/.test(str);
+  //   // console.log(str, isHaveSpace);
+  //   return isHaveSpace;
+  // }
 
   const onPressSave = () => {
     // if (categoryInfo?.keyword.split(',').every(word => !containsWhitespace(word))) {

@@ -1,6 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect} from 'react';
-import {StyleSheet, Text, Button, Image, ImageBackground, View, FlatList} from 'react-native';
+import {StyleSheet, View, FlatList} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import InquiryCard from '../../../components/BranchOffice/Dashboard/InquiryCard';
@@ -14,7 +14,7 @@ import UserContext from '../../../services/context/UserContext';
 
 function HO_SharedInfo({navigation, route}) {
   const {isOn: isExceptDone, onToggle} = useCustomSwitch('isIncludeInprogress');
-  const [User, , isHO] = useContext(UserContext);
+  const [, , isHO] = useContext(UserContext);
   const {
     list,
     status,
@@ -108,7 +108,8 @@ function HO_SharedInfo({navigation, route}) {
             <Pressable onPress={() => onItemSelected(item)}>
               <InquiryCard
                 key={item.idx}
-                title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
+                title={item.title}
+                // title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
                 mainCatName={item.mainCatName}
                 subCatName={item.subCatName}
                 branchOfficeName={item.branchOfficeName}
