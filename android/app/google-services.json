@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "541244472037",
+    "project_id": "ncs-notification",
+    "storage_bucket": "ncs-notification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541244472037:android:c1524b71f223362155f20c",
+        "android_client_info": {
+          "package_name": "com.nexcubecorp.ncs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541244472037-dle63hi0lcocd8vp43v93l0tk24dkl9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABiv2ypL6TpZ7GYsZcxB1naQnS-DVN_d4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541244472037-dle63hi0lcocd8vp43v93l0tk24dkl9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@baronha/react-native-multiple-image-picker": "^0.4.13",
+    "@react-native-firebase/app": "^16.5.2",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
