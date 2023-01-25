@@ -73,6 +73,7 @@ function HO_SettingPushTime({navigation, route}) {
         }}
         dropdownStyle={styles.dropdownStyle}
         rowTextStyle={styles.rowTextStyle}
+        statusBarTranslucent={true}
       />
       <VerticalSpace12 />
       <Text style={[styles.subject]}>알림 종료 시간</Text>
@@ -98,6 +99,7 @@ function HO_SettingPushTime({navigation, route}) {
         }}
         dropdownStyle={styles.dropdownStyle}
         rowTextStyle={styles.rowTextStyle}
+        statusBarTranslucent={true}
       />
     </View>
   );

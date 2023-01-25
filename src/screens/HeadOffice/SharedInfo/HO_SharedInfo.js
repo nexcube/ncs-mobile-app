@@ -85,7 +85,7 @@ function HO_SharedInfo({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
-      // console.log('onEndReached...');
+      console.log('onEndReached...');
       listRef.current.scrollToEnd();
       setLoading(true);
       getData(status.offset);
@@ -133,7 +133,7 @@ function HO_SharedInfo({navigation, route}) {
           )}
           keyExtractor={item => item.idx}
           scrollEventThrottle={200}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
           ListFooterComponent={status.loading && <FlatListFooterLoading />}

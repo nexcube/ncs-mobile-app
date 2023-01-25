@@ -54,6 +54,7 @@ function SearchHeader({
             );
           }}
           dropdownStyle={styles.dropdownStyle}
+          statusBarTranslucent={true}
         />
         <View style={[styles.padding]} />
         <SearchTextInput

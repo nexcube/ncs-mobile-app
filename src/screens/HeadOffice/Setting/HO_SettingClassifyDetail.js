@@ -1,5 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {VerticalSpace24} from '../../../components/common/VerticalSpace';
 import AssignedStaffComp from '../../../components/HeadOffice/Detail/AssignedStaffComp';
@@ -102,7 +110,7 @@ function HO_SettingClassifyDetail({navigation, route}) {
   };
 
   return (
-    <View style={[styles.fullscreen]}>
+    <SafeAreaView style={[styles.fullscreen]}>
       <VerticalSpace24 />
       <View style={[styles.titleContainer]}>
         <Text style={[styles.titleName]}>분류 키워드</Text>
@@ -145,12 +153,12 @@ function HO_SettingClassifyDetail({navigation, route}) {
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  fullscreen: {},
+  fullscreen: {flex: 1},
   save: {
     fontFamily: globalStyles.font.regular,
     fontSize: 15,

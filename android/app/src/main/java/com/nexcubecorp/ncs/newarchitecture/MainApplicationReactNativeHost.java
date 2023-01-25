@@ -19,7 +19,7 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.ncsmobileapp.BuildConfig;
+import com.nexcubecorp.ncs.BuildConfig;
 import com.ncsmobileapp.newarchitecture.components.MainComponentsRegistry;
 import com.ncsmobileapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;

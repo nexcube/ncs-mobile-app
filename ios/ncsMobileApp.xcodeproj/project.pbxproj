@@ -14,6 +14,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4886EC70F8BF4C5D81090C08 /* Happiness-Sans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC262CFBC9D14C11AD6525A9 /* Happiness-Sans-Bold.ttf */; };
+		71278BE72980DA5800267F3E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71278BE62980DA5800267F3E /* File.swift */; };
+		71278BE82980DA5800267F3E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71278BE62980DA5800267F3E /* File.swift */; };
 		734DB7FF590E4F9CA5F16067 /* HappinessSansVF.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27E24E8521AD40C7A886B453 /* HappinessSansVF.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-ncsMobileApp-ncsMobileAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ncsMobileApp-ncsMobileAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -60,6 +62,9 @@
 		5709B34CF0A7D63546082F79 /* Pods-ncsMobileApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ncsMobileApp.release.xcconfig"; path = "Target Support Files/Pods-ncsMobileApp/Pods-ncsMobileApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-ncsMobileApp-ncsMobileAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ncsMobileApp-ncsMobileAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ncsMobileApp-ncsMobileAppTests/Pods-ncsMobileApp-ncsMobileAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ncsMobileApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ncsMobileApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71278BE42980DA5700267F3E /* ncsMobileApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ncsMobileApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		71278BE52980DA5700267F3E /* ncsMobileAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ncsMobileAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		71278BE62980DA5800267F3E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		713154EE29385A28004D2F92 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		713154EF29387538004D2F92 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		713154F92938DB7E004D2F92 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -164,6 +169,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				71278BE62980DA5800267F3E /* File.swift */,
 				713154F92938DB7E004D2F92 /* fonts */,
 				713154EE29385A28004D2F92 /* Config.xcconfig */,
 				13B07FAE1A68108700A75B9A /* ncsMobileApp */,
@@ -173,6 +179,8 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				49E19E968C214AD8AFFD01DF /* Resources */,
+				71278BE42980DA5700267F3E /* ncsMobileApp-Bridging-Header.h */,
+				71278BE52980DA5700267F3E /* ncsMobileAppTests-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -255,10 +263,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 1420;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -483,6 +492,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E356F31AD99517003FC87E /* ncsMobileAppTests.m in Sources */,
+				71278BE82980DA5800267F3E /* File.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				71278BE72980DA5800267F3E /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,7 +521,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-ncsMobileApp-ncsMobileAppTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -529,6 +542,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ncsMobileAppTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ncsMobileApp.app/ncsMobileApp";
 			};
 			name = Debug;
@@ -537,7 +553,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ncsMobileAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -553,6 +571,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ncsMobileAppTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ncsMobileApp.app/ncsMobileApp";
 			};
 			name = Release;
@@ -577,7 +597,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.nexcubecorp.ncs;
 				PRODUCT_NAME = ncsMobileApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "ncsMobileApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -603,7 +625,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.nexcubecorp.ncs;
 				PRODUCT_NAME = ncsMobileApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "ncsMobileApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

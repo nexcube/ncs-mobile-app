@@ -146,7 +146,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId project.env.get("APP_ID")
+        applicationId "com.nexcubecorp.ncs"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode project.env.get("BUILD_VERSION").toInteger()

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
-import SelectDropdown from 'react-native-select-dropdown';
 import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';
 

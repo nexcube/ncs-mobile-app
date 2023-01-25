@@ -1,10 +1,9 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
-
 import SearchHeader from '../../../components/HeadOffice/Dashboard/Search/SearchHeader';
 import ClassifyItem from '../../../components/HeadOffice/Setting/ClassifyItem';
 import NoResult from '../../../components/NoResult';
@@ -12,7 +11,7 @@ import useInquiryList from '../../../hooks/useInquiryLIst';
 import apiCategorySearch from '../../../services/api/category/search';
 import apiCategorySearchByStaff from '../../../services/api/category/searchByStaff';
 import apiCategorySearchByWatch from '../../../services/api/category/searchByWatch';
-import {fetchCount, fetchCountForCategory} from '../../../services/config';
+import {fetchCountForCategory} from '../../../services/config';
 
 function HO_SettingClassify({navigation, route}) {
   const [searchString, setSearchString] = useState('');
@@ -145,7 +144,7 @@ function HO_SettingClassify({navigation, route}) {
           )}
           keyExtractor={(item, index) => index}
           scrollEventThrottle={200}
-          onEndReachedThreshold={0.01}
+          onEndReachedThreshold={0.2}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
           ListFooterComponent={status.loading && <FlatListFooterLoading />}
@@ -159,7 +158,7 @@ function HO_SettingClassify({navigation, route}) {
 
 const styles = StyleSheet.create({
   fullscreen: {
-    flex: 1,
+    // flex: 1,
   },
 });
 

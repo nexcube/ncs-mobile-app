@@ -192,7 +192,7 @@ function BO_Dashboard({navigation, route}) {
           scrollEventThrottle={200}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
           ListFooterComponent={status.loading && <FlatListFooterLoading />}
           onRefresh={onRefresh}
           refreshing={status.isRefreshing}

@@ -1,17 +1,26 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../styles/globalStyles';
+import FlatListFooterLoading from './common/FlatListFooterLoading';
 import {VerticalSpace24} from './common/VerticalSpace';
 
-function NoResult() {
+function NoResult({message}) {
   return (
     <View style={[styles.noResultContainer]}>
       <VerticalSpace24 />
       <VerticalSpace24 />
-      <Text style={[styles.noResultTitle]}>검색결과가 존재하지 않습니다. </Text>
-      <Text style={[styles.noResultTitle]}>다른 단어로 다시 시도해 보세요. </Text>
-      <VerticalSpace24 />
-      <Image style={[styles.image]} source={require('../../assets/images/Find.png')} />
+      {message ? (
+        message.map(m => <Text style={[styles.noResultTitle]}>{m}</Text>)
+      ) : (
+        <FlatListFooterLoading />
+      )}
+
+      {message && (
+        <>
+          <VerticalSpace24 />
+          <Image style={[styles.image]} source={require('../../assets/images/Find.png')} />
+        </>
+      )}
     </View>
   );
 }

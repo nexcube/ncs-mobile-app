@@ -1,4 +1,4 @@
-package com.ncsmobileapp;
+package com.nexcubecorp.ncs;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

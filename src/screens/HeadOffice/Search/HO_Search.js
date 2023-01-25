@@ -138,7 +138,7 @@ function HO_Search({navigation, route}) {
         onSearchSubmit={onSearchSubmit}
       />
       {list.length === 0 ? (
-        <NoResult />
+        <NoResult message={['검색 결과가 존재하지 않습니다.', '다른 단어로 다시 시도해 보세요']} />
       ) : (
         <FlatList
           ref={listRef}
@@ -167,7 +167,7 @@ function HO_Search({navigation, route}) {
           )}
           keyExtractor={item => item.idx}
           scrollEventThrottle={200}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
           ListFooterComponent={status.loading && <FlatListFooterLoading />}

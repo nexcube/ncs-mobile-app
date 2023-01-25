@@ -146,6 +146,7 @@ function HO_Dashboard({navigation, route}) {
 
   const onEndReached = () => {
     if (!status.loading && !status.noMore) {
+      console.log('onEndReached...');
       listRef.current.scrollToEnd();
       setLoading(true);
       getData(status.offset);
@@ -185,8 +186,8 @@ function HO_Dashboard({navigation, route}) {
             <Pressable onPress={() => onItemSelected(item)}>
               <InquiryCard
                 key={item.idx}
-                // title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
-                title={item.title}
+                title={`count: ${index + 1} qnaIdx: ${item.idx} \n${item.title} `}
+                // title={item.title}
                 mainCatName={item.mainCatName}
                 subCatName={item.subCatName}
                 branchOfficeName={item.branchOfficeName}
@@ -216,7 +217,7 @@ function HO_Dashboard({navigation, route}) {
             {useNativeDriver: false},
           )}
           scrollEventThrottle={200}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
           ItemSeparatorComponent={<View style={[styles.itemSeparator]} />}
           onEndReached={onEndReached}
           ListFooterComponent={status.loading && <FlatListFooterLoading />}
