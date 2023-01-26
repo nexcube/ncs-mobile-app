@@ -12,6 +12,8 @@ import apiSettingQnaAccessUserListItem from '../services/api/setting/qnaAccessUs
 import UserContext from '../services/context/UserContext';
 import apiResponsibilityList from '../services/api/setting/responsibilityList';
 import apiAssignedRelatedCategoryWatchStaff from '../services/api/assigned/relatedCategoryWatchStaff';
+import messaging from '@react-native-firebase/messaging';
+import apiCommonRegisterUserInfo from '../services/api/common/registerUserInfo';
 
 function LoginScreen({navigation, route}) {
   // 본사 직원: namhy00 / YAjPr5YLys
@@ -74,12 +76,31 @@ function LoginScreen({navigation, route}) {
     }
   };
 
+  async function onAppBootstrap(JWTToken, staffId) {
+    // Register the device with FCM
+    await messaging().registerDeviceForRemoteMessages();
+
+    // Get the token
+    const token = await messaging().getToken();
+
+    // Save the token
+    // await postToApi('/users/1234/tokens', {token});
+    // console.log(token);
+
+    await apiCommonRegisterUserInfo(
+      JWTToken,
+      staffId,
+      token,
+      Platform.select({ios: 'I', android: 'A'}),
+    );
+  }
+
   const loginProcess = (data, routesName) => {
     userData.setId(id);
     userData.setPassword(password);
     userData.setJWT(data.token);
     userData.setUserData(data.userData);
-    // console.log(JSON.stringify(data, null, '\t'));
+    onAppBootstrap(data.token, data.userData.staffId);
 
     if (routesName === 'HO_MainStack') {
       // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.

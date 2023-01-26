@@ -9,6 +9,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import React from 'react';
 import theme from './src/theme/theme';
 import messaging from '@react-native-firebase/messaging';
+import notifee, {EventType} from '@notifee/react-native';
 
 export default function Main() {
   return (
@@ -19,7 +20,28 @@ export default function Main() {
 }
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message Handled in the background!', remoteMessage);
+  const {notification, data} = remoteMessage;
+
+  notifee.displayNotification({
+    title: notification.title,
+    body: notification.body,
+    data,
+    ios: {
+      categoryId: 'workout',
+    },
+  });
+});
+
+//handle background event for when the notification is displayed in the background
+notifee.onBackgroundEvent(async ({type, detail}) => {
+  const {notification, pressAction} = detail;
+  if (type === EventType.ACTION_PRESS) {
+    if (detail.pressAction.id === 'liked-workout') {
+      //do some action
+    }
+    // Remove the notification
+    await notifee.cancelNotification(notification.id);
+  }
 });
 
 function HeadlessCheck({isHeadless}) {

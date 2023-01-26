@@ -10,6 +10,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SpinnerContextProvider} from './src/services/context/SpinnerContext';
 import {UserContextProvider} from './src/services/context/UserContext';
 import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -24,19 +25,29 @@ function App() {
   ]);
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
+    const unsubscribe = messaging().onMessage(onMessageReceived);
 
     return unsubscribe;
   }, []);
 
-  axios.defaults.baseURL = Platform.select({
-    // ios: 'http://192.168.0.37',
-    // android: 'http://192.168.0.37',
+  async function onMessageReceived(message) {
+    // Alert.alert('A new FCM message arrived!', JSON.stringify(message));
+    console.log('A new FCM message arrived!', JSON.stringify(message));
+    const {notification, data} = message;
+    const {title, body} = notification;
+    notifee.displayNotification({
+      title,
+      body,
+      data,
+    });
+  }
 
-    ios: 'http://3.39.59.30',
-    android: 'http://3.39.59.30',
+  axios.defaults.baseURL = Platform.select({
+    ios: 'http://192.168.0.37',
+    android: 'http://192.168.0.37',
+
+    // ios: 'http://3.39.59.30',
+    // android: 'http://3.39.59.30',
   });
 
   return (
