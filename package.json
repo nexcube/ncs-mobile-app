@@ -18,6 +18,7 @@
     "android:prd:d": "react-native run-android --variant=productdebug",
     "android:prd:r": "react-native run-android --variant=productrelease",
     "ios:dev:d": "react-native run-ios --scheme Develop --configuration Debug --simulator='iPhone 14'",
+    "ios:dev:p": "react-native run-ios --scheme Develop --configuration Debug --device='Koh의 iPhone'",
     "ios:dev:r": "react-native run-ios --scheme Develop --configuration Release --device 'TEST iPhone'",
     "ios:stg:d": "react-native run-ios --scheme Stage --configuration Debug --simulator='iPhone 14'",
     "ios:stg:r": "react-native run-ios --scheme Stage --configuration Release --simulator='iPhone 14'",
@@ -27,6 +28,7 @@
   "dependencies": {
     "@baronha/react-native-multiple-image-picker": "^0.4.13",
     "@react-native-firebase/app": "^16.5.2",
+    "@react-native-firebase/messaging": "^16.5.2",
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",

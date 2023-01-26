@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
-import {LogBox, Platform, StatusBar} from 'react-native';
+import React, {useEffect} from 'react';
+import {Alert, LogBox, Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ import {DefaultTheme} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SpinnerContextProvider} from './src/services/context/SpinnerContext';
 import {UserContextProvider} from './src/services/context/UserContext';
+import messaging from '@react-native-firebase/messaging';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -21,6 +22,14 @@ function App() {
   LogBox.ignoreLogs([
     'Could not find image file:///Users/parkcom/Library/Developer/CoreSimulator/Devices/',
   ]);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+  }, []);
 
   axios.defaults.baseURL = Platform.select({
     // ios: 'http://192.168.0.37',

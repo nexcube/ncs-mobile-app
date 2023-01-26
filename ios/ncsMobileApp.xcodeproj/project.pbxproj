@@ -70,6 +70,7 @@
 		713154F92938DB7E004D2F92 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		71903F352951A97D00447D03 /* RNFileViewer.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; name = RNFileViewer.xcworkspace; path = "../node_modules/react-native-file-viewer/ios/RNFileViewer.xcworkspace"; sourceTree = "<group>"; };
 		71C90FB129821A530084D959 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		71C90FB8298248E30084D959 /* ncsMobileApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ncsMobileApp.entitlements; path = ncsMobileApp/ncsMobileApp.entitlements; sourceTree = "<group>"; };
 		7C9D030FA07A4540B1728C58 /* Happiness-Sans-Title.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Happiness-Sans-Title.ttf"; path = "../assets/fonts/Happiness-Sans-Title.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ncsMobileApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; path = "Target Support Files/Pods-ncsMobileApp-ncsMobileAppTests/Pods-ncsMobileApp-ncsMobileAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 		13B07FAE1A68108700A75B9A /* ncsMobileApp */ = {
 			isa = PBXGroup;
 			children = (
+				71C90FB8298248E30084D959 /* ncsMobileApp.entitlements */,
 				71C90FB129821A530084D959 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -601,6 +603,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ncsMobileApp/ncsMobileApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WDT56TWT3;
 				ENABLE_BITCODE = NO;
@@ -630,6 +633,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = ncsMobileApp/ncsMobileApp.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9WDT56TWT3;
 				INFOPLIST_FILE = ncsMobileApp/Info.plist;
