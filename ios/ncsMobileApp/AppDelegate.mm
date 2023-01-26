@@ -1,3 +1,5 @@
+#import <Firebase.h>
+
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -31,6 +33,10 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+// Add me --- \/
+  [FIRApp configure];
+  // Add me --- /\
+
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
