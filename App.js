@@ -33,12 +33,24 @@ function App() {
   async function onMessageReceived(message) {
     // Alert.alert('A new FCM message arrived!', JSON.stringify(message));
     console.log('A new FCM message arrived!', JSON.stringify(message));
-    const {notification, data} = message;
+
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    const {notification} = message;
     const {title, body} = notification;
     notifee.displayNotification({
       title,
       body,
-      data,
+      android: {
+        channelId: channelId,
+      },
     });
   }
 
@@ -48,6 +60,11 @@ function App() {
 
     // ios: 'http://3.39.59.30',
     // android: 'http://3.39.59.30',
+  });
+
+  notifee.displayNotification({
+    title: 'test',
+    body: 'dkfja;lskdfja;lsdkfj;l',
   });
 
   return (
