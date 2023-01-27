@@ -24,8 +24,7 @@ function BO_MainStack() {
         headerBackImageSource:
           Platform.OS === 'android'
             ? require('../../../assets/images/chevron-left.png')
-            : {uri: 'back', width: 24, height: 24},
-        // presentation: 'modal',
+            : undefined,
         animationTypeForReplace: 'push',
         animation: 'slide_from_right',
       }}>

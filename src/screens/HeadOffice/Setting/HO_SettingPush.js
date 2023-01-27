@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
+import {check} from 'react-native-permissions';
+import {pushTypeName} from '../../../services/config';
 import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';
 
-const pushTypeName_HO = 'pushTypeName_HO';
 function HO_SettingPush({navigation, route}) {
   const [checked, setChecked] = useState('first');
 
-  userData.getItem(pushTypeName_HO).then(data => setChecked(data === undefined ? 'first' : data));
+  userData
+    .getItem(pushTypeName)
+    .then(data => setChecked(data === null || data === undefined ? 'first' : data));
 
   const onPress = select => {
     setChecked(select);
-    userData.setItem(pushTypeName_HO, select);
+    userData.setItem(pushTypeName, select);
   };
 
   return (
@@ -25,6 +28,7 @@ function HO_SettingPush({navigation, route}) {
             status={checked === 'first' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
+            onPress={() => onPress('first')}
           />
         </TouchableOpacity>
         <Divider />
@@ -35,6 +39,7 @@ function HO_SettingPush({navigation, route}) {
             status={checked === 'second' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
+            onPress={() => onPress('second')}
           />
         </TouchableOpacity>
         <Divider />
@@ -45,6 +50,7 @@ function HO_SettingPush({navigation, route}) {
             status={checked === 'third' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
+            onPress={() => onPress('third')}
           />
         </TouchableOpacity>
         <Divider />
@@ -55,6 +61,7 @@ function HO_SettingPush({navigation, route}) {
             status={checked === 'fourth' ? 'checked' : 'unchecked'}
             uncheckedColor={globalStyles.color.gray}
             color="blue"
+            onPress={() => onPress('fourth')}
           />
         </TouchableOpacity>
       </Card>

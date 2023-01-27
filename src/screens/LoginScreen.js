@@ -78,7 +78,11 @@ function LoginScreen({navigation, route}) {
 
   async function onAppBootstrap(JWTToken, staffId) {
     // Register the device with FCM
-    await messaging().registerDeviceForRemoteMessages();
+    // await messaging().registerDeviceForRemoteMessages();
+
+    // if (!messaging().isDeviceRegisteredForRemoteMessages) {
+    //   await messaging().registerDeviceForRemoteMessages();
+    // }
 
     // Get the token
     const token = await messaging().getToken();
@@ -95,40 +99,40 @@ function LoginScreen({navigation, route}) {
     );
   }
 
-  const loginProcess = (data, routesName) => {
+  const loginProcess = async (data, routesName) => {
     userData.setId(id);
     userData.setPassword(password);
     userData.setJWT(data.token);
     userData.setUserData(data.userData);
-    onAppBootstrap(data.token, data.userData.staffId);
-
-    if (routesName === 'HO_MainStack') {
-      // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.
-      apiResponsibilityList().then(responsibilityList => {
-        // console.log(responsibilityList);
-        // const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
-        const assignedCatIdxs = responsibilityList
-          .filter(i => i.staffId === data.userData.staffId)
-          .map(j => j.catIndex);
-        // console.log(catIdx);
-        // console.log(assignedCatIdxs);
-        //TODO 연관된 카테고리 정보도 추가하자.
-        // 담당 카테고리가 없는 경우도 처리하자.
-        apiAssignedRelatedCategoryWatchStaff(data.userData.staffId).then(catIdxs => {
-          const newUser = {
-            ...data.userData,
-            assignedCatIdxs: assignedCatIdxs,
-            relatedCatIdxs: catIdxs.map(v => v.catIdx),
-          };
-          setUser(newUser);
-          // console.log(JSON.stringify(newUser, null, '\t'));
-          navigation.navigate(routesName);
+    onAppBootstrap(data.token, data.userData.staffId).then(res => {
+      if (routesName === 'HO_MainStack') {
+        // 본사인 경우 미리 담당 카테코리 정보를 가져와서 셋팅 해준다.
+        apiResponsibilityList().then(responsibilityList => {
+          // console.log(responsibilityList);
+          // const catIdx = responsibilityList.find(i => i.staffId === data.userData.staffId)?.catIndex;
+          const assignedCatIdxs = responsibilityList
+            .filter(i => i.staffId === data.userData.staffId)
+            .map(j => j.catIndex);
+          // console.log(catIdx);
+          // console.log(assignedCatIdxs);
+          //TODO 연관된 카테고리 정보도 추가하자.
+          // 담당 카테고리가 없는 경우도 처리하자.
+          apiAssignedRelatedCategoryWatchStaff(data.userData.staffId).then(catIdxs => {
+            const newUser = {
+              ...data.userData,
+              assignedCatIdxs: assignedCatIdxs,
+              relatedCatIdxs: catIdxs.map(v => v.catIdx),
+            };
+            setUser(newUser);
+            // console.log(JSON.stringify(newUser, null, '\t'));
+            navigation.navigate(routesName);
+          });
         });
-      });
-    } else {
-      setUser(data.userData);
-      navigation.navigate(routesName);
-    }
+      } else {
+        setUser(data.userData);
+        navigation.navigate(routesName);
+      }
+    });
   };
 
   const onLoginError = () => {

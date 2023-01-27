@@ -20,7 +20,7 @@ function BO_SettingStack() {
         headerBackImageSource:
           Platform.OS === 'android'
             ? require('../../../../assets/images/chevron-left.png')
-            : {uri: 'back', width: 24, height: 24},
+            : undefined,
       }}>
       <Stack.Screen name="BO_Setting" component={BO_Setting} options={{title: '환경설정'}} />
       <Stack.Screen

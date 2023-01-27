@@ -19,3 +19,6 @@ export const QnaStatus = {
 
 export const fetchCount = 7;
 export const fetchCountForCategory = 20;
+
+// first: 소리와 진동, second:소리, third:진동, fourth:무음
+export const pushTypeName = 'pushTypeName';

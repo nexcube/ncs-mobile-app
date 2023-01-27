@@ -11,6 +11,8 @@ import {SpinnerContextProvider} from './src/services/context/SpinnerContext';
 import {UserContextProvider} from './src/services/context/UserContext';
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native';
+import userData from './src/services/storage/DeviceStorage';
+import {pushTypeName} from './src/services/config';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -35,24 +37,89 @@ function App() {
     console.log('A new FCM message arrived!', JSON.stringify(message));
 
     // Request permissions (required for iOS)
-    await notifee.requestPermission();
+    await notifee.requestPermission({sound: true, badge: true});
+
+    let pushType = await userData.getItem(pushTypeName);
+    pushType = pushType === null || pushType === undefined ? 'first' : pushType;
+    console.log('pushType:', pushType);
+
+    let vibration = true;
+    let sound = true;
+    switch (pushType) {
+      case 'first':
+        vibration = true;
+        sound = true;
+        break;
+      case 'second':
+        vibration = false;
+        sound = true;
+        break;
+      case 'third':
+        vibration = true;
+        sound = false;
+        break;
+      case 'fourth':
+        vibration = false;
+        sound = false;
+        break;
+    }
 
     // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
+    let channelId = null;
+    if (sound) {
+      channelId = await notifee.createChannel({
+        id: pushType,
+        name: 'Default Channel',
+        vibration: vibration,
+        sound: 'default',
+      });
+    } else {
+      channelId = await notifee.createChannel({
+        id: pushType,
+        name: 'Default Channel',
+        vibration: vibration,
+      });
+    }
 
     const {notification} = message;
     const {title, body} = notification;
-    notifee.displayNotification({
-      title,
-      body,
-      android: {
-        channelId: channelId,
-      },
-    });
+
+    let notificationConfig = {};
+
+    if (Platform.OS === 'android') {
+      notificationConfig = {
+        title,
+        body,
+        android: {
+          channelId: channelId,
+        },
+      };
+    } else {
+      if (sound) {
+        notificationConfig = {
+          title,
+          body,
+          ios: {
+            sound: 'default',
+            vibration: vibration,
+          },
+        };
+      } else {
+        notificationConfig = {
+          title,
+          body,
+          ios: {
+            vibration: vibration,
+          },
+        };
+      }
+    }
+
+    console.log(notificationConfig);
+    notifee.displayNotification(notificationConfig);
   }
+
+  messaging().setBackgroundMessageHandler(onMessageReceived);
 
   axios.defaults.baseURL = Platform.select({
     ios: 'http://192.168.0.37',
@@ -60,11 +127,6 @@ function App() {
 
     // ios: 'http://3.39.59.30',
     // android: 'http://3.39.59.30',
-  });
-
-  notifee.displayNotification({
-    title: 'test',
-    body: 'dkfja;lskdfja;lsdkfj;l',
   });
 
   return (

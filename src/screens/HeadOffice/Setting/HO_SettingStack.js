@@ -23,7 +23,7 @@ function HO_SettingStack() {
         headerBackImageSource:
           Platform.OS === 'android'
             ? require('../../../../assets/images/chevron-left.png')
-            : {uri: 'back', width: 24, height: 24},
+            : undefined,
       }}>
       <Stack.Screen name="HO_Setting" component={HO_Setting} options={{title: '환경설정'}} />
       <Stack.Screen

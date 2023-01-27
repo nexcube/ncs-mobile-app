@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import {Divider} from 'react-native-paper';
 
@@ -12,18 +12,41 @@ const alarmStartIndexName = 'alarmStartIndex';
 const alarmEndIndexName = 'alarmEndIndex';
 
 import userData from '../../../services/storage/DeviceStorage';
+import UserContext from '../../../services/context/UserContext';
+import apiCommonGetUserInfo from '../../../services/api/common/getUserInfo';
+import apiCommonUpdateUserInfo from '../../../services/api/common/updateUserInfo';
 function HO_SettingPushTime({navigation, route}) {
   const [startAlarmIndex, setStartAlarmIndex] = useState(0);
   const [endAlarmIndex, setEndAlarmIndex] = useState(0);
   const [dayOfWeeks, setDayOfWeeks] = useState(initDayOfWeeks);
 
-  userData.getItem(alarmStartIndexName).then(data => {
-    setStartAlarmIndex(data === undefined ? 0 : data);
-  });
+  const [User, ,] = useContext(UserContext, onSuccess);
 
-  userData.getItem(alarmEndIndexName).then(data => {
-    setEndAlarmIndex(data === undefined ? 0 : data);
-  });
+  useEffect(() => {
+    apiCommonGetUserInfo(User.staffId, onSuccess);
+    return onSave;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [User.staffId]);
+
+  const onSuccess = async data => {
+    const alarmObject = JSON.parse(data.alarmTime);
+    setStartAlarmIndex(alarmObject.startIndex);
+    setEndAlarmIndex(alarmObject.endIndex);
+    setDayOfWeeks(alarmObject.dayOfWeeks);
+  };
+
+  const onSave = async () => {
+    console.log(dayOfWeeks);
+    apiCommonUpdateUserInfo(User.staffId, {
+      startIndex: startAlarmIndex,
+      endIndex: endAlarmIndex,
+      dayOfWeeks,
+    });
+  };
+
+  console.log(startAlarmIndex);
+  console.log(endAlarmIndex);
+  console.log(dayOfWeeks);
 
   return (
     <View style={[styles.screen]}>

@@ -19,19 +19,6 @@ export default function Main() {
   );
 }
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-  const {notification, data} = remoteMessage;
-
-  notifee.displayNotification({
-    title: notification.title,
-    body: notification.body,
-    data,
-    ios: {
-      categoryId: 'workout',
-    },
-  });
-});
-
 //handle background event for when the notification is displayed in the background
 notifee.onBackgroundEvent(async ({type, detail}) => {
   const {notification, pressAction} = detail;
