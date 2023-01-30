@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Divider} from 'react-native-paper';
 
 import SelectDropdown from 'react-native-select-dropdown';
@@ -8,13 +8,16 @@ import {VerticalSpace12} from '../../../components/common/VerticalSpace';
 import globalStyles from '../../../styles/globalStyles';
 import Icon from 'react-native-vector-icons/Feather';
 
-const alarmStartIndexName = 'alarmStartIndex';
-const alarmEndIndexName = 'alarmEndIndex';
-
-import userData from '../../../services/storage/DeviceStorage';
 import UserContext from '../../../services/context/UserContext';
 import apiCommonGetUserInfo from '../../../services/api/common/getUserInfo';
 import apiCommonUpdateUserInfo from '../../../services/api/common/updateUserInfo';
+import userData from '../../../services/storage/DeviceStorage';
+import {
+  alarmDayOfWeeksName,
+  alarmEndIndexName,
+  alarmStartIndexName,
+} from '../../../services/config';
+
 function HO_SettingPushTime({navigation, route}) {
   const [startAlarmIndex, setStartAlarmIndex] = useState(0);
   const [endAlarmIndex, setEndAlarmIndex] = useState(0);
@@ -24,8 +27,6 @@ function HO_SettingPushTime({navigation, route}) {
 
   useEffect(() => {
     apiCommonGetUserInfo(User.staffId, onSuccess);
-    return onSave;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [User.staffId]);
 
   const onSuccess = async data => {
@@ -35,8 +36,13 @@ function HO_SettingPushTime({navigation, route}) {
     setDayOfWeeks(alarmObject.dayOfWeeks);
   };
 
-  const onSave = async () => {
-    console.log(dayOfWeeks);
+  useEffect(() => {
+    return onSave;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dayOfWeeks, startAlarmIndex, endAlarmIndex]);
+
+  const onSave = () => {
+    // console.log('onSave:', dayOfWeeks);
     apiCommonUpdateUserInfo(User.staffId, {
       startIndex: startAlarmIndex,
       endIndex: endAlarmIndex,
@@ -44,30 +50,25 @@ function HO_SettingPushTime({navigation, route}) {
     });
   };
 
-  console.log(startAlarmIndex);
-  console.log(endAlarmIndex);
-  console.log(dayOfWeeks);
-
   return (
     <View style={[styles.screen]}>
       <Text style={[styles.subject]}>요일 설정</Text>
       <View style={[styles.dayOfWeek]}>
-        {Object.entries(dayOfWeeks).map(([key, value]) => {
-          return (
-            <DayOfWeekToggleButton
-              key={key}
-              title={key}
-              checked={value}
-              setChecked={() => {
-                setDayOfWeeks(prev => {
-                  prev[key] = !prev[key];
-                  const newClass = {...prev};
-                  return newClass;
-                });
-              }}
-            />
-          );
-        })}
+        {Object.entries(dayOfWeeks).map(([key, value]) => (
+          <DayOfWeekToggleButton
+            key={key}
+            title={key}
+            checked={value}
+            setChecked={() => {
+              setDayOfWeeks(prev => {
+                prev[key] = !prev[key];
+                const newClass = {...prev};
+                userData.setItem(alarmDayOfWeeksName, newClass);
+                return newClass;
+              });
+            }}
+          />
+        ))}
       </View>
       <Text style={[styles.info]}>지정된 요일의 설정된 시간내에만 푸시알림을 받습니다.</Text>
       <VerticalSpace12 />
@@ -82,8 +83,8 @@ function HO_SettingPushTime({navigation, route}) {
         buttonTextStyle={styles.buttonTextStyle}
         data={timeIntervals}
         onSelect={(selectedItem, index) => {
-          setStartAlarmIndex(index);
           userData.setItem(alarmStartIndexName, index);
+          setStartAlarmIndex(index);
         }}
         renderDropdownIcon={isOpened => {
           return (
@@ -108,8 +109,8 @@ function HO_SettingPushTime({navigation, route}) {
         buttonTextStyle={styles.buttonTextStyle}
         data={timeIntervals}
         onSelect={(selectedItem, index) => {
-          setEndAlarmIndex(index);
           userData.setItem(alarmEndIndexName, index);
+          setEndAlarmIndex(index);
         }}
         renderDropdownIcon={isOpened => {
           return (
@@ -184,7 +185,7 @@ const initDayOfWeeks = {
   일: false,
 };
 
-const timeIntervals = new Array(48).fill(0).map((value, index) => {
+const timeIntervals = new Array(49).fill(0).map((value, index) => {
   const hour = Math.floor(index / 2);
   return `${String(hour).padStart(2, '0')} : ${index % 2 ? '30' : '00'}`;
 });

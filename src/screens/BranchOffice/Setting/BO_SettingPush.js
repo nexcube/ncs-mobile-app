@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
 import {pushTypeName} from '../../../services/config';
 import userData from '../../../services/storage/DeviceStorage';
@@ -30,28 +30,33 @@ function BO_SettingPush({navigation, route}) {
           />
         </TouchableOpacity>
         <Divider />
-        <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('second')}>
-          <Text style={[styles.text]}>소리</Text>
-          <RadioButton
-            value="second"
-            status={checked === 'second' ? 'checked' : 'unchecked'}
-            uncheckedColor={globalStyles.color.gray}
-            color="blue"
-            onPress={() => onPress('second')}
-          />
-        </TouchableOpacity>
-        <Divider />
-        <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('third')}>
-          <Text style={[styles.text]}>진동</Text>
-          <RadioButton
-            value="third"
-            status={checked === 'third' ? 'checked' : 'unchecked'}
-            uncheckedColor={globalStyles.color.gray}
-            color="blue"
-            onPress={() => onPress('third')}
-          />
-        </TouchableOpacity>
-        <Divider />
+        {Platform.OS === 'ios' ? undefined : (
+          <>
+            <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('second')}>
+              <Text style={[styles.text]}>소리</Text>
+              <RadioButton
+                value="second"
+                status={checked === 'second' ? 'checked' : 'unchecked'}
+                uncheckedColor={globalStyles.color.gray}
+                color="blue"
+                onPress={() => onPress('second')}
+              />
+            </TouchableOpacity>
+            <Divider />
+            <TouchableOpacity style={[styles.radioButton]} onPress={() => onPress('third')}>
+              <Text style={[styles.text]}>진동</Text>
+              <RadioButton
+                value="third"
+                status={checked === 'third' ? 'checked' : 'unchecked'}
+                uncheckedColor={globalStyles.color.gray}
+                color="blue"
+                onPress={() => onPress('third')}
+              />
+            </TouchableOpacity>
+            <Divider />
+          </>
+        )}
+
         <TouchableOpacity style={[styles.radioButtonLast]} onPress={() => onPress('fourth')}>
           <Text style={[styles.text]}>무음</Text>
           <RadioButton

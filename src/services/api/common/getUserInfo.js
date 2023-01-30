@@ -18,7 +18,7 @@ const apiCommonGetUserInfo = async (staffId, onSuccess) => {
     const response = await axios.get(url, data);
 
     if (response.data.code === 200) {
-      console.log(JSON.stringify(response.data.data, null, '\t'));
+      // console.log(JSON.stringify(response.data.data, null, '\t'));
       // return response.data.data;
       onSuccess(response.data.data);
     } else {

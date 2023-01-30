@@ -12,7 +12,14 @@ import {UserContextProvider} from './src/services/context/UserContext';
 import messaging from '@react-native-firebase/messaging';
 import notifee from '@notifee/react-native';
 import userData from './src/services/storage/DeviceStorage';
-import {pushTypeName} from './src/services/config';
+import {
+  alarmDayOfWeeksName,
+  alarmEndIndexName,
+  alarmStartIndexName,
+  pushTypeName,
+} from './src/services/config';
+import apiCommonGetUserInfo from './src/services/api/common/getUserInfo';
+import {current} from 'immer';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -21,27 +28,25 @@ if (Platform.OS === 'android') {
 }
 
 function App() {
-  // TODO 나중에 제거 되어야 됨.
-  LogBox.ignoreLogs([
-    'Could not find image file:///Users/parkcom/Library/Developer/CoreSimulator/Devices/',
-  ]);
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(onMessageReceived);
 
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function onMessageReceived(message) {
-    // Alert.alert('A new FCM message arrived!', JSON.stringify(message));
-    console.log('A new FCM message arrived!', JSON.stringify(message));
+    if (await isNotAlarmTime()) {
+      return;
+    }
+    // console.log('A new FCM message arrived!', JSON.stringify(message));
 
     // Request permissions (required for iOS)
     await notifee.requestPermission({sound: true, badge: true});
 
     let pushType = await userData.getItem(pushTypeName);
     pushType = pushType === null || pushType === undefined ? 'first' : pushType;
-    console.log('pushType:', pushType);
+    // console.log('pushType:', pushType);
 
     let vibration = true;
     let sound = true;
@@ -115,9 +120,35 @@ function App() {
       }
     }
 
-    console.log(notificationConfig);
+    // console.log(notificationConfig);
     notifee.displayNotification(notificationConfig);
   }
+
+  const isNotAlarmTime = async () => {
+    const dayOfWeeks = await userData.getItem(alarmDayOfWeeksName);
+    const startTimeIndex = await userData.getItem(alarmStartIndexName);
+    const endTimeIndex = await userData.getItem(alarmEndIndexName);
+
+    const day = new Date();
+    const DOW = ['일', '월', '화', '수', '목', '금', '토'];
+
+    if (dayOfWeeks[DOW[day.getDay()]] === false) {
+      // console.log('is not Alarm Time');
+      return true;
+    }
+
+    const hour = day.getHours();
+    const minute = day.getMinutes();
+
+    const currentTimeIndex = hour * 2 + Math.floor(minute / 30);
+    // console.log(currentTimeIndex);
+
+    if (startTimeIndex < currentTimeIndex && currentTimeIndex < endTimeIndex) {
+      return false;
+    }
+
+    return true;
+  };
 
   messaging().setBackgroundMessageHandler(onMessageReceived);
 
