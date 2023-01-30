@@ -27,8 +27,16 @@ function RootStack() {
 
       <Stack.Navigator>
         <Stack.Screen name="LogIn" component={LoginScreen} options={{headerShown: false}} />
-        <Stack.Screen name="HO_MainStack" component={HO_MainStack} options={{headerShown: false}} />
-        <Stack.Screen name="BO_MainStack" component={BO_MainStack} options={{headerShown: false}} />
+        <Stack.Screen
+          name="HO_MainStack"
+          component={HO_MainStack}
+          options={{headerShown: false, gestureEnabled: false}}
+        />
+        <Stack.Screen
+          name="BO_MainStack"
+          component={BO_MainStack}
+          options={{headerShown: false, gestureEnabled: false}}
+        />
       </Stack.Navigator>
     </>
   );

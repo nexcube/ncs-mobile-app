@@ -51,8 +51,11 @@ function HO_Dashboard({navigation, route}) {
   useEffect(
     () =>
       navigation.addListener('beforeRemove', e => {
-        console.log('beforeRemove');
-        e.preventDefault();
+        //  console.log('beforeRemove :' + JSON.stringify(e.data.action, null, '\t'));
+
+        if (e?.data?.action?.type !== 'POP_TO_TOP') {
+          e.preventDefault();
+        }
       }),
     [navigation],
   );

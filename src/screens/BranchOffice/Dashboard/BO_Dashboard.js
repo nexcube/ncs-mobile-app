@@ -42,8 +42,9 @@ function BO_Dashboard({navigation, route}) {
   useEffect(
     () =>
       navigation.addListener('beforeRemove', e => {
-        console.log('beforeRemove');
-        e.preventDefault();
+        if (e?.data?.action?.type !== 'POP_TO_TOP') {
+          e.preventDefault();
+        }
       }),
     [navigation],
   );
