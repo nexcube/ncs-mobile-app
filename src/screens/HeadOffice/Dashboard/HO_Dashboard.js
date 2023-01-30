@@ -121,7 +121,6 @@ function HO_Dashboard({navigation, route}) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status.isRefreshing]);
-
   const onSuccess = (offset, data) => {
     setLoading(false);
     console.log(data.map(i => i.idx));

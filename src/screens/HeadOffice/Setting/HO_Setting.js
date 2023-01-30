@@ -58,7 +58,7 @@ function HO_Setting({navigation, route}) {
       subTitle:
         '특정 담당자에게 할당된 분류 및 참고인 정보를 다른 사람으로 일괄 변경합니다.(인수인계시 사용)',
       subtitleNumberOfLines: 5,
-      icon: 'clock',
+      icon: 'users',
       onPress: onPressChangeAssigned,
     },
   ];
@@ -67,13 +67,13 @@ function HO_Setting({navigation, route}) {
     {
       title: '로그아웃',
       subTitle: '',
-      icon: 'clock',
+      icon: 'log-out',
       onPress: onPressLogout,
     },
     {
       title: '앱버전',
       subTitle: getVersion(),
-      icon: 'clock',
+      icon: 'heart',
       onPress: () => null,
     },
   ];
