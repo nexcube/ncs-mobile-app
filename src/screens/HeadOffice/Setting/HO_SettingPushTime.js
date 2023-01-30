@@ -176,13 +176,13 @@ const styles = StyleSheet.create({
 });
 
 const initDayOfWeeks = {
-  월: false,
-  화: false,
-  수: false,
-  목: false,
-  금: false,
-  토: false,
-  일: false,
+  월: true,
+  화: true,
+  수: true,
+  목: true,
+  금: true,
+  토: true,
+  일: true,
 };
 
 const timeIntervals = new Array(49).fill(0).map((value, index) => {

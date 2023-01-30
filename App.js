@@ -30,10 +30,38 @@ if (Platform.OS === 'android') {
 function App() {
   useEffect(() => {
     const unsubscribe = messaging().onMessage(onMessageReceived);
+    initAlarmTime();
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  async function initAlarmTime() {
+    const dayOfWeeks = await userData.getItem(alarmDayOfWeeksName);
+    if (dayOfWeeks === null || dayOfWeeks === undefined) {
+      const initDayOfWeeks = {
+        월: true,
+        화: true,
+        수: true,
+        목: true,
+        금: true,
+        토: true,
+        일: true,
+      };
+      userData.setItem(alarmDayOfWeeksName, initDayOfWeeks);
+    }
+
+    const startTimeIndex = await userData.getItem(alarmStartIndexName);
+    if (startTimeIndex === null || startTimeIndex === undefined) {
+      userData.setItem(alarmStartIndexName, 0);
+    }
+
+    const endTimeIndex = await userData.getItem(alarmEndIndexName);
+    if (endTimeIndex === null || endTimeIndex === undefined) {
+      userData.setItem(alarmEndIndexName, 48);
+    }
+    console.log(dayOfWeeks, startTimeIndex, endTimeIndex);
+  }
 
   async function onMessageReceived(message) {
     if (await isNotAlarmTime()) {
