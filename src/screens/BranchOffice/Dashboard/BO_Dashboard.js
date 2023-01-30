@@ -1,8 +1,6 @@
 import {useFocusEffect} from '@react-navigation/native';
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {Animated, StyleSheet, View, FlatList, Pressable} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
-
 import InquiryCard from '../../../components/BranchOffice/Dashboard//InquiryCard';
 import InquiryStatus from '../../../components/BranchOffice/Dashboard//inquiryStatus';
 import SearchTextInput from '../../../components/BranchOffice/Dashboard//SearchTextInput';
@@ -40,6 +38,15 @@ function BO_Dashboard({navigation, route}) {
     addData,
   } = useInquiryList();
 
+  // prevent go back
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        console.log('beforeRemove');
+        e.preventDefault();
+      }),
+    [navigation],
+  );
   //  API 처리 /////////////////////////////////////////////////////////////////////////////////////
 
   useFocusEffect(

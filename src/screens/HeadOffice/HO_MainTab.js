@@ -27,6 +27,7 @@ function HO_MainTab() {
           title: '대시보드',
           headerTintColor: globalStyles.color.white,
           headerShown: false,
+
           tabBarIcon: ({color}) => <Icon name="home" size={24} color={color} />,
         }}
       />

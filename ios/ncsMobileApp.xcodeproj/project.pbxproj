@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4886EC70F8BF4C5D81090C08 /* Happiness-Sans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC262CFBC9D14C11AD6525A9 /* Happiness-Sans-Bold.ttf */; };
 		71278BE72980DA5800267F3E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71278BE62980DA5800267F3E /* File.swift */; };
+		7176969529878C18008CBAB2 /* Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7176969229878C18008CBAB2 /* Logo.png */; };
 		71C90FB229821A530084D959 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 71C90FB129821A530084D959 /* GoogleService-Info.plist */; };
 		734DB7FF590E4F9CA5F16067 /* HappinessSansVF.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27E24E8521AD40C7A886B453 /* HappinessSansVF.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -57,6 +58,7 @@
 		713154EE29385A28004D2F92 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		713154EF29387538004D2F92 /* ReactNativeConfig.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeConfig.xcodeproj; path = "../node_modules/react-native-config/ios/ReactNativeConfig.xcodeproj"; sourceTree = "<group>"; };
 		713154F92938DB7E004D2F92 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		7176969229878C18008CBAB2 /* Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Logo.png; sourceTree = "<group>"; };
 		71903F352951A97D00447D03 /* RNFileViewer.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; name = RNFileViewer.xcworkspace; path = "../node_modules/react-native-file-viewer/ios/RNFileViewer.xcworkspace"; sourceTree = "<group>"; };
 		71C90FB129821A530084D959 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		71C90FB8298248E30084D959 /* ncsMobileApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ncsMobileApp.entitlements; path = ncsMobileApp/ncsMobileApp.entitlements; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		13B07FAE1A68108700A75B9A /* ncsMobileApp */ = {
 			isa = PBXGroup;
 			children = (
+				7176969229878C18008CBAB2 /* Logo.png */,
 				71C90FB8298248E30084D959 /* ncsMobileApp.entitlements */,
 				71C90FB129821A530084D959 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -281,6 +284,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				4886EC70F8BF4C5D81090C08 /* Happiness-Sans-Bold.ttf in Resources */,
 				9DFAE83874494BA9A1B381DC /* Happiness-Sans-Regular.ttf in Resources */,
+				7176969529878C18008CBAB2 /* Logo.png in Resources */,
 				0E778CB30A314D10882E60FD /* Happiness-Sans-Title.ttf in Resources */,
 				734DB7FF590E4F9CA5F16067 /* HappinessSansVF.ttf in Resources */,
 				71C90FB229821A530084D959 /* GoogleService-Info.plist in Resources */,

@@ -47,6 +47,16 @@ function HO_Dashboard({navigation, route}) {
     addData,
   } = useInquiryList();
 
+  // prevent go back
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        console.log('beforeRemove');
+        e.preventDefault();
+      }),
+    [navigation],
+  );
+
   const getData = offset => {
     switch (tabIndex) {
       case 0: // assignedMe
