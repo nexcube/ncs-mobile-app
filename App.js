@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {Alert, LogBox, Platform, StatusBar} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 import RootStack from './src/screens/RootStack';
 import axios from 'axios';
 
@@ -18,8 +18,6 @@ import {
   alarmStartIndexName,
   pushTypeName,
 } from './src/services/config';
-import apiCommonGetUserInfo from './src/services/api/common/getUserInfo';
-import {current} from 'immer';
 
 StatusBar.setBarStyle('light-content');
 if (Platform.OS === 'android') {
@@ -60,7 +58,7 @@ function App() {
     if (endTimeIndex === null || endTimeIndex === undefined) {
       userData.setItem(alarmEndIndexName, 48);
     }
-    console.log(dayOfWeeks, startTimeIndex, endTimeIndex);
+    // console.log(dayOfWeeks, startTimeIndex, endTimeIndex);
   }
 
   async function onMessageReceived(message) {

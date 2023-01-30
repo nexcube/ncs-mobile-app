@@ -12,12 +12,10 @@ import UserContext from '../../../services/context/UserContext';
 import apiInquiryListAssigned from '../../../services/api/inquiry/listAssigned';
 import useInquiryList from '../../../hooks/useInquiryLIst';
 import {useEffect} from 'react';
-import {ActivityIndicator} from 'react-native-paper';
 import apiInquiryListRelated from '../../../services/api/inquiry/listRelated';
 import apiInquiryList from '../../../services/api/inquiry/list';
 import {fetchCount} from '../../../services/config';
 import NoResult from '../../../components/NoResult';
-import globalStyles from '../../../styles/globalStyles';
 import FlatListFooterLoading from '../../../components/common/FlatListFooterLoading';
 
 function HO_Dashboard({navigation, route}) {
@@ -37,7 +35,9 @@ function HO_Dashboard({navigation, route}) {
   const {
     list,
     status,
+    // eslint-disable-next-line no-unused-vars
     resetStatus,
+    // eslint-disable-next-line no-unused-vars
     reset,
     setLoading,
     setNoMore,

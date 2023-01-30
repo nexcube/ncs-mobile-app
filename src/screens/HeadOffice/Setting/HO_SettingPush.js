@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Card, Divider, RadioButton} from 'react-native-paper';
-import {check} from 'react-native-permissions';
 import {pushTypeName} from '../../../services/config';
 import userData from '../../../services/storage/DeviceStorage';
 import globalStyles from '../../../styles/globalStyles';

@@ -5,9 +5,8 @@ import globalStyles from '../../../styles/globalStyles';
 
 import Icon from 'react-native-vector-icons/Feather';
 import ResponseTab from './ResponseTab';
-import userData from '../../../services/storage/DeviceStorage';
 import apiCommonAverageResponseTime from '../../../services/api/common/averageResponseTime';
-import {getTimeDiff, getTime} from '../../../Utils/timeDiff';
+import {getTime} from '../../../Utils/timeDiff';
 
 const Header_Max_Height = 130;
 const Header_Min_Height = 0;
@@ -41,8 +40,12 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, is
     }, 0);
     const totalNoReplaySecTime = noReplyResponseTime / 1000;
 
-    const total =
+    let total =
       (totalHasReplySecTime + totalNoReplaySecTime) / (data.hasReply.length + data.noReply.length);
+
+    if (Number.isNaN(total)) {
+      total = 0;
+    }
     setTime(getTime(total));
   };
 
@@ -63,9 +66,19 @@ function ResponseStatus({animHeaderValue, onPressInfo, tabIndex, setTabIndex, is
           <View style={[styles.container]}>
             <Text style={styles.headerText}>평균 응답 시간</Text>
             <View style={[styles.row]}>
-              <Element count={time.hour} text="시간 " />
-              <Element count={time.min} text="분 " />
-              <Element count={time.sec} text="초 " />
+              {time.hour === '00' && time.min === '00' && time.sec === 0 ? (
+                <>
+                  <Element count="--" text="시간 " />
+                  <Element count="--" text="분 " />
+                  <Element count="--" text="초 " />
+                </>
+              ) : (
+                <>
+                  <Element count={time.hour} text="시간 " />
+                  <Element count={time.min} text="분 " />
+                  <Element count={time.sec} text="초 " />
+                </>
+              )}
               <Icon name="info" size={15} color={globalStyles.color.gray} onPress={onPressInfo} />
             </View>
           </View>

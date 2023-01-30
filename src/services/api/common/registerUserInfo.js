@@ -1,5 +1,4 @@
 import axios from 'axios';
-import userData from '../../storage/DeviceStorage';
 import axios_error_handler from '../errorHandler';
 
 const apiCommonRegisterUserInfo = async (JWTToken, staffId, FCMToken, OS) => {
